@@ -274,10 +274,13 @@ const styles = StyleSheet.create({
    
   },
   loginButton: {
-    marginTop:20,
+    position: 'absolute', // Position the button absolutely
+    bottom: 0, // Stick to the bottom of the screen
+    left: 0,
+    right: 0,
     backgroundColor: 'black',
-    borderRadius: 5,
     padding: 16,
+    borderRadius: 0, // Full-width button
     alignItems: 'center',
   },
   loginButtonText: {

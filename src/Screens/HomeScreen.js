@@ -8,6 +8,7 @@ import CardLayout from '../Component/CardLayout';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import HeaderContent from '../Component/HeaderContent';
+import SeeAll from '../Component/SeeAll';
 
 const HomeScreen = () => {
   return (
@@ -18,13 +19,10 @@ const HomeScreen = () => {
         <IconSection />
         <CategoryList />
 
-      <Text style={{fontSize:20,fontWeight:'bold',marginStart:10,marginTop:20}}>COLLECTIONS</Text>
-      <TouchableOpacity style={styles.row}>
-      <Text style={styles.text}>SEE ALL</Text>
-      <Icon name="arrowright" size={16} color="#333" style={styles.icon} />
-      </TouchableOpacity>
+      <Text style={{fontSize:20,fontWeight:'bold',marginStart:20,marginTop:20}}>COLLECTIONS</Text>
+     <SeeAll/>
       <CardLayout />
-      <Text style={{fontSize:20,fontWeight:'bold',marginStart:10,marginTop:20}}>NEW ARRIVALS</Text>
+      <Text style={{fontSize:20,fontWeight:'bold',marginStart:20,marginTop:20}}>NEW ARRIVALS</Text>
        <ShoppingCarousel/>
        <HeaderContent/>
       

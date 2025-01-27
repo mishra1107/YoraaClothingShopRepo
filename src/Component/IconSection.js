@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const IconSection = () => {
-  const [selected, setSelected] = useState('MEN'); 
+  const [selected, setSelected] = useState('MEN');
   const navigation = useNavigation();
 
   const handlePress = (item) => {
-    setSelected(item); 
+    setSelected(item);
 
     if (item === 'WOMEN') {
       navigation.navigate('Women');
@@ -16,7 +16,7 @@ const IconSection = () => {
     } else if (item === 'ACCESSORIES') {
       navigation.navigate('Accessories');
     } else {
-      navigation.navigate(''); 
+      navigation.navigate('');
     }
   };
 
@@ -27,11 +27,15 @@ const IconSection = () => {
           key={index}
           style={[
             styles.touchable,
-            selected === item && styles.selected, 
+            selected === item && styles.selected,
+            index === 3 && styles.lastItem, // Remove right border for the last item
           ]}
           onPress={() => handlePress(item)}
         >
-          <Text style={[styles.text, selected === item && styles.selectedText]}>
+          <Text
+            style={[styles.text, selected === item && styles.selectedText]}
+            numberOfLines={1} // Prevent text wrapping
+          >
             {item}
           </Text>
         </TouchableOpacity>
@@ -43,24 +47,34 @@ const IconSection = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    overflow: 'hidden',
+    margin: 10,
   },
   touchable: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'transparent', 
+    flex: 0.25, // Adjust width for each item
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10, // Adjust padding
+    borderRightWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: 'white',
   },
   selected: {
-    backgroundColor: 'black', 
+    backgroundColor: 'black',
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: 'black', 
+    color: 'black',
   },
   selectedText: {
-    color: 'white', 
+    color: 'white',
+  },
+  lastItem: {
+    borderRightWidth: 0, // Remove right border for the last item
   },
 });
 

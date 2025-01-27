@@ -26,6 +26,12 @@ import "react-native-gesture-handler";
 import KidScreen from './src/Screens/KidScreen';
 import AccessoriesScreen from './src/Screens/AccessoriesScreen';
 import WomenScreen from './src/Screens/WomenScreen';
+import TopScreen from './src/Screens/TopScreen';
+import BottomScreen from './src/Screens/BottomScreen';
+import OutwearScreen from './src/Screens/OutwearScreen';
+import EthicScreen from './src/Screens/EthicScreen';
+import LoungewearScreen from './src/Screens/LoungewearScreen';
+import ActiveScreen from './src/Screens/ActiveScreen';
  
 const Stack = createStackNavigator();
 
@@ -55,6 +61,14 @@ const App = () => {
         <Stack.Screen name="Kid" component={KidScreen}/>
         <Stack.Screen name="Accessories" component={AccessoriesScreen}/>
         <Stack.Screen name="Women" component={WomenScreen}/>
+        <Stack.Screen name="Top" component={TopScreen}/>
+        <Stack.Screen name="Bottom" component={BottomScreen}/>
+        <Stack.Screen name="Outwear" component={OutwearScreen}/>
+        <Stack.Screen name="Ethic" component={EthicScreen}/>
+        <Stack.Screen name="Loungewear" component={LoungewearScreen}/>
+        <Stack.Screen name="Active" component={ActiveScreen}/>
+       
+       
       </Stack.Navigator>
     </NavigationContainer>
   );

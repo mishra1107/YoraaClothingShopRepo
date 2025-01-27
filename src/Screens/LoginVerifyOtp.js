@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const LoginVerifyOtp = ({ navigation }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -30,21 +29,12 @@ const LoginVerifyOtp = ({ navigation }) => {
 
   const handleOTPChange = (text, index) => {
     const newOtp = [...otp];
-
-    if (text === '') {
-      newOtp[index] = '';
-      setOtp(newOtp);
-
-      if (index > 0) {
-        inputs[index - 1].focus();
-      }
-    } else if (text.length === 1) {
-      newOtp[index] = text;
-      setOtp(newOtp);
-
-      if (index < otp.length - 1) {
-        inputs[index + 1].focus();
-      }
+    newOtp[index] = text;
+    setOtp(newOtp);
+    if (text.length === 1 && index < otp.length - 1) {
+      inputs[index + 1].focus();
+    } else if (text.length === 0 && index > 0) {
+      inputs[index - 1].focus();
     }
   };
 
@@ -64,7 +54,7 @@ const LoginVerifyOtp = ({ navigation }) => {
         onPress={() => navigation.navigate('Welcome')}
         style={styles.backButton}
       >
-        <Icon name="arrow-back" size={24} color="black" />
+        <MaterialIcons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <View style={styles.header}>
         <Text style={styles.title}>Verify OTP</Text>
@@ -171,10 +161,13 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   verifyButton: {
-    marginTop: 20,
+    position: 'absolute', // Stick the button to the bottom
+    bottom: 0, // Align at the bottom
+    left: 0,
+    right: 0,
     backgroundColor: '#000000',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 0, // Full-width button
     alignItems: 'center',
   },
   verifyButtonText: {
