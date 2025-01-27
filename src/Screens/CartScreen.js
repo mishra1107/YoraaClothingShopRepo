@@ -240,21 +240,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   checkoutText: { fontSize: 16, fontWeight: '600', color: '#fff' },
-   verifyButton: {
-    position: 'absolute', // Stick the button to the bottom
-    bottom: 0, // Align at the bottom
-    left: 0,
-    right: 0,
-    backgroundColor: '#000000',
-    padding: 15,
-    borderRadius: 0, // Full-width button
-    alignItems: 'center',
-  },
-  verifyButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+  //  verifyButton: {
+  //   position: 'absolute', // Stick the button to the bottom
+  //   bottom: 0, // Align at the bottom
+  //   left: 0,
+  //   right: 0,
+  //   backgroundColor: '#000000',
+  //   padding: 15,
+  //   borderRadius: 0, // Full-width button
+  //   alignItems: 'center',
+  // },
+  // verifyButtonText: {
+  //   color: '#FFFFFF',
+  //   fontSize: 16,
+  //   fontWeight: 'bold',
+  // },
 });
 
 
