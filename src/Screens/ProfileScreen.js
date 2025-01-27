@@ -31,6 +31,10 @@ const ProfileScreen = () => {
             <Text style={styles.profileName}>JOHN SMITH</Text>
             <Text style={styles.profileSubtitle}>Style Preference Here</Text>
           </View>
+       <View></View>
+       <View></View>
+       <View></View>
+       <View></View>
         </View>
       </View>
 
@@ -146,21 +150,30 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   profileContainer: {
-    alignItems: 'center',
+   
+    // alignItems: 'center',
     marginVertical: 20,
     position: 'relative',
   },
   backgroundImage: {
     width: '100%',
-    height: 150,
+    height: 139,
     position: 'absolute',
     resizeMode: 'cover',
   },
   profileContent: {
-    marginTop: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    // marginTop: 40,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // paddingHorizontal: 20,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    
+    padding:30,
+   
+    // width:'100%'
+
   },
   profileImage: {
     width: 80,

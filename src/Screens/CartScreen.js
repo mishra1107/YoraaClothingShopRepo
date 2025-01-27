@@ -6,41 +6,40 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  Button,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import RazorpayCheckout from 'react-native-razorpay';
 
 const CartScreen = () => {
-    const navigation = useNavigation();
-    const handleCheckout = () => {
-      // Configure Razorpay options
-      const options = {
-        description: 'Order Payment',
-        image: 'https://your-logo-url.com/logo.png', // Optional: Replace with your logo URL
-        currency: 'INR', // Change if needed
-        key: 'rzp_test_tICgwjKnkQloxe', // Replace with your Razorpay API key
-        amount: '24000', // Amount in paise (e.g., 24000 = ₹240)
-        name: 'Your Business Name',
-        prefill: {
-          email: 'user@example.com', // Replace with user's email
-          contact: '9876543210', // Replace with user's phone number
-          name: 'User Name', // Replace with user's name
-        },
-        theme: { color: '#F37254' }, // Customize Razorpay UI theme
-      };
+  const navigation = useNavigation();
 
-      RazorpayCheckout.open(options)
+  const handleCheckout = () => {
+    const options = {
+      description: 'Order Payment',
+      image: 'https://your-logo-url.com/logo.png',
+      currency: 'INR',
+      key: 'rzp_test_tICgwjKnkQloxe',
+      amount: '24000',
+      name: 'Your Business Name',
+      prefill: {
+        email: 'user@example.com',
+        contact: '9876543210',
+        name: 'User Name',
+      },
+      theme: { color: '#F37254' },
+    };
+
+    RazorpayCheckout.open(options)
       .then((data) => {
-        // Handle success
         Alert.alert('Payment Success', `Payment ID: ${data.razorpay_payment_id}`);
       })
       .catch((error) => {
-        // Handle failure
         Alert.alert('Payment Failure', error.description);
       });
   };
+
   const [cartItems, setCartItems] = useState([
     {
       id: '1',
@@ -70,20 +69,20 @@ const CartScreen = () => {
 
   const decrementQuantity = (id) => {
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+      prevItems
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0) // Remove items with quantity 0
     );
   };
-
+  
   const calculateTotal = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const renderCartItem = ({ item }) => (
     <View style={styles.cartItem}>
-      <Image source={ item.image } style={styles.itemImage} />
+      <Image source={item.image} style={styles.itemImage} />
       <View style={styles.itemDetails}>
         <Text style={styles.itemTitle}>{item.title}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
@@ -106,10 +105,11 @@ const CartScreen = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}
-                style={styles.backButton}>
-                <Icon name="arrow-back" size={24} color="black" />
-              </TouchableOpacity>
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Icon name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>CART</Text>
       </View>
 
@@ -121,18 +121,18 @@ const CartScreen = () => {
         style={styles.cartList}
       />
 
-      {/* Address and Delivery */}
-
+      {/* Address Section */}
       <TouchableOpacity onPress={() => navigation.navigate('Address')}>
-      <View style={styles.addressContainer}>
-        <Text style={styles.address}>
-          606-3727 ULLAMCORPER. STREET{'\n'}ROSEVILLE NH 11523{'\n'}(786)
-          713-8616
-        </Text>
-        <Text style={styles.editIcon}>{'>'}</Text>
-      </View>
-    </TouchableOpacity>
+        <View style={styles.addressContainer}>
+          <Text style={styles.addressText}>
+            606-3727 ULLAMCORPER. STREET{'\n'}ROSEVILLE NH 11523{'\n'}(786)
+            713-8616
+          </Text>
+          <Icon name="chevron-right" size={24} color="black" />
+        </View>
+      </TouchableOpacity>
 
+      {/* Delivery Section */}
       <View style={styles.deliveryContainer}>
         <Text style={styles.deliveryLabel}>DELIVERY</Text>
         <Text style={styles.deliveryValue}>Free</Text>
@@ -143,141 +143,119 @@ const CartScreen = () => {
         <Text style={styles.totalText}>TOTAL</Text>
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
       </View>
-      <TouchableOpacity onPress={handleCheckout}   style={styles.checkoutButton}>
+      {/* <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
         <Text style={styles.checkoutText}>CHECKOUT</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+
+      <TouchableOpacity
+              onPress={handleCheckout}
+              style={styles.verifyButton}
+            >
+              <Text style={styles.verifyButtonText}>CHECKOUT</Text>
+            </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#eee',
   },
-  backIcon: {
-    fontSize: 16,
-    color: '#000',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
-  cartList: {
-    flex: 1,
-  },
+  backButton: { padding: 5 },
+  headerTitle: { fontSize: 18, fontWeight: '600', textAlign: 'center', flex: 1 },
+  cartList: { flex: 1 },
   cartItem: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#eee',
   },
-  itemImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-  },
-  itemDetails: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  itemTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  itemDescription: {
-    fontSize: 12,
-    color: '#555',
-  },
+  itemImage: { width: 80, height: 80, borderRadius: 8 },
+  itemDetails: { flex: 1, marginLeft: 10 },
+  itemTitle: { fontSize: 14, fontWeight: 'bold', marginBottom: 4 },
+  itemDescription: { fontSize: 12, color: '#999', marginBottom: 10 },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
   },
   quantityButton: {
-    fontSize: 18,
-    width: 30,
+    fontSize: 16,
+    width: 28,
     textAlign: 'center',
     color: '#000',
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 4,
   },
-  quantity: {
-    fontSize: 14,
-    marginHorizontal: 10,
-  },
-  itemPrice: {
-    fontSize: 14,
-    color: '#ff0000',
-    fontWeight: 'bold',
-  },
+  quantity: { fontSize: 14, marginHorizontal: 10 },
+  itemPrice: { fontSize: 14, fontWeight: '600', color: '#E91E63' },
   addressContainer: {
+    // backgroundColor:'red',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    alignItems: 'center',
+    paddingVertical: 45,
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#eee',
   },
-  address: {
+  addressText: {
     fontSize: 12,
-    color: '#555',
-  },
-  editIcon: {
-    fontSize: 16,
-    color: '#000',
+    color: '#666',
+    lineHeight: 18,
+    flex: 1,
   },
   deliveryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
-  deliveryLabel: {
-    fontSize: 14,
-    color: '#555',
-  },
-  deliveryValue: {
-    fontSize: 14,
-    color: '#000',
-  },
+  deliveryLabel: { fontSize: 14, color: '#999' },
+  deliveryValue: { fontSize: 14, fontWeight: '600' },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: '#eee',
   },
-  totalText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  totalPrice: {
-    fontSize: 16,
-    color: '#ff0000',
-    fontWeight: 'bold',
-  },
+  totalText: { fontSize: 16, fontWeight: '600' },
+  totalPrice: { fontSize: 16, fontWeight: '600', color: '#E91E63' },
   checkoutButton: {
     backgroundColor: '#000',
-    padding: 15,
+    paddingVertical: 15,
     alignItems: 'center',
-    margin: 10,
-    borderRadius: 4,
+    margin: 20,
+    borderRadius: 8,
   },
-  checkoutText: {
+  checkoutText: { fontSize: 16, fontWeight: '600', color: '#fff' },
+   verifyButton: {
+    position: 'absolute', // Stick the button to the bottom
+    bottom: 0, // Align at the bottom
+    left: 0,
+    right: 0,
+    backgroundColor: '#000000',
+    padding: 15,
+    borderRadius: 0, // Full-width button
+    alignItems: 'center',
+  },
+  verifyButtonText: {
+    color: '#FFFFFF',
     fontSize: 16,
-    color: '#fff',
     fontWeight: 'bold',
   },
 });
+
 
 export default CartScreen;
