@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
 
 const FilterSection = () => {
@@ -18,6 +19,22 @@ const FilterSection = () => {
     navigation.navigate('Wishlist');
   };
 
+  // Function to handle deep linking share
+  const handleShare = async () => {
+    const shareOptions = {
+      title: 'Check out this product!',
+      message: 'Hey, check out this amazing product on our store: https://mystore.com/product/12345', // Replace with your dynamic link
+      url: 'https://mystore.com/product/12345',
+      social: Share.Social.WHATSAPP,
+    };
+
+    try {
+      await Share.open(shareOptions);
+    } catch (error) {
+      console.log('Error ->', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -29,16 +46,13 @@ const FilterSection = () => {
         />
       </View>
 
-
-      <TouchableOpacity >
+      <TouchableOpacity onPress={handleShare}>
         <Image
          source={require('../assests/images/share.png')}
           style={styles.icon1}
         />
       </TouchableOpacity>
 
-
-     
       <TouchableOpacity onPress={handleWishlistPress}>
         <Icon
           name={isWishlistSelected ? 'heart' : 'heart-outline'}
@@ -47,7 +61,6 @@ const FilterSection = () => {
         />
       </TouchableOpacity>
 
-      
       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
         <Icon name="cart-outline" size={24} style={styles.icon} />
         {cartCount > 0 && (
@@ -105,8 +118,8 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: -5, // Adjust as needed for perfect positioning
-    left: -10, // Move to the left of the cart icon
+    top: -5,
+    left: -10,
     backgroundColor: 'red',
     borderRadius: 10,
     width: 20,
@@ -123,5 +136,3 @@ const styles = StyleSheet.create({
 });
 
 export default FilterSection;
-
-

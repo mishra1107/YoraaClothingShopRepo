@@ -1,11 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign'; // Ensure AntDesign is installed
+import Icon from 'react-native-vector-icons/AntDesign'; 
 
 const SeeAll = () => {
   return (
     <TouchableOpacity style={styles.button}>
-      <View style={styles.leftBorder} /> {/* Blue left border */}
+      <View style={styles.leftBorder} />
       <View style={styles.content}>
         <Text style={styles.text}>SEE ALL</Text>
         <Icon name="arrowright" size={16} color="#000" />
@@ -22,15 +22,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000',
     borderRadius: 5,
-    // overflow: 'hidden', // Ensures the left border stays within the button
-    width: 150, // Adjust width as needed
-    height: 40, // Adjust height as needed
+    width: 150, 
+    height: 40, 
   },
   leftBorder: {
     
     width: 5,
-    // backgroundColor: '#007BFF', // Blue color for the left border
-    height: '100%', // Stretches to the full height of the button
+    
+    height: '100%', 
   },
   content: {
     flex: 1,

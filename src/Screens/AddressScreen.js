@@ -52,7 +52,7 @@ const AddAddressScreen = () => {
 
       {/* Confirm Button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('')}
+      
         style={styles.button}>
         <Text style={styles.buttonText}>CONFIRM ADDRESS</Text>
       </TouchableOpacity>

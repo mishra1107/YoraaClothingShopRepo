@@ -1,25 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const IconSection = () => {
-  const [selected, setSelected] = useState('MEN');
-  const navigation = useNavigation();
-
-  const handlePress = (item) => {
-    setSelected(item);
-
-    if (item === 'WOMEN') {
-      navigation.navigate('Women');
-    } else if (item === 'KIDS') {
-      navigation.navigate('Kid');
-    } else if (item === 'ACCESSORIES') {
-      navigation.navigate('Accessories');
-    } else {
-      navigation.navigate('');
-    }
-  };
-
+const IconSection = ({ selectedCategory, setSelectedCategory }) => {
   return (
     <View style={styles.container}>
       {['MEN', 'WOMEN', 'KIDS', 'ACCESSORIES'].map((item, index) => (
@@ -27,14 +9,14 @@ const IconSection = () => {
           key={index}
           style={[
             styles.touchable,
-            selected === item && styles.selected,
-            index === 3 && styles.lastItem, // Remove right border for the last item
+            selectedCategory === item && styles.selected,
+            index === 3 && styles.lastItem,
           ]}
-          onPress={() => handlePress(item)}
+          onPress={() => setSelectedCategory(item)}
         >
           <Text
-            style={[styles.text, selected === item && styles.selectedText]}
-            numberOfLines={1} // Prevent text wrapping
+            style={[styles.text, selectedCategory === item && styles.selectedText]}
+            numberOfLines={1}
           >
             {item}
           </Text>
@@ -54,10 +36,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   touchable: {
-    flex: 0.25, // Adjust width for each item
+    flex: 0.25,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10, // Adjust padding
+    paddingVertical: 10,
     borderRightWidth: 1,
     borderColor: '#ccc',
     backgroundColor: 'white',
@@ -74,7 +56,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   lastItem: {
-    borderRightWidth: 0, // Remove right border for the last item
+    borderRightWidth: 0,
   },
 });
 

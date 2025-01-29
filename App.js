@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SplashScreen from './src/Screens/SplashScreen'; // Adjust path as needed
+import SplashScreen from './src/Screens/SplashScreen'; 
 import WelcomeScreen from './src/Screens/WelcomeScreen';
 import LoginScreen from './src/Screens/LoginScreen';
 import LoginVerifyOtp from './src/Screens/LoginVerifyOtp';
@@ -9,7 +9,7 @@ import HomeScreen from './src/Screens/HomeScreen';
 import WishlistScreen from './src/Screens/WishlistScreen';
 import CartScreen from './src/Screens/CartScreen';
 import AddressScreen from './src/Screens/AddressScreen';
-import CheckoutScreen from './src/Screens/CheckoutScreen';
+
 import SignupScreen from './src/Screens/SignupScreen';
 import CollectionScreen from './src/Screens/CollectionScreen';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
@@ -32,6 +32,9 @@ import OutwearScreen from './src/Screens/OutwearScreen';
 import EthicScreen from './src/Screens/EthicScreen';
 import LoungewearScreen from './src/Screens/LoungewearScreen';
 import ActiveScreen from './src/Screens/ActiveScreen';
+import EditProfileScreen from './src/Screens/EditProfileScreen';
+import ProductDetailScreen from './src/Screens/ProductDetailScreen';
+import ArrivalScreen from './src/Screens/ArrivalScreen';
  
 const Stack = createStackNavigator();
 
@@ -47,7 +50,7 @@ const App = () => {
         <Stack.Screen name="Wishlist" component={WishlistScreen}/>
         <Stack.Screen name="Cart" component={CartScreen}/>
         <Stack.Screen name="Address" component={AddressScreen}/>
-        <Stack.Screen name="Checkout" component={CheckoutScreen}/>
+       
         <Stack.Screen name="Signup" component={SignupScreen}/>
         <Stack.Screen name="Collection" component={CollectionScreen}/>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
@@ -67,7 +70,9 @@ const App = () => {
         <Stack.Screen name="Ethic" component={EthicScreen}/>
         <Stack.Screen name="Loungewear" component={LoungewearScreen}/>
         <Stack.Screen name="Active" component={ActiveScreen}/>
-       
+        <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
+        <Stack.Screen name="Product" component={ProductDetailScreen}/>
+        <Stack.Screen name="Arrival" component={ArrivalScreen}/>
        
       </Stack.Navigator>
     </NavigationContainer>

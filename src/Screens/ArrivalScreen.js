@@ -1,68 +1,91 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const products = [
   { id: '1', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
   { id: '2', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
   { id: '3', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
   { id: '4', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
+  { id: '5', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
+  { id: '6', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
+  { id: '7', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
+  { id: '8', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
 ];
 
-const CardLayout = () => {
-  const navigation=useNavigation();
+const ArrivalScreen = () => {
+  const navigation = useNavigation();
+
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <Image source={item.image} style={styles.image} />
         <View style={styles.iconsContainer}>
           <TouchableOpacity style={styles.iconButton}>
-            <Image 
-              source={require('../assests/images/like.png')} 
-              style={styles.iconImage} 
-            />
+            <Image source={require('../assests/images/like.png')} style={styles.iconImage} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}  style={styles.iconButton}>
+            <Image source={require('../assests/images/cart.png')} style={styles.iconImage} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Product')}  style={styles.iconButton}>
-            <Image
-              source={require('../assests/images/eye.png')} 
-              style={styles.iconImage}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate('Cart')} style={styles.iconButton}>
-            <Image
-              source={require('../assests/images/cart.png')} 
-              style={styles.iconImage}
-            />
+            <Image source={require('../assests/images/preview.png')} style={styles.iconImage} />
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+      <Text style={styles.name} numberOfLines={2}>
+        {item.name}
+      </Text>
       <Text style={styles.price}>{item.price}</Text>
     </View>
   );
 
   return (
-    <FlatList
-      horizontal
-      data={products}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContainer}
-    />
+    <View style={{ flex: 1 }}>
+     
+
+      {/* Product List */}
+      <FlatList
+        key={'2-columns'}
+        data={products}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        contentContainerStyle={styles.scrollContainer}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  backButton: {
+    padding: 5,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
+    textAlign: 'right',
+    marginRight: 10,
+  },
   scrollContainer: {
     paddingVertical: 10,
     paddingHorizontal: 5,
   },
   cardContainer: {
     alignItems: 'flex-start',
-    marginHorizontal: 10,
-    width: 160, 
+    margin: 10,
+    flex: 1, // Ensures cards evenly distribute
+    maxWidth: '45%', // Ensures two columns
   },
   card: {
     width: '100%',
@@ -114,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardLayout;
+export default ArrivalScreen;

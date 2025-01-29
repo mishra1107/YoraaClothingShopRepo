@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from 'react-native-razorpay'; 
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -59,6 +59,10 @@ const CartScreen = () => {
     },
   ]);
 
+  const removeItem = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
   const incrementQuantity = (id) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -73,7 +77,7 @@ const CartScreen = () => {
         .map((item) =>
           item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
-        .filter((item) => item.quantity > 0) // Remove items with quantity 0
+        .filter((item) => item.quantity > 0)
     );
   };
   
@@ -95,7 +99,13 @@ const CartScreen = () => {
             <Text style={styles.quantityButton}>+</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.priceRemoveContainer}>
         <Text style={styles.itemPrice}>₹{item.price * item.quantity}</Text>
+        <View style={{ flex: 1 }} />
+        <TouchableOpacity onPress={() => removeItem(item.id)} style={styles.removeButton}>
+          <Text style={styles.removeButtonText}>Remove Item</Text>
+        </TouchableOpacity>
+      </View>
       </View>
     </View>
   );
@@ -125,8 +135,9 @@ const CartScreen = () => {
       <TouchableOpacity onPress={() => navigation.navigate('Address')}>
         <View style={styles.addressContainer}>
           <Text style={styles.addressText}>
-            606-3727 ULLAMCORPER. STREET{'\n'}ROSEVILLE NH 11523{'\n'}(786)
-            713-8616
+            606-3727 ULLAMCORPER. STREET {'\n'}
+ROSEVILLE NH 11523 {'\n'}
+78 713-8616
           </Text>
           <Icon name="chevron-right" size={24} color="black" />
         </View>
@@ -143,119 +154,162 @@ const CartScreen = () => {
         <Text style={styles.totalText}>TOTAL</Text>
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
       </View>
-      {/* <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
+      <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
         <Text style={styles.checkoutText}>CHECKOUT</Text>
-      </TouchableOpacity> */}
-
-
-      <TouchableOpacity
-              onPress={handleCheckout}
-              style={styles.verifyButton}
-            >
-              <Text style={styles.verifyButtonText}>CHECKOUT</Text>
-            </TouchableOpacity>
+      </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  backButton: { padding: 5 },
-  headerTitle: { fontSize: 18, fontWeight: '600', textAlign: 'center', flex: 1 },
-  cartList: { flex: 1 },
-  cartItem: {
-    flexDirection: 'row',
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#ddd',
   },
-  itemImage: { width: 80, height: 80, borderRadius: 8 },
-  itemDetails: { flex: 1, marginLeft: 10 },
-  itemTitle: { fontSize: 14, fontWeight: 'bold', marginBottom: 4 },
-  itemDescription: { fontSize: 12, color: '#999', marginBottom: 10 },
+  backButton: {
+    marginRight: 15,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cartList: {
+    paddingHorizontal: 15,
+  },
+  cartItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  itemImage: {
+    width: 80, 
+    height: 80,
+    borderRadius: 10,
+  },
+  itemDetails: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  itemTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  itemDescription: {
+    fontSize: 12,
+    color: '#777',
+  },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 5,
+    marginTop: 5,
   },
   quantityButton: {
-    fontSize: 16,
-    width: 28,
-    textAlign: 'center',
-    color: '#000',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 4,
+    fontSize: 18,
+    paddingHorizontal: 10,
   },
-  quantity: { fontSize: 14, marginHorizontal: 10 },
-  itemPrice: { fontSize: 14, fontWeight: '600', color: '#E91E63' },
+  quantity: {
+    fontSize: 14,
+    marginHorizontal: 5,
+  },
+  itemPrice: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop: 5,
+  },
+  removeButton: {
+    backgroundColor: '#eee',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginTop: 5,
+  },
+  removeButtonText: {
+    fontSize: 12,
+    color: '#333',
+  },
   addressContainer: {
-    // backgroundColor:'red',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 45,
-    paddingHorizontal: 20,
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#ddd',
   },
   addressText: {
-    fontSize: 12,
-    color: '#666',
-    lineHeight: 18,
-    flex: 1,
+    fontSize: 14,
+    color: '#333',
   },
   deliveryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
   },
-  deliveryLabel: { fontSize: 14, color: '#999' },
-  deliveryValue: { fontSize: 14, fontWeight: '600' },
+  deliveryLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  deliveryValue: {
+    fontSize: 14,
+    color: '#333',
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    padding: 15,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#ddd',
   },
-  totalText: { fontSize: 16, fontWeight: '600' },
-  totalPrice: { fontSize: 16, fontWeight: '600', color: '#E91E63' },
+  totalText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  totalPrice: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#E53935',
+  },
   checkoutButton: {
-    backgroundColor: '#000',
-    paddingVertical: 15,
+    backgroundColor: 'black',
+    padding: 15,
     alignItems: 'center',
-    margin: 20,
-    borderRadius: 8,
+    marginHorizontal: 15,
+    marginBottom: 10,
+    borderRadius: 5,
   },
-  checkoutText: { fontSize: 16, fontWeight: '600', color: '#fff' },
-  //  verifyButton: {
-  //   position: 'absolute', // Stick the button to the bottom
-  //   bottom: 0, // Align at the bottom
-  //   left: 0,
-  //   right: 0,
-  //   backgroundColor: '#000000',
-  //   padding: 15,
-  //   borderRadius: 0, // Full-width button
-  //   alignItems: 'center',
-  // },
-  // verifyButtonText: {
-  //   color: '#FFFFFF',
-  //   fontSize: 16,
-  //   fontWeight: 'bold',
-  // },
-}); 
-
-
+  checkoutText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  priceRemoveContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  itemPrice: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#E53935',
+  },
+  removeButton: {
+    backgroundColor: '#eee',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  removeButtonText: {
+    fontSize: 12,
+    color: '#333',
+  },
+});
 export default CartScreen;

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Text, Modal, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Ensure you have react-native-vector-icons installed
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 
 const PaymentSuccessModal = ({ visible, onClose }) => {
   return (
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
-    position: 'relative', // Important for positioning the close button
+    position: 'relative', 
   },
   closeButton: {
     position: 'absolute',

@@ -19,7 +19,7 @@ const ShoppingCarousel = () => {
     const interval = setInterval(() => {
       currentIndex.current = (currentIndex.current + 1) % data.length;
       flatListRef.current.scrollToIndex({ index: currentIndex.current, animated: true });
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -105,20 +105,20 @@ const styles = StyleSheet.create({
   exploreButton: {
     position: "absolute",
     bottom: 30,
-    backgroundColor: "#fff", // White background for the button
+    backgroundColor: "#fff", 
     paddingVertical: 12,
-    paddingHorizontal: 60, // Increased horizontal padding for a rectangular shape
-    borderRadius: 10, // Smaller radius for a rectangle
+    paddingHorizontal: 60, 
+    borderRadius: 10, 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 5, // Shadow for Android
+    elevation: 5, 
     justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
-    color: "#000", // Black text color
+    color: "#000",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",

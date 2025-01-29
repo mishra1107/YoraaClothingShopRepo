@@ -25,7 +25,7 @@ const WishlistScreen = () => {
           <TouchableOpacity style={styles.iconButton}>
             <Image source={require('../assests/images/like.png')} style={styles.iconImage} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}  style={styles.iconButton}>
             <Image source={require('../assests/images/cart.png')} style={styles.iconImage} />
           </TouchableOpacity>
         </View>
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: 'flex-start',
     margin: 10,
-    flex: 1, // Ensures cards evenly distribute
-    maxWidth: '45%', // Ensures two columns
+    flex: 1, 
+    maxWidth: '45%', 
   },
   card: {
     width: '100%',

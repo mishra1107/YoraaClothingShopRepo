@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity ,Image} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity ,Image,Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
+const { width, height } = Dimensions.get("window");
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('../assests/images/Splash.png')} // Update the path to your local image
+        source={require('../assests/images/Splash.png')} 
         style={{marginBottom:80}} />
 
        <View style={styles.buttonContainer}>
@@ -39,7 +41,7 @@ const WelcomeScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.skipButton}>
+      <TouchableOpacity   onPress={() => navigation.navigate('Home')} style={styles.skipButton}>
         <Text style={styles.skipButtonText}>SKIP</Text>
       </TouchableOpacity>
     </View>
@@ -51,11 +53,7 @@ const styles = StyleSheet.create({
     width:20,height:20
   },
   container: {
-    // flex: 1,
-    // backgroundColor: '#FFFFFF',
-    // alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 20,
     flex: 1,
     alignItems: 'center', 
   },
@@ -97,6 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -148,18 +147,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipButton: {
-  absolute: 'position',
- top:110,
-    backgroundColor: '#000000',
-    paddingVertical: 15,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+   
+    top: height * 0.07,
+    backgroundColor: "#000000",
+    paddingVertical: 15, 
+    width: width * 0.8, 
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8, 
   },
   skipButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontSize: RFPercentage(2.5), 
+    fontWeight: "bold",
   },
  
 });

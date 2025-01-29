@@ -161,13 +161,13 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   verifyButton: {
-    position: 'absolute', // Stick the button to the bottom
-    bottom: 0, // Align at the bottom
+    position: 'absolute', 
+    bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: '#000000',
     padding: 15,
-    borderRadius: 0, // Full-width button
+    borderRadius: 0, 
     alignItems: 'center',
   },
   verifyButtonText: {

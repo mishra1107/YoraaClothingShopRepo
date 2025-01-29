@@ -274,13 +274,13 @@ const styles = StyleSheet.create({
    
   },
   loginButton: {
-    position: 'absolute', // Position the button absolutely
-    bottom: 0, // Stick to the bottom of the screen
+    position: 'absolute', 
+    bottom: 0, 
     left: 0,
     right: 0,
     backgroundColor: 'black',
     padding: 16,
-    borderRadius: 0, // Full-width button
+    borderRadius: 0,
     alignItems: 'center',
   },
   loginButtonText: {
@@ -292,16 +292,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%', // Ensure it spans the full width
+    width: '100%', 
     marginVertical: 20,
   },
   divider: {
-    flex: 1, // Allow equal space for both lines
+    flex: 1, 
     height: 1,
     backgroundColor: '#C4C4C4',
   },
   dividerText: {
-    marginHorizontal: 10, // Spacing between "Or" and the lines
+    marginHorizontal: 10, 
     color: '#C4C4C4',
     fontSize: 14,
   },

@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     
     padding:30,
    
-    // width:'100%'
+   
 
   },
   profileImage: {

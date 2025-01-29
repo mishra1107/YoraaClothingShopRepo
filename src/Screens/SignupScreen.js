@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signupButton: {
-    position: 'absolute', // Position the button absolutely
-    bottom: 0, // Stick to the bottom of the screen
+    position: 'absolute', 
+    bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: 'black',
     padding: 16,
-    borderRadius: 0, // Full-width button
+    borderRadius: 0, 
     alignItems: 'center',
   },
   signupButtonText: {
