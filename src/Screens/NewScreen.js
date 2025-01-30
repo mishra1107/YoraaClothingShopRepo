@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import ImageSection from './../Component/ImageSection';
 import WomenScreen from '../Screens/WomenScreen';
@@ -6,9 +6,13 @@ import KidScreen from '../Screens/KidScreen';
 import AccessoriesScreen from '../Screens/AccessoriesScreen';
 import WishlistScreen from './WishlistScreen';
 import ArrivalScreen from './ArrivalScreen';
+import Pagination from '../Component/Pagination';
+import JustForYou from '../Component/JustForYou';
+import CardLayout from '../Component/CardLayout';
 
 const NewScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
+  const [selectedPage, setSelectedPage] = useState(1);
 
   // Function to render the correct screen based on selected category
   const renderCategoryContent = () => {
@@ -20,7 +24,14 @@ const NewScreen = () => {
       case 'ACCESSORIES':
         return <AccessoriesScreen />;
       default:
-        return <ArrivalScreen />;
+        return (
+          <>
+            <ArrivalScreen />
+            <Pagination totalPages={5} onPageChange={setSelectedPage} />
+            <JustForYou />
+            <CardLayout />
+          </>
+        );
     }
   };
 
@@ -64,7 +75,6 @@ const NewScreen = () => {
 
       {/* Dynamic Content Based on Category */}
       <ScrollView>
-      
         {renderCategoryContent()}
       </ScrollView>
     </View>
@@ -105,14 +115,5 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: '#fff',
-  },
-  wishlistHeader: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  wishlistText: {
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });

@@ -1,8 +1,8 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useEffect } from "react";
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
 
 const { width, height } = Dimensions.get("window");
-
 const data = [
   { id: "1", image: require('../assests/images/Shopping.png') },
   { id: "2", image: require('../assests/images/Shopping.png') },
@@ -11,6 +11,7 @@ const data = [
 ];
 
 const ShoppingCarousel = () => {
+  const navigation=useNavigation();
   const flatListRef = useRef(null);
   const currentIndex = useRef(0);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -62,7 +63,7 @@ const ShoppingCarousel = () => {
           return <Animated.View key={index} style={[styles.dot, { opacity }]} />;
         })}
       </View>
-      <TouchableOpacity style={styles.exploreButton}>
+      <TouchableOpacity onPress={()=>navigation.navigate('New')} style={styles.exploreButton}>
         <Text style={styles.buttonText}>EXPLORE</Text>
       </TouchableOpacity>
     </View>

@@ -1,13 +1,17 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';  
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import AccordionItem from '../Component/AccordianItem'; 
 import { useNavigation } from '@react-navigation/native';
+import YouMayAlsoLike from '../Component/YouMayAlsoLike';
+import CardLayout from '../Component/CardLayout';
+import SizeChartModal from '../Component/SizeChartModal';  // Import the modal
 
 const ProductDetailScreen = () => {
+  const navigation = useNavigation();
+  const [sizeChartVisible, setSizeChartVisible] = useState(false); // State for modal visibility
 
-  const navigation=useNavigation();
   return (
     <View style={styles.container}>
       
@@ -19,31 +23,45 @@ const ProductDetailScreen = () => {
         <Text style={styles.headerTitle}>DETAILS</Text>
       </View>
 
-      {/* Product Image with Cart Icon */}
-      <View style={styles.imageContainer}>
-        <Image source={require('../assests/images/Shopping.png')} style={styles.productImage} />
-        
-        {/* Cart Icon at Bottom Right */}
-        <TouchableOpacity onPress={()=>navigation.navigate('Cart')}  style={styles.cartIcon}>
-          <Icon name="shopping-cart" size={22} color="#000" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Product Details */}
-      <View style={styles.detailsContainer}>
-        <Text style={styles.productTitle}>MOHAN</Text>
-        <Text style={styles.productDescription}>RECYCLE BOUCLE KNIT CARDIGAN PINK</Text>
-
-        {/* Price and Select Size in the same row */}
-        <View style={styles.priceContainer}>
-          <Text style={styles.productPrice}>₹120</Text>
-          <TouchableOpacity>
-            <Text style={styles.selectSize}>SELECT SIZE</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Product Image with Cart Icon */}
+        <View style={styles.imageContainer}>
+          <Image source={require('../assests/images/Shopping.png')} style={styles.productImage} />
+          
+          {/* Cart Icon at Bottom Right */}
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
+            <Icon name="shopping-cart" size={22} color="#000" />
           </TouchableOpacity>
         </View>
-      </View>
-<AccordionItem/>
-   
+
+        {/* Product Details */}
+        <View style={styles.detailsContainer}>
+          <Text style={styles.productTitle}>MOHAN</Text>
+          <Text style={styles.productDescription}>RECYCLE BOUCLE KNIT CARDIGAN PINK</Text>
+
+          {/* Price and Select Size in the same row */}
+          <View style={styles.priceContainer}>
+            <Text style={styles.productPrice}>₹120</Text>
+            <TouchableOpacity onPress={() => setSizeChartVisible(true)}> 
+              <Text style={styles.selectSize}>SELECT SIZE</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Accordion Sections */}
+        <AccordionItem title="DESCRIPTION & RETURNS" content="Product details here..." />
+        <AccordionItem title="MANUFACTURER DETAILS" content="Manufacturer details here..." />
+        <AccordionItem title="SHIPPING, RETURNS AND EXCHANGES" content="Shipping details here..." />
+
+        {/* You May Also Like Section */}
+        <YouMayAlsoLike />
+
+        {/* Card Layout */}
+        <CardLayout />
+      </ScrollView>
+
+      {/* Size Chart Modal */}
+      <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
     </View>
   );
 };
