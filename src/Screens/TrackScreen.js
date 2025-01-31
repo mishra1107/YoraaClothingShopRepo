@@ -26,21 +26,21 @@ const TrackScreen = () => {
   const navigation = useNavigation();
 
   const renderOrder = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={ item.image } style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.trackingId}>Tracking ID: {item.trackingId}</Text>
-        <Text style={styles.deliveryDate}>{item.deliveryDate}</Text>
-        <TouchableOpacity onPress={()=>navigation.navigate('Tracking')} style={styles.trackButton}>
-          <Image
-            source={require('../assests/images/Shippingtrack.png')} // Replace this path with your actual local image path
-            style={styles.trackImage}
-          />
-          <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-        </TouchableOpacity>
+    <View style={styles.orderContainer}>
+      <View style={styles.orderDetails}>
+        <Image source={item.image} style={styles.image} />
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+          <Text style={styles.trackingId}>Tracking ID: <Text style={styles.trackingIdBold}>{item.trackingId}</Text></Text>
+          <Text style={styles.deliveryDate}>{item.deliveryDate}</Text>
+        </View>
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate('Tracking')} style={styles.trackButton}>
+      <Image source={require('../assests/images/Shippingtrack.png')} style={styles.trackIcon} />
+
+        <Text style={styles.trackButtonText}>TRACK ORDER</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -63,12 +63,6 @@ const TrackScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    trackImage: {
-        width: 18,
-        height: 18,
-        resizeMode: 'contain',
-        marginRight: 8, 
-      },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -77,9 +71,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    backgroundColor: '#fff',
   },
   backButton: {
     marginRight: 16,
@@ -89,62 +84,67 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 1,
     textAlign: 'center',
-    marginRight: 32, 
+    marginRight: 32,
   },
   list: {
-    padding: 16,
+    paddingVertical: 16,
   },
-  card: {
-    flexDirection: 'row',
+  orderContainer: {
     backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    marginBottom: 16,
-    overflow: 'hidden',
-    padding: 8, 
+    marginBottom: 12,
+    paddingBottom: 10,
+  },
+  orderDetails: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    alignItems: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
+    borderRadius: 5,
     resizeMode: 'cover',
   },
-  details: {
+  textContainer: {
     flex: 1,
     paddingLeft: 12,
-    justifyContent: 'space-between',
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 4,
+    color: '#000',
+    marginBottom: 2,
   },
   description: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 4,
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 2,
   },
   trackingId: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#333',
-    marginBottom: 4,
+  },
+  trackingIdBold: {
+    fontWeight: 'bold',
   },
   deliveryDate: {
     fontSize: 12,
-    color: '#666',
-    marginBottom: 8,
+    color: '#888',
+    marginBottom: 4,
   },
   trackButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
-    height: 48, 
-    width: '100%', 
-    borderRadius: 4,
-    alignSelf: 'stretch', 
+    height: 48,
+    marginHorizontal: 16,
+    marginTop: 6,
   },
   trackIcon: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
     marginRight: 8,
   },
   trackButtonText: {

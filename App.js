@@ -93,3 +93,100 @@ const App = () => {
 };
 
 export default App;
+
+
+
+// API logic 
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import { getToken } from './src/storage/storage'; // Import storage functions
+// import "react-native-gesture-handler";
+// import Toast from "react-native-toast-message";
+
+// // Import Screens
+// import SplashScreen from './src/Screens/SplashScreen';
+// import WelcomeScreen from './src/Screens/WelcomeScreen';
+// import LoginScreen from './src/Screens/LoginScreen';
+// import LoginVerifyOtp from './src/Screens/LoginVerifyOtp';
+// import SignupScreen from './src/Screens/SignupScreen';
+// import BottomTabNavigation from './src/navigation/BottomTabNavigation';
+
+// const Stack = createStackNavigator();
+
+// const App = () => {
+//   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+//   useEffect(() => {
+//     const checkLoginStatus = async () => {
+//       const userToken = await getToken();
+//       setIsLoggedIn(userToken ? true : false);
+//     };
+//     checkLoginStatus();
+//   }, []);
+
+//   if (isLoggedIn === null) {
+//     return null; // Prevents rendering until auth check is complete
+//   }
+
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator screenOptions={{ headerShown: false }}>
+//         {isLoggedIn ? (
+//           <>
+//             <Stack.Screen name="Home" component={BottomTabNavigation} />
+
+
+//             <Stack.Screen name="Wishlist" component={WishlistScreen} />
+//         <Stack.Screen name="Cart" component={CartScreen} />
+//          <Stack.Screen name="Address" component={AddressScreen} />
+
+//          {/* Profile Screens */}
+//         <Stack.Screen name="Profile" component={ProfileScreen} />
+//          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+//          <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
+
+//          {/* Support Screens */}
+//          <Stack.Screen name="Contact" component={ContactusScreen} />
+//          <Stack.Screen name="Terms" component={TermsConditionScreen} />
+//          <Stack.Screen name="Privacy" component={PrivacyPolicyScreen} />
+
+//          {/* Order Tracking */}
+//         <Stack.Screen name="Track" component={TrackScreen} />
+//         <Stack.Screen name="Tracking" component={TrackingOrderScreen} />
+
+//          {/* Product Collections */}
+//          <Stack.Screen name="Collection" component={CollectionScreen} />
+//         <Stack.Screen name="Product" component={ProductDetailScreen} />
+//          <Stack.Screen name="Arrival" component={ArrivalScreen} />
+
+//         {/* Categories */}
+//         <Stack.Screen name="Kid" component={KidScreen} />
+//         <Stack.Screen name="Accessories" component={AccessoriesScreen} />
+//          <Stack.Screen name="Women" component={WomenScreen} />
+//                   <Stack.Screen name="Top" component={TopScreen} />
+//         <Stack.Screen name="Bottom" component={BottomScreen} />
+//         <Stack.Screen name="Outwear" component={OutwearScreen} />
+//          <Stack.Screen name="Ethic" component={EthicScreen} />         <Stack.Screen name="Loungewear" component={LoungewearScreen} />
+//         <Stack.Screen name="Active" component={ActiveScreen} />
+//           </>
+//         ) : (
+//           <>
+//             <Stack.Screen name="Splash" component={SplashScreen} />
+//             <Stack.Screen name="Welcome" component={WelcomeScreen} />
+//             <Stack.Screen name="Login" component={LoginScreen} />
+//             <Stack.Screen name="LoginVerifyOtp" component={LoginVerifyOtp} />
+//             <Stack.Screen name="Signup" component={SignupScreen} />
+//           </>
+//         )}
+//       </Stack.Navigator>
+//       <Toast />
+//     </NavigationContainer>
+//   );
+// };
+
+// export default App;
+

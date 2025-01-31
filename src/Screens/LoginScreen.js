@@ -9,16 +9,25 @@ import {Image,
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Platform} from 'react-native';
-
+import { storeToken } from '../storage/storage';
 
 export default function LoginScreen({navigation}) {
   const [rememberMe, setRememberMe] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+
+
+  const handleLogin = async () => {
+    await storeToken('your_generated_token'); // Store token
+    navigation.replace('Home'); // Navigate to Home after login
+  };
+
 
   return (
     <View style={styles.container}>
@@ -39,7 +48,7 @@ export default function LoginScreen({navigation}) {
         <TextInput
           style={styles.passwordInput}
           placeholder="Enter your password"
-          secureTextEntry={!passwordVisible} // Toggle visibility
+          secureTextEntry={!passwordVisible} 
           value={password}
           onChangeText={setPassword}
         />
@@ -88,12 +97,7 @@ export default function LoginScreen({navigation}) {
       </TouchableOpacity>
 
       <View>
-  {/* <Text style={styles.signupText}>
-    Don't have an account?{' '}
-    <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-      <Text style={styles.signupLink}>Sign-up</Text>
-    </TouchableOpacity>
-  </Text> */}
+ 
    <TouchableOpacity style={styles.loginContainer} onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.loginText}>
            Don't have an account? <Text style={styles.loginLink}>Sign-up</Text>
@@ -102,6 +106,7 @@ export default function LoginScreen({navigation}) {
 </View>
 
       <TouchableOpacity
+
         onPress={() => navigation.navigate('LoginVerifyOtp')}
         style={styles.loginButton}>
         <Text style={styles.loginButtonText}>LOGIN</Text>
@@ -241,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
+    borderRadius: 3,
     padding: 12,
     marginBottom: 20,
   },
@@ -254,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'black',
-    borderRadius: 5,
+    borderRadius: 3,
     padding: 12,
     marginBottom: 20,
   },

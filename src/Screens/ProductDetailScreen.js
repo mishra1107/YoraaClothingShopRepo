@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import YouMayAlsoLike from '../Component/YouMayAlsoLike';
 import CardLayout from '../Component/CardLayout';
 import SizeChartModal from '../Component/SizeChartModal';  // Import the modal
+import ShoppingCarousel from '../Component/ShoppingCarosuel';
 
 const ProductDetailScreen = () => {
   const navigation = useNavigation();
@@ -27,7 +28,11 @@ const ProductDetailScreen = () => {
         {/* Product Image with Cart Icon */}
         <View style={styles.imageContainer}>
           <Image source={require('../assests/images/Shopping.png')} style={styles.productImage} />
+
           
+          
+
+           {/* <ShoppingCarousel/> */}
           {/* Cart Icon at Bottom Right */}
           <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
             <Icon name="shopping-cart" size={22} color="#000" />
@@ -49,9 +54,9 @@ const ProductDetailScreen = () => {
         </View>
 
         {/* Accordion Sections */}
-        <AccordionItem title="DESCRIPTION & RETURNS" content="Product details here..." />
-        <AccordionItem title="MANUFACTURER DETAILS" content="Manufacturer details here..." />
-        <AccordionItem title="SHIPPING, RETURNS AND EXCHANGES" content="Shipping details here..." />
+        <AccordionItem title="DESCRIPTION & RETURNS" content="" />
+<AccordionItem title="MANUFACTURER DETAILS" content="Manufacturer details here..." />
+<AccordionItem title="SHIPPING, RETURNS AND EXCHANGES" content="Shipping details here..." />
 
         {/* You May Also Like Section */}
         <YouMayAlsoLike />

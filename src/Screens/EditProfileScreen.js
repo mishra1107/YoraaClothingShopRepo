@@ -172,17 +172,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   saveButton: {
-    backgroundColor: '#000',
-    padding: 14,
+    position: 'absolute', 
+    bottom: 0, 
+    left: 0,
+    right: 0,
+    backgroundColor: 'black',
+    padding: 16,
+    borderRadius: 0,
     alignItems: 'center',
-    borderRadius: 5,
-    marginTop: 20,
   },
   saveButtonText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  
 });
 
 export default EditProfileScreen;

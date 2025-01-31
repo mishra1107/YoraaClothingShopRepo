@@ -32,9 +32,9 @@ const WelcomeScreen = ({ navigation }) => {
         source={require('../assests/images/Gmail.png')} 
         style={styles.icon}  />
             <Text style={styles.googleButtonText}>Continue with Google</Text>
-        </TouchableOpacity>
+         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.appleButton}>
+        <TouchableOpacity style={styles.appleButton}>
           <View style={styles.iconWithText}>
             <MaterialCommunityIcons name="apple" size={20} color="#FFFFFF" />
             <Text style={styles.appleButtonText}>Continue with Apple</Text>
@@ -49,31 +49,26 @@ const WelcomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  icon:{
-    width:20,height:20
+  icon: {
+    width: 20,
+    height: 20
   },
   container: {
     justifyContent: 'center',
     flex: 1,
-    alignItems: 'center', 
-  },
-  logoText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#000000',
-    marginTop: 90,
+    alignItems: 'center',
   },
   buttonContainer: {
     width: '100%',
     alignItems: 'center',
-    marginBottom:50,
+    marginBottom: 50,
   },
   loginButton: {
     backgroundColor: '#000000',
     paddingVertical: 15,
-    width: '80%',
+    width: width * 0.9,  // Increased width
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 3,
     marginBottom: 15,
   },
   loginButtonText: {
@@ -85,9 +80,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000000',
     paddingVertical: 15,
-    width: '80%',
+    width: width * 0.9,  // Increased width
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 3,
     marginBottom: 15,
   },
   signUpButtonText: {
@@ -95,11 +90,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '80%',
+    width: width * 0.9, 
     marginVertical: 20,
   },
   divider: {
@@ -118,8 +112,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#C4C4C4',
     paddingVertical: 15,
-    width: '80%',
-    borderRadius: 5,
+    width: width * 0.9,  // Increased width
+    borderRadius: 3,
     marginBottom: 15,
     justifyContent: 'center',
   },
@@ -133,8 +127,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000000',
     paddingVertical: 15,
-    width: '80%',
-    borderRadius: 5,
+    width: width * 0.9,  // Increased width
+    borderRadius: 3,
     justifyContent: 'center',
   },
   appleButtonText: {
@@ -147,22 +141,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipButton: {
-   
-    top: height * 0.07,
+    position: 'absolute',
+    bottom: 0, 
     backgroundColor: "#000000",
-    paddingVertical: 15, 
-    width: width * 0.8, 
-    alignSelf: "center",
+    paddingVertical: 18, 
+    width: '100%', 
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 8, 
+    borderTopLeftRadius: 0, 
+    borderTopRightRadius: 0, 
+    borderBottomLeftRadius: 0, 
+    borderBottomRightRadius: 0, 
   },
   skipButtonText: {
     color: "#FFFFFF",
-    fontSize: RFPercentage(2.5), 
+    fontSize: RFPercentage(2.5),
     fontWeight: "bold",
   },
- 
+  
+  
 });
+
 
 export default WelcomeScreen;

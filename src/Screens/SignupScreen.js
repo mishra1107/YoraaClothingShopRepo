@@ -55,6 +55,8 @@ const SignupScreen = ({ navigation }) => {
   // };
 
   const handleSignup = async () => {
+
+    
     console.log("Initiating Signup...");
 
     // Step 1: Validate input fields
@@ -230,16 +232,19 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   signupButton: {
-    marginTop: 20,
-    backgroundColor: "black",
+    position: 'absolute', 
+    bottom: 0, 
+    left: 0,
+    right: 0,
+    backgroundColor: 'black',
     padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
+    borderRadius: 0,
+    alignItems: 'center',
   },
   signupButtonText: {
+    color: 'white',
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: 'bold',
   },
 });
 

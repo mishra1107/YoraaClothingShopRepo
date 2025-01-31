@@ -43,7 +43,7 @@ const UpdateProfileScreen = () => {
       </Text>
 
       {/* Edit Profile Button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={()=>navigation.navigate('EditProfile')} style={styles.button}>
         <Text style={styles.buttonText}>EDIT PROFILE</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#000",
     paddingVertical: 15,
-    borderRadius: 5,
+    borderRadius: 3,
     alignItems: "center",
   },
   buttonText: {

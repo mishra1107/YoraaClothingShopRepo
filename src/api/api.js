@@ -12,6 +12,7 @@ export const postRequest = async (endpoint, data) => {
       },
       body: JSON.stringify(data),
     });
+    
     const jsonResponse = await response.json();
     console.log("API Response:", jsonResponse);
     return jsonResponse;

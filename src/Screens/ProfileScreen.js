@@ -8,9 +8,17 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+import { removeToken } from '../storage/storage';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+
+
+  const handleLogout = async () => {
+    await removeToken(); 
+    navigation.replace('Login'); 
+  };
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -43,7 +51,7 @@ const ProfileScreen = () => {
         style={styles.updateProfileButton}>
         <Text style={styles.updateProfileButtonText}>UPDATE PROFILE</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
         <Text style={styles.logoutButtonText}>LOG OUT</Text>
       </TouchableOpacity>
 
@@ -149,9 +157,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
-  profileContainer: {
-   
-    // alignItems: 'center',
+   profileContainer: { 
     marginVertical: 20,
     position: 'relative',
   },
@@ -162,18 +168,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   profileContent: {
-    // marginTop: 40,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // paddingHorizontal: 20,
+   
     flexDirection:'row',
     justifyContent:'space-between',
     alignItems:'center',
-    
     padding:30,
-   
-   
-
   },
   profileImage: {
     width: 80,
