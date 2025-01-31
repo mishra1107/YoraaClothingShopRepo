@@ -2,7 +2,7 @@
 import { postRequest } from "./api";
 import { API_ENDPOINTS } from "../constants/config";
 
-// ✅ Function for User Signup
+//  Function for User Signup
 export const signupUser = async (name, phNo, password) => {
   try {
     console.log("Signing up user with:", { name, phNo, password }); 
@@ -15,7 +15,7 @@ export const signupUser = async (name, phNo, password) => {
   }
 };
 
-// ✅ Function to Generate OTP
+//  Function to Generate OTP
 export const generateOTP = async (phNo) => {
     try {
       console.log("Generating OTP for:", phNo);
@@ -28,7 +28,7 @@ export const generateOTP = async (phNo) => {
     }
 };
 
-// ✅ Function to Verify OTP
+//  Function to Verify OTP
 export const verifyOTP = async (phNo, otpCode) => {
     try {
         console.log("Verifying OTP for:", phNo, "with OTP:", otpCode);
@@ -41,7 +41,7 @@ export const verifyOTP = async (phNo, otpCode) => {
     }
 };
 
-// ✅ Function to Resend OTP
+//  Function to Resend OTP
 export const resendOTP = async (phNo) => {
     try {
         console.log("Resending OTP for:", phNo);
@@ -54,15 +54,18 @@ export const resendOTP = async (phNo) => {
     }
 };
 
-// ✅ Function to Login User
 export const loginUser = async (phNo, password) => {
   try {
-    console.log("Logging in user with:", { phNo, password });
+    console.log("🔑 Logging in user with:", { phNo, password });
     const response = await postRequest(API_ENDPOINTS.LOGIN, { phNo, password });
-    console.log("Login Response:", response);
+    console.log("🔓 Login Response:", response);
     return response;
   } catch (error) {
-    console.error("Login Error:", error);
+    console.error(" Login Error:", error);
     return { success: false, message: "Login request failed" };
   }
 };
+
+
+
+

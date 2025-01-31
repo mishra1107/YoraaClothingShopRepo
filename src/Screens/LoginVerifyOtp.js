@@ -14,7 +14,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     startTimer();
   }, []);
 
-  // ✅ Function to start/restart the timer
+  //  Function to start/restart the timer
   const startTimer = () => {
     setTimer(45);
     setResendDisabled(true);
@@ -43,11 +43,11 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     }
   };
 
-  // ✅ Function to Resend OTP
+  //  Function to Resend OTP
   const handleResendOTP = async () => {
     if (!resendDisabled) {
       console.log("Resending OTP...");
-      setOtp(['', '', '', '']);
+      setOtp(['', '', '', '']); // Clear OTP input fields
       startTimer(); // Restart the timer
 
       try {
@@ -55,7 +55,8 @@ const LoginVerifyOtp = ({ navigation, route }) => {
         console.log("Resend OTP Response:", response);
 
         if (response.success) {
-          Alert.alert("Success", "OTP Resent Successfully.");
+          Alert.alert("Success", "OTP Resent Successfully. Please enter the new OTP.");
+          console.log("New OTP has been sent. Please enter the latest OTP.");
         } else {
           Alert.alert("Error", response.message || "Failed to resend OTP.");
         }
@@ -66,7 +67,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     }
   };
 
-  // ✅ Function to Verify OTP
+  //  Function to Verify OTP
   const handleVerifyOTP = async () => {
     const otpCode = otp.join(""); // Convert OTP array to a string
     if (otpCode.length !== 4) {

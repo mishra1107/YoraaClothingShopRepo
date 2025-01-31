@@ -5,6 +5,5 @@ export const validateSignup = (name, phNo, password, confirmPassword) => {
   if (!phNo.trim() || phNo.length !== 10) return "Enter a valid 10-digit phone number.";
   if (!password || password.length < 6) return "Password must be at least 6 characters long.";
   if (password !== confirmPassword) return "Passwords do not match.";
-
   return null;
 };
