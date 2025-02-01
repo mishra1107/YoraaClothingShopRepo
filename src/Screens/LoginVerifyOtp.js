@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+
+
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import { postRequest } from "../api/api"; 
 import { API_ENDPOINTS } from "../constants/config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginVerifyOtp = ({ navigation, route }) => {
   const { phNo } = route.params; // Get phone number from previous screen
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(45);
   const [resendDisabled, setResendDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Define an array of refs for each OTP input field
+  const inputs = useRef([]);
 
   useEffect(() => {
     startTimer();
   }, []);
 
-  //  Function to start/restart the timer
+  // Function to start/restart the timer
   const startTimer = () => {
     setTimer(45);
     setResendDisabled(true);
@@ -32,18 +39,21 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     return () => clearInterval(countdown);
   };
 
+  // Handle OTP input change
   const handleOTPChange = (text, index) => {
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
+
+    // Move to the next input if a digit is entered
     if (text.length === 1 && index < otp.length - 1) {
-      inputs[index + 1]?.focus();
+      inputs.current[index + 1]?.focus();
     } else if (text.length === 0 && index > 0) {
-      inputs[index - 1]?.focus();
+      inputs.current[index - 1]?.focus();
     }
   };
 
-  //  Function to Resend OTP
+  // Function to Resend OTP
   const handleResendOTP = async () => {
     if (!resendDisabled) {
       console.log("Resending OTP...");
@@ -67,34 +77,52 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     }
   };
 
-  //  Function to Verify OTP
+
+ 
+
+
+  // Function to Verify OTP
   const handleVerifyOTP = async () => {
-    const otpCode = otp.join(""); // Convert OTP array to a string
-    if (otpCode.length !== 4) {
-      Alert.alert("Error", "Please enter a valid 4-digit OTP.");
-      return;
+    if (otp.some((digit) => digit === '')) {
+        Alert.alert("⚠️ Error", "Please enter the complete OTP.");
+        return;
     }
 
-    console.log("Verifying OTP:", { phNo, otp: otpCode });
+    setLoading(true);
+    const otpCode = otp.join(""); // Convert OTP array to string
+
+    console.log("📤 Sending request to API with:", { phNo, otp: otpCode });
 
     try {
-      const response = await postRequest(API_ENDPOINTS.VERIFY_OTP, { phNo, otp: otpCode });
-      console.log("OTP Verification Response:", response);
+        // Ensure the request format is exactly as needed
+        const response = await postRequest(API_ENDPOINTS.VERIFY_OTP, {
+            phNo: String(phNo).trim(),  // Ensure phNo is a string
+            otp: String(otpCode).trim() // Ensure OTP is a string
+        });
 
-      if (response.success) {
-        console.log("OTP Verified Successfully!");
-        Alert.alert("Success", "OTP Verified Successfully!");
-        navigation.navigate("Home"); // Navigate to home screen
-      } else {
-        Alert.alert("Error", response.message || "Invalid OTP, please try again.");
-      }
+        console.log("📥 API Response:", response);
+
+        if (response.success === true) {
+            const { token, user } = response.data;
+
+            // Store token and user info in AsyncStorage
+            await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+
+            Alert.alert("✅ Success", "OTP Verified Successfully!");
+            navigation.replace('Home'); // Navigate to Home Screen
+        } else {
+            console.error("❌ Verification Failed:", response);
+            Alert.alert("Verification Failed", response.message || "Invalid OTP.");
+        }
     } catch (error) {
-      console.error("OTP Verification Failed:", error);
-      Alert.alert("Error", "Something went wrong. Please try again.");
+        console.error("❌ OTP Verification Error:", error);
+        Alert.alert("Error", "Something went wrong. Please try again.");
+    } finally {
+        setLoading(false);
     }
-  };
+};
 
-  const inputs = [];
 
   return (
     <View style={styles.container}>
@@ -116,7 +144,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
             maxLength={1}
             value={digit}
             onChangeText={(text) => handleOTPChange(text, index)}
-            ref={(input) => (inputs[index] = input)}
+            ref={(input) => (inputs.current[index] = input)}
           />
         ))}
       </View>
@@ -133,8 +161,11 @@ const LoginVerifyOtp = ({ navigation, route }) => {
         <MaterialIcons name="timer" size={18} color="#666666" />
         <Text style={styles.timerText}> 00 : {timer.toString().padStart(2, '0')}</Text>
       </View>
-      <TouchableOpacity onPress={handleVerifyOTP} style={styles.verifyButton}>
-        <Text style={styles.verifyButtonText}>VERIFY OTP</Text>
+      <TouchableOpacity
+        onPress={handleVerifyOTP}
+        style={styles.verifyButton}
+        disabled={loading}>
+        <Text style={styles.verifyButtonText}>{loading ? "VERIFYING..." : "VERIFY OTP"}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import { removeToken } from '../storage/storage';
+
 
 const ProfileScreen = () => {
   const navigation = useNavigation();

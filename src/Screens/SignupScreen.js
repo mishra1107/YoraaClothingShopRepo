@@ -56,7 +56,6 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSignup = async () => {
 
-    
     console.log("Initiating Signup...");
 
     // Step 1: Validate input fields
