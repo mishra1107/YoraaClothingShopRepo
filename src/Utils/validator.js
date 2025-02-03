@@ -7,3 +7,13 @@ export const validateSignup = (name, phNo, password, confirmPassword) => {
   if (password !== confirmPassword) return "Passwords do not match.";
   return null;
 };
+
+
+// validator/validator.js
+export const validateLogin = (phNo, password) => {
+  console.log("Validating Login Data:", { phNo, password });
+
+  if (!phNo.trim() || phNo.length !== 10) return "Enter a valid 10-digit phone number.";
+  if (!password || password.length < 6) return "Password must be at least 6 characters long.";
+  return null;
+};

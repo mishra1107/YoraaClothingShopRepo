@@ -6,19 +6,31 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
+  ScrollView,Alert
 } from 'react-native';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
-
   const handleLogout = async () => {
-    await removeToken(); 
-    navigation.replace('Login'); 
+    try {
+      // Clear token and user data from AsyncStorage
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('user');
+
+      console.log("🔴 User logged out. Token removed.");
+
+      // Show logout confirmation
+      Alert.alert("✅ Logged Out", "You have been logged out successfully.", [
+        { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
+      ]);
+      
+    } catch (error) {
+      console.error("❌ Error logging out:", error);
+      Alert.alert("⚠️ Error", "Something went wrong while logging out.");
+    }
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
 
 const { width, height } = Dimensions.get("window");
+
 const data = [
   { id: "1", image: require('../assests/images/Shopping.png') },
   { id: "2", image: require('../assests/images/Shopping.png') },
@@ -11,16 +12,22 @@ const data = [
 ];
 
 const ShoppingCarousel = () => {
-  const navigation=useNavigation();
+  const navigation = useNavigation();
   const flatListRef = useRef(null);
   const currentIndex = useRef(0);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      currentIndex.current = (currentIndex.current + 1) % data.length;
-      flatListRef.current.scrollToIndex({ index: currentIndex.current, animated: true });
-    }, 1000);
+      if (flatListRef.current) {  // ✅ Ensure FlatList ref is set before scrolling
+        currentIndex.current = (currentIndex.current + 1) % data.length;
+        flatListRef.current.scrollToIndex({
+          index: currentIndex.current,
+          animated: true,
+          viewPosition: 0.5, // Center the item
+        });
+      }
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -47,6 +54,12 @@ const ShoppingCarousel = () => {
         )}
         scrollEventThrottle={16}
         contentContainerStyle={{ alignItems: "center" }}
+        initialScrollIndex={0} // ✅ Ensures list is ready for `scrollToIndex`
+        getItemLayout={(data, index) => ({
+          length: width * 0.8, // Width of each item
+          offset: (width * 0.8) * index,
+          index,
+        })}
       />
       <View style={styles.dotsContainer}>
         {data.map((_, index) => {
@@ -63,7 +76,7 @@ const ShoppingCarousel = () => {
           return <Animated.View key={index} style={[styles.dot, { opacity }]} />;
         })}
       </View>
-      <TouchableOpacity onPress={()=>navigation.navigate('New')} style={styles.exploreButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('New')} style={styles.exploreButton}>
         <Text style={styles.buttonText}>EXPLORE</Text>
       </TouchableOpacity>
     </View>
@@ -106,15 +119,15 @@ const styles = StyleSheet.create({
   exploreButton: {
     position: "absolute",
     bottom: 30,
-    backgroundColor: "#fff", 
+    backgroundColor: "#fff",
     paddingVertical: 12,
-    paddingHorizontal: 60, 
-    borderRadius: 10, 
+    paddingHorizontal: 60,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 5, 
+    elevation: 5,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -125,7 +138,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-
 
 export default ShoppingCarousel;

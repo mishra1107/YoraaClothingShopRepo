@@ -3,6 +3,7 @@ import { BASE_URL } from "../constants/config";
 export const postRequest = async (endpoint, data) => {
   try {
     // Ensure phone number is always sent as a string
+
     if (data.phNo) {
       data.phNo = String(data.phNo);
     }
@@ -17,6 +18,7 @@ export const postRequest = async (endpoint, data) => {
       },
       body: JSON.stringify(data),
     });
+    console.log("Code pahuch nhi paaa rha hai yaha tak");
 
     const jsonResponse = await response.json();
     console.log("API Response:", jsonResponse);
@@ -26,3 +28,6 @@ export const postRequest = async (endpoint, data) => {
     return { success: false, message: "Something went wrong!" };
   }
 };
+
+
+

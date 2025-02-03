@@ -408,6 +408,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { validateLogin } from '../utils/validator';
+import { BASE_URL, API_ENDPOINTS } from '../constants/config';
 
 export default function LoginScreen({ navigation }) {
   const [phNo, setPhNo] = useState(''); // State for phone number
@@ -427,12 +429,10 @@ export default function LoginScreen({ navigation }) {
       Alert.alert("⚠️ Error", "Please enter your phone number and password.");
       return;
     }
-
     setLoading(true); // Start loading
-
     try {
       console.log("📤 Sending login request to API...");
-      const response = await fetch('http://192.168.1.22:8080/api/auth/login', {
+      const response = await fetch('http:/10.0.2.2:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
@@ -514,7 +514,6 @@ export default function LoginScreen({ navigation }) {
        
       </View>
 
-    
 
       <TouchableOpacity style={styles.googleButton}>
         <Image source={require('../assests/images/Gmail.png')} style={{ width: 20, height: 20 }} />
@@ -526,23 +525,17 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.appleButtonText}>Continue with Apple</Text>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity style={styles.loginContainer} onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.loginText}>
-          Don't have an account? <Text style={styles.loginLink}>Sign-up</Text>
-        </Text>
-      </TouchableOpacity> */}
-
-      <TouchableOpacity style={styles.loginContainer} onPress={() => navigation.navigate("Signup")}>
+   
+           <TouchableOpacity style={styles.loginContainer} onPress={() => navigation.navigate("Signup")}>
               <Text style={styles.loginText}>
               Don't have an account? <Text style={styles.loginLink}>Sign-up</Text>
               </Text>
             </TouchableOpacity>
 
-      <TouchableOpacity
+        <TouchableOpacity
         onPress={handleLogin}
         style={styles.loginButton}
-        disabled={loading}
-      >
+        disabled={loading} >
         <Text style={styles.loginButtonText}>{loading ? "Logging In..." : "LOGIN"}</Text>
       </TouchableOpacity>
     </View>

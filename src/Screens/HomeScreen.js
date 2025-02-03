@@ -1,44 +1,53 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, StyleSheet,Text } from 'react-native';
 import FilterSection from './../Component/FilterSection';
 import IconSection from './../Component/IconSection';
 import ImageSection from './../Component/ImageSection';
-import CategoryList from './../Component/CategoryList';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CardLayout from '../Component/CardLayout';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import HeaderContent from '../Component/HeaderContent';
 import SeeAll from '../Component/SeeAll';
-import WomenScreen from '../Screens/WomenScreen';
-import KidScreen from '../Screens/KidScreen';
-import AccessoriesScreen from '../Screens/AccessoriesScreen';
+import SubcategoryList from '../Component/SubCategoryList';
 
-const HomeScreen = () => {
-  const [selectedCategory, setSelectedCategory] = useState('MEN');
+const HomeScreen = () => {    
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subcategories, setSubcategories] = useState([]);
 
-  const renderCategoryContent = () => {
-    switch (selectedCategory) {
-      case 'WOMEN':
-        return <WomenScreen />;
-      case 'KIDS':
-        return <KidScreen />;
-      case 'ACCESSORIES':
-        return <AccessoriesScreen />;
-      default:
-        return (
-          <>
-            <CategoryList />
-            <View style={styles.row}>
-              <Text style={styles.heading}>COLLECTIONS</Text>
-              <SeeAll />
-            </View>
-            <CardLayout />
-            <View style={styles.row}>
-              <Text style={styles.heading}>NEW ARRIVALS</Text>
-            </View>
-            <ShoppingCarousel />
-            <HeaderContent />
-          </>
-        );
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchSubcategories(selectedCategory._id);
+    }
+  }, [selectedCategory]);  // ✅ Runs when `selectedCategory` changes
+
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.warn("⚠️ No token found in AsyncStorage.");
+        return;
+      }
+
+      const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+      console.log(" Fetching Subcategories from:", apiUrl);
+
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error(" Failed to fetch subcategories");
+
+      const data = await response.json();
+      console.log("✅ Subcategories Data:", data);
+
+      setSubcategories(data?.data || []);
+    } catch (error) {
+      console.error(" Error fetching subcategories:", error.message);
     }
   };
 
@@ -48,14 +57,21 @@ const HomeScreen = () => {
         <FilterSection />
         <ImageSection selectedCategory={selectedCategory} />
         <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-        {renderCategoryContent()}
+        <SubcategoryList subcategories={subcategories} /> 
+        <View style={styles.row}>
+      
+        <Text style={styles.heading}>COLLECTIONS</Text>
+          <SeeAll />
+        </View>
+        <CardLayout />
+        <View style={styles.row}>
+          <ShoppingCarousel />
+        </View>
+        <HeaderContent />
       </ScrollView>
     </View>
   );
 };
-
-export default HomeScreen;
-
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -70,6 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-
+export default HomeScreen;

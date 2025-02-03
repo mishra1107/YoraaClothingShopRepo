@@ -2,6 +2,47 @@ import { postRequest } from "./api";
 import { API_ENDPOINTS } from "../constants/config";
 
 //  Function for User Signup
+// export const signupUser = async (name, phNo, password) => {
+//   console.log("Signing up user with:", { name, phNo, password });
+//   const url = "http://10.0.2.2:8080/api/auth/signup";
+//   const data = {
+//     phNo: "545454",
+//     name: "pushkar",
+//     password: "2002"
+//   };
+
+//   try {
+//     console.log(`Sending POST request to: ${url}`);
+//     console.log("Request Body:", data);
+
+//     const response = await fetch(url, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data),
+//     });
+
+//    console.log("response" ,response);
+// if (!response) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const responseData = await response.json();
+//     console.log("Response:", responseData);
+//     return responseData;
+//   } catch (error) {
+//     if (error instanceof TypeError) {
+//       console.error("Network error: Unable to connect to the server.");
+//     } else {
+//       console.error("Error:", error.message);
+//     }
+//   }
+// };
+
+
+
+
 export const signupUser = async (name, phNo, password) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
@@ -15,6 +56,7 @@ export const signupUser = async (name, phNo, password) => {
     return { success: false, message: "Signup request failed" };
   }
 };
+
 
 //  Function to Generate OTP
 export const generateOTP = async (phNo) => {
@@ -61,6 +103,8 @@ export const resendOTP = async (phNo) => {
     return { success: false, message: "Failed to resend OTP" };
   }
 };
+
+
 
 //  Function for User Login
 export const loginUser = async (phNo, password) => {

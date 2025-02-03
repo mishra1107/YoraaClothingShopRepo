@@ -4,7 +4,7 @@ import React from 'react'
 const AppNavigator = () => {
   return (
     <View>
-      <Text>AppNavigator</Text>
+      <Text>MainNavigator</Text>
     </View>
   )
 }
