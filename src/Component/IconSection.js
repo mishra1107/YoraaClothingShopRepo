@@ -34,10 +34,10 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
 
         if (data?.data?.length > 0) {
           setCategories(data.data);
-          setSelectedCategory(data.data[0]); // ✅ Default: Select first category
+          setSelectedCategory(data.data[0]); 
         }
       } catch (error) {
-        console.error("❌ Error fetching categories:", error.message);
+        console.error(" Error fetching categories:", error.message);
       }
     };
 
@@ -54,7 +54,7 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
             selectedCategory?._id === category._id && styles.selected, // ✅ Highlights selected category
           ]}
           onPress={() => setSelectedCategory(category)} // ✅ Updates category on click
-        >
+>
           <Text style={[styles.text, selectedCategory?._id === category._id && styles.selectedText]}>
             {category.name.toUpperCase()}
           </Text>

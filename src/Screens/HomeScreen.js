@@ -9,7 +9,8 @@ import CardLayout from '../Component/CardLayout';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import HeaderContent from '../Component/HeaderContent';
 import SeeAll from '../Component/SeeAll';
-import SubcategoryList from '../Component/SubCategoryList';
+import SubCategoryList from './../Component/SubCategoryList';
+
 
 const HomeScreen = () => {    
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -57,7 +58,7 @@ const HomeScreen = () => {
         <FilterSection />
         <ImageSection selectedCategory={selectedCategory} />
         <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-        <SubcategoryList subcategories={subcategories} /> 
+        <SubCategoryList subcategories={subcategories} /> 
         <View style={styles.row}>
       
         <Text style={styles.heading}>COLLECTIONS</Text>
