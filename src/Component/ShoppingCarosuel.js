@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"; 
 import React, { useRef, useEffect } from "react";
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
 
@@ -14,17 +14,16 @@ const data = [
 const ShoppingCarousel = () => {
   const navigation = useNavigation();
   const flatListRef = useRef(null);
-  const currentIndex = useRef(0);
   const scrollX = useRef(new Animated.Value(0)).current;
+  const currentIndex = useRef(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (flatListRef.current) {  // ✅ Ensure FlatList ref is set before scrolling
+      if (flatListRef.current) {
         currentIndex.current = (currentIndex.current + 1) % data.length;
-        flatListRef.current.scrollToIndex({
-          index: currentIndex.current,
+        flatListRef.current.scrollToOffset({
+          offset: currentIndex.current * width, // ✅ Ensure full scroll per item
           animated: true,
-          viewPosition: 0.5, // Center the item
         });
       }
     }, 3000);
@@ -48,19 +47,21 @@ const ShoppingCarousel = () => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         pagingEnabled
+        snapToInterval={width} // ✅ Snap per full image
+        decelerationRate="fast"
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
-        contentContainerStyle={{ alignItems: "center" }}
-        initialScrollIndex={0} // ✅ Ensures list is ready for `scrollToIndex`
+        contentContainerStyle={styles.flatListContainer}
         getItemLayout={(data, index) => ({
-          length: width * 0.8, // Width of each item
-          offset: (width * 0.8) * index,
+          length: width,
+          offset: width * index,
           index,
         })}
       />
+      
       <View style={styles.dotsContainer}>
         {data.map((_, index) => {
           const opacity = scrollX.interpolate({
@@ -76,6 +77,7 @@ const ShoppingCarousel = () => {
           return <Animated.View key={index} style={[styles.dot, { opacity }]} />;
         })}
       </View>
+
       <TouchableOpacity onPress={() => navigation.navigate('New')} style={styles.exploreButton}>
         <Text style={styles.buttonText}>EXPLORE</Text>
       </TouchableOpacity>
@@ -90,22 +92,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  flatListContainer: {
+    alignItems: "center",
+  },
   card: {
-    width: width * 0.8,
-    height: height * 0.6,
+    width: width, // ✅ Ensure full width per card
+    height: height * 0.5, // Adjust for proper display
     borderRadius: 15,
     overflow: "hidden",
-    marginHorizontal: width * 0.05,
+    backgroundColor: "#fff",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "cover", // ✅ Fix overlapping issue
   },
   dotsContainer: {
     flexDirection: "row",
     position: "absolute",
-    bottom: 90,
+    bottom: 80,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
   },
   exploreButton: {
     position: "absolute",
-    bottom: 30,
+    bottom: 20,
     backgroundColor: "#fff",
     paddingVertical: 12,
     paddingHorizontal: 60,

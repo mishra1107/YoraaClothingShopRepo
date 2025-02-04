@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
 
 const FilterSection = () => {
   const navigation = useNavigation();
-  const [cartCount, setCartCount] = useState(0); 
-  const [isWishlistSelected, setIsWishlistSelected] = useState(false); 
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [isWishlistSelected, setIsWishlistSelected] = useState(false);
 
-  const handleCartPress = () => {
-    setCartCount(cartCount + 1); 
-    navigation.navigate('Cart');
+  useEffect(() => {
+    loadWishlistCount();
+  }, []);
+
+  const loadWishlistCount = async () => {
+    const count = await AsyncStorage.getItem("wishlistCount");
+    if (count) {
+      setWishlistCount(JSON.parse(count));
+    }
   };
 
   const handleWishlistPress = () => {
@@ -19,11 +27,15 @@ const FilterSection = () => {
     navigation.navigate('Wishlist');
   };
 
-  // Function to handle deep linking share
+  const handleCartPress = () => {
+    setCartCount(cartCount + 1);
+    navigation.navigate('Cart');
+  };
+
   const handleShare = async () => {
     const shareOptions = {
       title: 'Check out this product!',
-      message: 'Hey, check out this amazing product on our store: https://mystore.com/product/12345', // Replace with your dynamic link
+      message: 'Hey, check out this amazing product on our store: https://mystore.com/product/12345',
       url: 'https://mystore.com/product/12345',
       social: Share.Social.WHATSAPP,
     };
@@ -47,18 +59,20 @@ const FilterSection = () => {
       </View>
 
       <TouchableOpacity onPress={handleShare}>
-        <Image
-         source={require('../assests/images/share.png')}
-          style={styles.icon1}
-        />
+        <Image source={require('../assests/images/share.png')} style={styles.icon1} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleWishlistPress}>
+      <TouchableOpacity onPress={handleWishlistPress} style={styles.wishlistContainer}>
         <Icon
           name={isWishlistSelected ? 'heart' : 'heart-outline'}
           size={24}
           style={[styles.icon, isWishlistSelected && styles.selectedIcon]}
         />
+        {wishlistCount > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{wishlistCount}</Text>
+          </View>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
@@ -69,7 +83,6 @@ const FilterSection = () => {
           </View>
         )}
       </TouchableOpacity>
-      
     </View>
   );
 };
@@ -116,10 +129,13 @@ const styles = StyleSheet.create({
   cartContainer: {
     position: 'relative',
   },
+  wishlistContainer: {
+    position: 'relative',
+  },
   badge: {
     position: 'absolute',
     top: -5,
-    left: -10,
+    right: -10,
     backgroundColor: 'red',
     borderRadius: 10,
     width: 20,

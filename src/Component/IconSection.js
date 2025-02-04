@@ -51,11 +51,18 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
           key={category._id}
           style={[
             styles.touchable,
-            selectedCategory?._id === category._id && styles.selected, // ✅ Highlights selected category
+            selectedCategory?._id === category._id && styles.selected,
           ]}
-          onPress={() => setSelectedCategory(category)} // ✅ Updates category on click
->
-          <Text style={[styles.text, selectedCategory?._id === category._id && styles.selectedText]}>
+          onPress={() => setSelectedCategory(category)}
+        >
+          <Text 
+            style={[
+              styles.text, 
+              selectedCategory?._id === category._id && styles.selectedText
+            ]}
+            numberOfLines={1} // ✅ Prevents breaking into two lines
+            ellipsizeMode="tail"
+          >
             {category.name.toUpperCase()}
           </Text>
         </TouchableOpacity>
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   touchable: {
-    flex: 1,
+    flex: 1,  // ✅ Fix text wrapping issue
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -83,15 +90,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   selected: {
-    backgroundColor: "black",  // ✅ Highlight Active Category
+    backgroundColor: "black", 
   },
   text: {
     fontSize: 14,
     fontWeight: "bold",
     color: "black",
+    textAlign: 'center', // ✅ Keeps text in one line
   },
   selectedText: {
-    color: "white",  // ✅ Highlight text of Active Category
+    color: "white",
   },
 });
 

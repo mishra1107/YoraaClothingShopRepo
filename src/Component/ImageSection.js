@@ -9,18 +9,24 @@ const ImageSection = ({ selectedCategory }) => {
     ACCESSORIES: require('../assests/images/cap.png'),
   };
 
+  console.log("Selected Category:", selectedCategory?.name?.trim().toUpperCase()); // Debugging Log
+
   return (
     <View style={styles.container}>
-      {Object.keys(images).map((category, index) => (
-        <Image
-          key={index}
-          source={images[category]}
-          style={[
-            styles.image,
-            selectedCategory === category && styles.highlightedImage,
-          ]}
-        />
-      ))}
+      {Object.keys(images).map((category, index) => {
+        const isSelected = selectedCategory?.name?.trim().toUpperCase() === category; 
+
+        return (
+          <Image
+            key={index}
+            source={images[category]}
+            style={[
+              styles.image,
+              isSelected && styles.highlightedImage,
+            ]}
+          />
+        );
+      })}
     </View>
   );
 };
@@ -37,10 +43,13 @@ const styles = StyleSheet.create({
     height: 35,
     marginRight: 8,
     resizeMode: 'contain',
-    opacity: 0.5, 
+    opacity: 0.5,  // ✅ Default opacity
   },
   highlightedImage: {
-    opacity: 1, 
+    opacity: 1,  // ✅ Fully visible when selected
+    borderWidth: 2, 
+    borderColor: 'black', 
+    borderRadius: 8, 
   },
 });
 

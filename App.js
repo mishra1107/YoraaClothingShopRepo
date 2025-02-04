@@ -39,6 +39,7 @@ import LoungewearScreen from './src/Screens/LoungewearScreen';
 import ActiveScreen from './src/Screens/ActiveScreen';
 // Navigation
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
+import ItemListScreen from './src/Screens/ItemListScreen';
 
 const Stack = createStackNavigator();
 
@@ -86,7 +87,7 @@ const App = () => {
         <Stack.Screen name="Wishlist" component={WishlistScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
         <Stack.Screen name="Address" component={AddressScreen} />
-
+        <Stack.Screen name="ItemList" component={ItemListScreen} />
         {/* Profile Screens */}
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
