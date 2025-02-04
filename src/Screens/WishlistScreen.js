@@ -1,39 +1,40 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-
-const products = [
-  { id: '1', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '2', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '3', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '4', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '5', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '6', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '7', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-  { id: '8', image: require('../assests/images/Shopping.png'), name: '21WN REVERSIBLE ANGORA CARDIGAN', price: '₹120' },
-];
+import { getWishlist } from '../services/wishlistService'; // ✅ Import getWishlist function
 
 const WishlistScreen = () => {
   const navigation = useNavigation();
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const fetchWishlist = async () => {
+    setLoading(true);
+    const wishlistData = await getWishlist();
+    setWishlistItems(wishlistData);
+    setLoading(false);
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
-        <Image source={item.image} style={styles.image} />
+        <Image source={{ uri: item.item.imageUrl }} style={styles.image} />
         <View style={styles.iconsContainer}>
           <TouchableOpacity style={styles.iconButton}>
-            <Image source={require('../assests/images/like.png')} style={styles.iconImage} />
+            <Icon name="favorite" size={20} color="red" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}  style={styles.iconButton}>
-            <Image source={require('../assests/images/cart.png')} style={styles.iconImage} />
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.iconButton}>
+            <Icon name="shopping-cart" size={20} color="black" />
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.name} numberOfLines={2}>
-        {item.name}
-      </Text>
-      <Text style={styles.price}>{item.price}</Text>
+      <Text style={styles.name} numberOfLines={2}>{item.item.name}</Text>
+      <Text style={styles.price}>₹{item.item.price}</Text>
     </View>
   );
 
@@ -47,15 +48,21 @@ const WishlistScreen = () => {
         <Text style={styles.headerTitle}>WISH LIST</Text>
       </View>
 
-      {/* Product List */}
-      <FlatList
-        key={'2-columns'}
-        data={products}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        contentContainerStyle={styles.scrollContainer}
-      />
+      {/* Show Loader while fetching data */}
+      {loading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#FF5722" />
+        </View>
+      ) : (
+        <FlatList
+          key={'2-columns'}
+          data={wishlistItems}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          numColumns={2}
+          contentContainerStyle={styles.scrollContainer}
+        />
+      )}
     </View>
   );
 };
@@ -80,6 +87,11 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginRight: 10,
   },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   scrollContainer: {
     paddingVertical: 10,
     paddingHorizontal: 5,
@@ -87,8 +99,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: 'flex-start',
     margin: 10,
-    flex: 1, 
-    maxWidth: '45%', 
+    flex: 1,
+    maxWidth: '45%',
   },
   card: {
     width: '100%',
@@ -116,12 +128,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconButton: {
-    marginBottom: 10,
-  },
-  iconImage: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
+    backgroundColor: 'white',
+    padding: 6,
+    borderRadius: 20,
+    marginVertical: 5,
+    elevation: 5,
   },
   name: {
     marginTop: 5,

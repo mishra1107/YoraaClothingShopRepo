@@ -24,9 +24,7 @@ import TrackingOrderScreen from './src/Screens/TrackingOrderScreen';
 import CollectionScreen from './src/Screens/CollectionScreen';
 import ProductDetailScreen from './src/Screens/ProductDetailScreen';
 import ArrivalScreen from './src/Screens/ArrivalScreen';
-import { Provider } from 'react-redux';
-import store from './src/redux/store';
-
+import { WishlistProvider } from "./src/services/context/WishlistContext";
 // Categories
 import KidScreen from './src/Screens/KidScreen';
 import AccessoriesScreen from './src/Screens/AccessoriesScreen';
@@ -71,7 +69,7 @@ const App = () => {
   }
 
   return (
-    <Provider store={store}>
+    <WishlistProvider>
     <NavigationContainer>
      
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
@@ -121,7 +119,7 @@ const App = () => {
       
       <Toast />
     </NavigationContainer>
-    </Provider>
+    </WishlistProvider>
   );
 };
 

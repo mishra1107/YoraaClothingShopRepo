@@ -1,29 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
+import { WishlistContext } from '../services/context/WishlistContext'; // ✅ Import WishlistContext
 
 const FilterSection = () => {
   const navigation = useNavigation();
-  const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount, setWishlistCount] = useState(0);
-  const [isWishlistSelected, setIsWishlistSelected] = useState(false);
-
-  useEffect(() => {
-    loadWishlistCount();
-  }, []);
-
-  const loadWishlistCount = async () => {
-    const count = await AsyncStorage.getItem("wishlistCount");
-    if (count) {
-      setWishlistCount(JSON.parse(count));
-    }
-  };
+  const { wishlistCount } = useContext(WishlistContext); // ✅ Get count from context
+  const [cartCount, setCartCount] = React.useState(0); 
 
   const handleWishlistPress = () => {
-    setIsWishlistSelected(!isWishlistSelected);
     navigation.navigate('Wishlist');
   };
 
@@ -63,11 +50,7 @@ const FilterSection = () => {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={handleWishlistPress} style={styles.wishlistContainer}>
-        <Icon
-          name={isWishlistSelected ? 'heart' : 'heart-outline'}
-          size={24}
-          style={[styles.icon, isWishlistSelected && styles.selectedIcon]}
-        />
+        <Icon name="heart-outline" size={24} style={styles.icon} />
         {wishlistCount > 0 && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{wishlistCount}</Text>
@@ -118,9 +101,6 @@ const styles = StyleSheet.create({
   icon: {
     marginHorizontal: 5,
     color: '#000',
-  },
-  selectedIcon: {
-    color: 'red',
   },
   icon1: {
     width: 25,
