@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
+    console.log("insiden wishlist provider")
     const [wishlist, setWishlist] = useState({});
     const [wishlistCount, setWishlistCount] = useState(0); // ✅ Added wishlist count
 
@@ -14,7 +15,10 @@ export const WishlistProvider = ({ children }) => {
     }, []);
 
     const loadWishlist = async () => {
+        console.log("insiden wishlist loadWishlist")
+
         try {
+            
             const wishlistData = await getWishlist(); // Fetch latest wishlist from API
             const wishlistMap = wishlistData.reduce((acc, item) => {
                 acc[item.item._id] = true; // Create map with item IDs

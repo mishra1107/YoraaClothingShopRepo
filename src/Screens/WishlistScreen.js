@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getWishlist, removeFromWishlist } from '../services/wishlistService'; // ✅ Import removeFromWishlist function
+import { WishlistContext } from '../services/context/WishlistContext';
 
 const WishlistScreen = () => {
   const navigation = useNavigation();
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
+    const { wishlist, toggleWishlist } = useContext(WishlistContext);
 
   useEffect(() => {
     fetchWishlist();
@@ -22,7 +24,13 @@ const WishlistScreen = () => {
 
   const handleToggleWishlist = async (productId) => {
     try {
-      await removeFromWishlist(productId); // Use actual product ID
+      console.log("11111111111111111111")
+      // await removeFromWishlist(productId); // Use actual product ID
+      console.log("222222222222222222222222")
+
+      toggleWishlist(productId)
+      console.log("30000000000000000000")
+
       setWishlistItems(prevItems => prevItems.filter(item => item.item._id !== productId)); // Update UI
     } catch (error) {
       console.error("🚨 Remove from Wishlist Error:", error);

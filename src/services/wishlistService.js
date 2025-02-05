@@ -32,6 +32,7 @@ export const addToWishlist = async (itemId) => {
 
 // ✅ Remove from Wishlist
 export const removeFromWishlist = async (itemId) => {
+    console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
     try {
         const headers = await getAuthHeaders();
         const url = `${BASE_URL}${API_ENDPOINTS.REMOVE_WISHLIST}/${itemId}`;
