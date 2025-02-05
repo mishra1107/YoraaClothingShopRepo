@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'reac
 import Icon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
-import { WishlistContext } from '../services/context/WishlistContext'; // ✅ Import WishlistContext
+import { WishlistContext } from '../services/context/WishlistContext'; //  Import WishlistContext
 
 const FilterSection = () => {
   const navigation = useNavigation();

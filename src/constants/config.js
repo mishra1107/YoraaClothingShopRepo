@@ -9,4 +9,9 @@ export const API_ENDPOINTS = {
     GET_WISHLIST: "/wishlist",
     REMOVE_WISHLIST: "/wishlist/remove",
     REMOVE_ALL_WISHLIST: "/wishlist/clear",
+    ADD_CART:"/cart",
+    UPDATE_CART:"/cart",
+    REMOVE_CART:"/cart",
+    GET_CART:"/cart"
+
 };
