@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { getWishlist } from '../services/wishlistService'; // ✅ Import getWishlist function
+import { getWishlist, removeFromWishlist } from '../services/wishlistService'; // ✅ Import removeFromWishlist function
 
 const WishlistScreen = () => {
   const navigation = useNavigation();
@@ -20,12 +20,26 @@ const WishlistScreen = () => {
     setLoading(false);
   };
 
+  const handleToggleWishlist = async (productId) => {
+    try {
+      await removeFromWishlist(productId); // Use actual product ID
+      setWishlistItems(prevItems => prevItems.filter(item => item.item._id !== productId)); // Update UI
+    } catch (error) {
+      console.error("🚨 Remove from Wishlist Error:", error);
+    }
+  };
+  
+
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <Image source={{ uri: item.item.imageUrl }} style={styles.image} />
         <View style={styles.iconsContainer}>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity 
+            style={styles.iconButton} 
+            onPress={() => handleToggleWishlist(item.item._id)}
+
+          >
             <Icon name="favorite" size={20} color="red" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.iconButton}>
@@ -35,6 +49,7 @@ const WishlistScreen = () => {
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.item.name}</Text>
       <Text style={styles.price}>₹{item.item.price}</Text>
+      <Text style={styles.name}>{item.item.description}</Text>
     </View>
   );
 
