@@ -33,7 +33,6 @@ export const addToCart = async (itemId, quantity) => {
 
 // ✅ Delete Item from Cart by ID
 
-
 export const removeFromCart = async (cartItemId) => {
     try {
         const headers = await getAuthHeaders();
@@ -61,7 +60,6 @@ export const removeFromCart = async (cartItemId) => {
         return { success: false, message: error.message || "Failed to remove item from cart" };
     }
 };
-
 
 export const getCart = async () => {
     try {
@@ -98,7 +96,6 @@ export const getCart = async () => {
     }
 };
 
-
 // ✅ Update Cart Item by ID
 export const updateCartItem = async (cartItemId, quantity) => {
     try {
@@ -115,14 +112,14 @@ export const updateCartItem = async (cartItemId, quantity) => {
             body: JSON.stringify({ quantity }),
         });
 
-        const responseText = await response.text();  // Read response as text
+        const responseText = await response.text();
         console.log("Update Cart Item Raw Response:", responseText);
 
         if (!response.ok) {
             throw new Error(`Server Error: ${response.status}`);
         }
 
-        const data = JSON.parse(responseText);  // Parse only if it's JSON
+        const data = JSON.parse(responseText);
         console.log("Parsed Update Cart Item Response:", data);
 
         if (!data.success) {

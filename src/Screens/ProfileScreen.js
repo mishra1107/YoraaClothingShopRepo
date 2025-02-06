@@ -1,16 +1,58 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,Alert
+  ScrollView, Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfileScreen = () => {
   const navigation = useNavigation();
+
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        console.log("hello");
+
+        const token = await AsyncStorage.getItem("token"); // ✅ Ensure token is fetched
+        if (!token) {
+          console.error("No token found!");
+          return;
+        }
+
+        const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
+        console.log("Fetching user profile from:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json(); // ✅ Properly parse JSON
+        console.log("Response Data:", responseData);
+        setData(responseData); // ✅ Store actual response data
+
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        setData([]); // ✅ Ensure UI doesn't break
+      }
+    };
+
+    fetchProfile();
+  }, []); // Empty dependency array means it runs once on mount
 
   const handleLogout = async () => {
     try {
@@ -24,7 +66,7 @@ const ProfileScreen = () => {
       Alert.alert("✅ Logged Out", "You have been logged out successfully.", [
         { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
       ]);
-      
+
     } catch (error) {
       console.error("❌ Error logging out:", error);
       Alert.alert("⚠️ Error", "Something went wrong while logging out.");
@@ -44,17 +86,21 @@ const ProfileScreen = () => {
         />
         <View style={styles.profileContent}>
           <Image
-            source={require('../assests/images/ProfileImage.png')}
+            source={
+              data?.imageUrl 
+                ? { uri: data.imageUrl } 
+                : require("../assests/images/ProfileImage.png") 
+            }
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>
-            <Text style={styles.profileName}>JOHN SMITH</Text>
-            <Text style={styles.profileSubtitle}>Style Preference Here</Text>
+            <Text style={styles.profileName}>{data?.user?.name}</Text>
+            
           </View>
-       <View></View>
-       <View></View>
-       <View></View>
-       <View></View>
+          <View></View>
+          <View></View>
+          <View></View>
+          <View></View>
         </View>
       </View>
 
@@ -169,7 +215,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
-   profileContainer: { 
+  profileContainer: {
     marginVertical: 20,
     position: 'relative',
   },
@@ -180,11 +226,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   profileContent: {
-   
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    padding:30,
+
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 30,
   },
   profileImage: {
     width: 80,

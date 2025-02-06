@@ -8,16 +8,34 @@ import {
   StyleSheet,
   Alert,
   PermissionsAndroid,
-  Platform
+  Platform,
+  ScrollView
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const EditProfileScreen = () => {
   const navigation = useNavigation();
-  const [profileImage, setProfileImage] = useState(require('../assests/images/Profile.png'));
-
+  const route = useRoute();
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [anniversaryDate, setAnniversaryDate] = useState(false);
+  const { profile } = route.params || {};
+  const [profileData, setProfileData] = useState({
+    name: profile?.user?.name || '',
+    phone: profile?.user?.phNo || '',
+    address: profile?.address || '',
+    email: profile?.email || '',
+    dob: profile?.dob || '',
+    anniversary: profile?.anniversary || '',
+    gender: profile?.gender || '',
+    imageUrl: profile?.imageUrl || null
+  });
+  const [profileImage, setProfileImage] = useState(
+    profileData.imageUrl ? { uri: profileData.imageUrl } : null
+  );
   // Request Camera Permission (For Android)
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -35,7 +53,13 @@ const EditProfileScreen = () => {
     }
     return true; // iOS doesn't require explicit permission check
   };
-
+  const convertToDateFormat = (timestamp) => {
+    if (!timestamp || timestamp.trim() === '') {
+      return "";
+    }
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+  };
   // Open Camera or Gallery
   const handleImagePick = async () => {
     Alert.alert('Upload Image', 'Choose an option', [
@@ -53,7 +77,9 @@ const EditProfileScreen = () => {
             } else if (response.errorCode) {
               console.log('Camera Error: ', response.errorMessage);
             } else if (response.assets) {
+              const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: response.assets[0].uri });
+              setProfileData({ ...profileData, imageUrl: newImageUri });
             }
           });
         },
@@ -67,16 +93,74 @@ const EditProfileScreen = () => {
             } else if (response.errorCode) {
               console.log('Gallery Error: ', response.errorMessage);
             } else if (response.assets) {
+              const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: response.assets[0].uri });
+              setProfileData({ ...profileData, imageUrl: newImageUri });
             }
           }),
       },
       { text: 'Cancel', style: 'cancel' },
     ]);
   };
+  const handleInputChange = (key, value) => {
+    if (key === "stylePreferences") {
+      const arrayValue = value.split(',').map(item => item.trim()); // Convert string to array
+      setProfileData({ ...profileData, [key]: arrayValue });
+    } else {
+      setProfileData({ ...profileData, [key]: value });
+    }
+  };
+  
+  const handleSaveProfile = async () => {
+    console.log("qqqqqqqqqqqqqqqqqqqqqqq")
+    try {
+      const formData = new FormData();
+
+      Object.entries(profileData).forEach(([key, value]) => {
+        if (value) {
+
+          if (key === "stylePreferences") {
+            formData.append(key,JSON.stringify(value) ); // Convert array to JSON string
+          } else {
+            formData.append(key, value);
+          }
+
+        }
+      });
+
+      // Ensure the image is properly added
+      if (profileImage && profileImage.uri) {
+        console.log("profile image", profileImage)
+        formData.append('image', {
+          uri: profileImage.uri,
+          type: 'image/jpeg',
+          name: 'profile.jpg',
+        });
+      }
+      console.log("formData", formData);
+
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Failed to update profile');
+
+      Alert.alert('Success', 'Profile updated successfully');
+      navigation.goBack();
+    } catch (error) {
+      console.error('❌ Error updating profile:', error);
+      Alert.alert('Error', error.message);
+    }
+  };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Icon name="arrow-left" size={20} color="#000" />
@@ -87,30 +171,69 @@ const EditProfileScreen = () => {
 
       {/* Profile Image with Camera Icon Overlay */}
       <View style={styles.imageContainer}>
-        <Image source={profileImage} style={styles.profileImage} />
+        <Image source={{ uri: profileData?.imageUrl }} style={styles.profileImage} />
         <TouchableOpacity style={styles.cameraIcon} onPress={handleImagePick}>
           <Icon name="camera" size={18} color="#fff" />
         </TouchableOpacity>
       </View>
 
       {/* Input Fields */}
-      <TextInput style={styles.input} placeholder="Rithik" />
-      <TextInput style={styles.input} placeholder="Address" />
-      <TextInput style={styles.input} placeholder="+91 1234-253-311" keyboardType="phone-pad" />
-      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
+      <TextInput style={styles.input} placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
+      <TextInput style={styles.input} placeholder="Phone" keyboardType="phone-pad" value={profileData.phone} onChangeText={(text) => handleInputChange('phone', text)} />
+      <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" value={profileData.email} onChangeText={(text) => handleInputChange('email', text)} />
 
-      {/* Other Details Section */}
+      {/* Other Details */}
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
-      <TextInput style={styles.input} placeholder="Date of Birth" />
-      <TextInput style={styles.input} placeholder="Anniversary" />
-      <TextInput style={styles.input} placeholder="Gender" />
-      <TextInput style={styles.input} placeholder="Style Preference" />
+      {/* <TextInput style={styles.input} placeholder="Date of Birth" value={convertToDateFormat(profileData.dob)} onChangeText={(text) => handleInputChange('dob', text)} /> */}
+      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+        <TextInput
+          style={styles.input}
+          placeholder="Date of Birth"
+          value={profileData.dob ? convertToDateFormat(profileData.dob) : ""}
+          editable={false} // Prevent manual text input
+        />
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          value={profileData.dob ? new Date(profileData.dob) : new Date()}
+          mode="date"
+          display="default"
+          onChange={(event, selectedDate) => {
+            setShowDatePicker(false);
+            if (selectedDate) {
+              handleInputChange('dob', selectedDate.toISOString());
+            }
+          }}
+        />
+      )}
+      <TouchableOpacity onPress={() => setAnniversaryDate(true)}>
+        <TextInput style={styles.input} placeholder="Anniversary" value={profileData.anniversary ? convertToDateFormat(profileData.anniversary) : ""} editable={false} />
 
-      {/* Save Profile Button */}
-      <TouchableOpacity style={styles.saveButton}>
+      </TouchableOpacity>
+      {anniversaryDate && (
+        <DateTimePicker
+          value={profileData.anniversary ? new Date(profileData.anniversary) : new Date()}
+          mode="date"
+          display="default"
+          onChange={(event, selectedDate) => {
+            setAnniversaryDate(false);
+            if (selectedDate) {
+              handleInputChange('anniversary', selectedDate.toISOString());
+            }
+          }}
+        />
+      )}
+
+      <TextInput style={styles.input} placeholder="Gender" value={profileData.gender} onChangeText={(text) => handleInputChange('gender', text)} />
+
+
+
+      {/* Save Button */}
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
         <Text style={styles.saveButtonText}>SAVE PROFILE</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -172,8 +295,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   saveButton: {
-    position: 'absolute', 
-    bottom: 0, 
+    position: 'relative',
+    bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: 'black',
@@ -186,7 +309,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  
+
 });
 
 export default EditProfileScreen;

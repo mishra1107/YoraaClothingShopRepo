@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Image,
   View,
   Text,
   TextInput,
@@ -8,10 +9,62 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import Icon from "react-native-vector-icons/FontAwesome"; 
+import Icon from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UpdateProfileScreen = () => {
   const navigation = useNavigation();
+
+  const [profile, setProfile] = useState({});
+  const convertToDateFormat = (timestamp) => {
+    if (!timestamp || timestamp.trim() === '') {
+      return "";
+    }
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+  };
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+          console.warn("⚠️ No token found in AsyncStorage.");
+          return;
+        }
+
+        const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
+        console.log("Fetching user profile from:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch user profile - Status: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+
+        console.log("✅ Data received:", JSON.stringify(data, null, 2));
+
+        if (data) {
+          setProfile(data); // Store the entire profile data
+        } else {
+          console.warn("⚠️ No user data found in response.");
+        }
+      } catch (error) {
+        console.error("❌ Error fetching user profile:", error.message);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -22,19 +75,36 @@ const UpdateProfileScreen = () => {
         </TouchableOpacity>
         <Text style={styles.header}>PROFILE</Text>
       </View>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: profile?.imageUrl }} style={styles.profileImage} editable={false} />
 
+      </View>
       {/* Input Fields */}
-      <TextInput style={styles.input} placeholder="Rithik" />
-      <TextInput style={styles.input} placeholder="Address" />
-      <TextInput style={styles.input} placeholder="+91 1234-253-311" keyboardType="phone-pad" />
-      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Rithik" value={profile?.user?.name || ""} editable={false} />
+      <TextInput style={styles.input} placeholder="Address" value={profile?.address} editable={false} />
+      <TextInput
+        style={styles.input}
+        placeholder="Phone"
+        value={profile?.user?.phNo || ""}
+        keyboardType="phone-pad"
+        editable={false}
+
+      />      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" value={profile?.email} editable={false} />
 
       {/* Other Details Section */}
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
-      <TextInput style={styles.input} placeholder="Date of Birth" />
-      <TextInput style={styles.input} placeholder="Anniversary" />
-      <TextInput style={styles.input} placeholder="Gender" />
-      <TextInput style={styles.input} placeholder="Style Preference" />
+      <TextInput style={styles.input} placeholder="Date of Birth" value={convertToDateFormat(profile?.dob)} editable={false} />
+      <TextInput style={styles.input} placeholder="Anniversary" value={convertToDateFormat(profile?.anniversary)} editable={false} />
+      <TextInput style={styles.input} placeholder="Gender" value={profile?.gender} editable={false}/>
+      {/* <TextInput style={styles.input} placeholder="Style Preference" value={profile?.stylePreferences ? JSON.parse(profile?.stylePreferences) : ""} /> */}
+      {/* <TextInput
+        style={styles.input}
+        placeholder="Style Preference"
+        value={profile?.stylePreferences
+          ? JSON.parse(profile?.stylePreferences).join(', ')
+          : ""}
+        editable={false} 
+      /> */}
 
       {/* Note Text */}
       <Text style={styles.note}>
@@ -43,8 +113,8 @@ const UpdateProfileScreen = () => {
       </Text>
 
       {/* Edit Profile Button */}
-      <TouchableOpacity onPress={()=>navigation.navigate('EditProfile')} style={styles.button}>
-        <Text style={styles.buttonText}>EDIT PROFILE</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile', { profile })} style={styles.button}>
+        <Text style={styles.buttonText} >EDIT PROFILE</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -61,7 +131,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", 
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   backButton: {
@@ -101,6 +171,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontWeight: "bold",
+  },
+  imageContainer: {
+    alignSelf: 'center',
+    position: 'relative',
+    marginBottom: 20,
+  },
+  profileImage: {
+
+    width: 90,
+    height: 90,
+    borderRadius: 45,
   },
 });
 

@@ -40,9 +40,6 @@ import { API_ENDPOINTS } from "../constants/config";
 //   }
 // };
 
-
-
-
 export const signupUser = async (name, phNo, password) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
@@ -56,7 +53,6 @@ export const signupUser = async (name, phNo, password) => {
     return { success: false, message: "Signup request failed" };
   }
 };
-
 
 //  Function to Generate OTP
 export const generateOTP = async (phNo) => {

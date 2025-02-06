@@ -46,6 +46,11 @@ const CartScreen = () => {
       });
   };
 
+  const handleAddress=()=>{
+    navigation.navigate('Address');
+  }
+
+
   const calculateTotal = () => cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleRemoveItem = async (itemId) => {
@@ -79,19 +84,30 @@ const CartScreen = () => {
         <Text style={styles.itemTitle}>{item.name}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <View style={styles.quantityContainer}>
-          <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}>
+          {/* <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}>
             <Icon name="remove" size={20} color="black" />
           </TouchableOpacity>
           <Text style={styles.quantityText}>{item.quantity}</Text>
           <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}>
             <Icon name="add" size={20} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+
+<TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}>
+    <Icon name="remove" size={20} color="black" />
+</TouchableOpacity>
+
+<Text style={styles.quantityText}>{item.quantity}</Text>
+<TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}>
+    <Icon name="add" size={20} color="black" />
+</TouchableOpacity>
         </View>
         <Text style={styles.itemPrice}>₹{item.price * item.quantity}</Text>
       </View>
       <TouchableOpacity onPress={() => handleRemoveItem(item.id)} style={styles.removeButton}>
-        <Text style={styles.removeButtonText}>Remove Item</Text>
-      </TouchableOpacity>
+    <Text style={styles.removeButtonText}>Remove Item</Text>
+</TouchableOpacity>
+
     </View>
   );  
 
@@ -110,12 +126,15 @@ const CartScreen = () => {
         keyExtractor={(item) => item.id.toString()} 
       />
 
-      <View style={styles.addressContainer}> 
+      <View style={styles.addressContainer}>
+<TouchableOpacity onPress={handleCheckout}>
         <View>
           <Text style={styles.addressText}>606-3727 ULLAMCORPER. STREET</Text>
           <Text style={styles.addressText}>ROSEVILLE NH 11523</Text>
           <Text style={styles.addressText}>(786) 713-8616</Text>
         </View>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.arrowIconContainer}>
           <Icon name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
@@ -132,7 +151,7 @@ const CartScreen = () => {
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
       </View>
 
-      <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
+      <TouchableOpacity onPress={handleAddress}  style={styles.checkoutButton}>
         <Text style={styles.checkoutText}>CHECKOUT</Text>
       </TouchableOpacity>
     </View>
