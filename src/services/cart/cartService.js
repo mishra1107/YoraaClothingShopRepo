@@ -23,21 +23,23 @@ export const addToCart = async (itemId, quantity) => {
         });
 
         const data = await response.json();
-        console.log("🛒 Add to Cart Response:", data);
+        console.log(" Add to Cart Response:", data);
         return data;
     } catch (error) {
-        console.error("🚨 Add to Cart Error:", error);
+        console.error(" Add to Cart Error:", error);
         return { success: false, message: "Failed to add item to cart" };
     }
 };
 
 // ✅ Delete Item from Cart by ID
+
+
 export const removeFromCart = async (cartItemId) => {
     try {
         const headers = await getAuthHeaders();
         const url = `${BASE_URL}${API_ENDPOINTS.REMOVE_CART}/${cartItemId}`;
 
-        console.log("🗑️ DELETE Cart Item Request URL:", url);
+        console.log(" DELETE Cart Item Request URL:", url);
 
         const response = await fetch(url, {
             method: "DELETE",
@@ -45,16 +47,17 @@ export const removeFromCart = async (cartItemId) => {
         });
 
         const data = await response.json();
-        console.log("🗑️ Remove Cart Item Response:", data);
+        console.log(" Remove Cart Item Response:", data);
 
         if (!response.ok) {
-            console.warn("⚠️ API Error Message:", data.message);
+            console.warn(" API Error Message:", data.message);
             throw new Error(data.message || "Failed to remove item from cart");
         }
 
         return { success: true, message: "Removed from cart" };
     } catch (error) {
-        console.error("🚨 Remove from Cart Error:", error);
+        console.error(" Remove from Cart Error:", error);
+        Alert.alert("API Error", error.message); // Show error directly in the UI
         return { success: false, message: error.message || "Failed to remove item from cart" };
     }
 };
@@ -69,7 +72,7 @@ export const getCart = async () => {
         });
 
         const data = await response.json();
-        console.log("📦 Get Cart Response:", data);
+        console.log(" Get Cart Response:", data);
 
         if (!data.success) {
             throw new Error("Failed to fetch cart items");
@@ -86,11 +89,11 @@ export const getCart = async () => {
             item: item.item._id
         }));
 
-        console.log("🛒 Extracted Cart Items:", cartItems); // ✅ Log extracted data
+        console.log(" Extracted Cart Items:", cartItems); // ✅ Log extracted data
 
         return cartItems;
     } catch (error) {
-        console.error("🚨 Error fetching cart:", error);
+        console.error(" Error fetching cart:", error);
         return [];
     }
 };
@@ -100,14 +103,27 @@ export const getCart = async () => {
 export const updateCartItem = async (cartItemId, quantity) => {
     try {
         const headers = await getAuthHeaders();
-        const response = await fetch(`${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartItemId}`, {
+        const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartItemId}`;
+        
+        // Log the formed URL
+        console.log("Updating Cart Item URL:", url);
+        console.log("Payload:", JSON.stringify({ quantity }));
+
+        const response = await fetch(url, {
             method: "PUT",
             headers,
             body: JSON.stringify({ quantity }),
         });
 
-        const data = await response.json();
-        console.log("✏️ Update Cart Item Response:", data);
+        const responseText = await response.text();  // Read response as text
+        console.log("Update Cart Item Raw Response:", responseText);
+
+        if (!response.ok) {
+            throw new Error(`Server Error: ${response.status}`);
+        }
+
+        const data = JSON.parse(responseText);  // Parse only if it's JSON
+        console.log("Parsed Update Cart Item Response:", data);
 
         if (!data.success) {
             throw new Error(data.message || "Failed to update cart item");
@@ -115,7 +131,7 @@ export const updateCartItem = async (cartItemId, quantity) => {
 
         return data;
     } catch (error) {
-        console.error("🚨 Update Cart Item Error:", error);
+        console.error("Update Cart Item Error:", error);
         return { success: false, message: "Failed to update cart item" };
     }
 };

@@ -15,10 +15,10 @@ import { useCart } from '../services/cart/CartContext';
 
 const CartScreen = () => {
   const navigation = useNavigation();
-  const { cart, fetchCart } = useCart();  // ✅ Use cart from context
+  const { cart, fetchCart, removeFromCart, updateCartItem } = useCart();
 
   useEffect(() => {
-    fetchCart(); // ✅ Fetch cart items when screen loads
+    fetchCart();
   }, []);
 
   const handleCheckout = () => {
@@ -27,7 +27,7 @@ const CartScreen = () => {
       image: 'https://your-logo-url.com/logo.png',
       currency: 'INR',
       key: 'rzp_test_tICgwjKnkQloxe',
-      amount: calculateTotal() * 100, // Convert to paise
+      amount: calculateTotal() * 100,
       name: 'Your Business Name',
       prefill: {
         email: 'user@example.com',
@@ -46,24 +46,57 @@ const CartScreen = () => {
       });
   };
 
-  // ✅ Calculate total from cart
   const calculateTotal = () => cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  // ✅ Render each cart item
+  const handleRemoveItem = async (itemId) => {
+    try {
+        await removeFromCart(itemId);
+        await fetchCart();
+    } catch (error) {
+        console.error('Error removing item:', error);
+        Alert.alert('Error', 'Failed to remove item from cart');
+    }
+  };
+
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
+    if (newQuantity <= 0) {
+      await handleRemoveItem(itemId);
+    } else {
+      try {
+        await updateCartItem(itemId, newQuantity);
+        await fetchCart();
+      } catch (error) {
+        console.error('Error updating item quantity:', error);
+        Alert.alert('Error', 'Failed to update item quantity');
+      }
+    }
+  };
+
   const renderCartItem = ({ item }) => (
     <View style={styles.cartItem}>
       <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
       <View style={styles.itemDetails}>
         <Text style={styles.itemTitle}>{item.name}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}>
+            <Icon name="remove" size={20} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{item.quantity}</Text>
+          <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}>
+            <Icon name="add" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.itemPrice}>₹{item.price * item.quantity}</Text>
       </View>
+      <TouchableOpacity onPress={() => handleRemoveItem(item.id)} style={styles.removeButton}>
+        <Text style={styles.removeButtonText}>Remove Item</Text>
+      </TouchableOpacity>
     </View>
-  );
+  );  
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color="black" />
@@ -71,14 +104,29 @@ const CartScreen = () => {
         <Text style={styles.headerTitle}>CART</Text>
       </View>
 
-      {/* Cart Items */}
       <FlatList 
         data={cart} 
         renderItem={renderCartItem} 
         keyExtractor={(item) => item.id.toString()} 
       />
 
-      {/* Footer */}
+      <View style={styles.addressContainer}> 
+        <View>
+          <Text style={styles.addressText}>606-3727 ULLAMCORPER. STREET</Text>
+          <Text style={styles.addressText}>ROSEVILLE NH 11523</Text>
+          <Text style={styles.addressText}>(786) 713-8616</Text>
+        </View>
+        <TouchableOpacity style={styles.arrowIconContainer}>
+          <Icon name="keyboard-arrow-right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.deliveryContainer}>
+        <Icon name="local-shipping" size={20} color="black" style={styles.deliveryIcon} />
+        <Text style={styles.deliveryText}>DELIVERY</Text>
+        <Text style={styles.deliveryFee}>Free</Text>
+      </View>
+
       <View style={styles.footer}>
         <Text style={styles.totalText}>TOTAL</Text>
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
@@ -96,12 +144,31 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1, borderBottomColor: '#ddd' },
   backButton: { marginRight: 15 },
   headerTitle: { fontSize: 18, fontWeight: 'bold' },
-  cartItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', padding: 10, borderBottomWidth: 1, borderBottomColor: '#ddd' },
+  cartItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', padding: 10, borderBottomWidth: 1, borderBottomColor: '#ddd', justifyContent: 'space-between' },
   itemImage: { width: 80, height: 80, borderRadius: 10 },
   itemDetails: { flex: 1, marginLeft: 10 },
   itemTitle: { fontSize: 14, fontWeight: 'bold' },
   itemDescription: { fontSize: 12, color: '#777' },
   itemPrice: { fontSize: 14, fontWeight: 'bold', marginTop: 5, color: '#E53935' },
+  quantityContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
+  quantityText: { marginHorizontal: 10, fontSize: 16 },
+  removeButton: { 
+    marginLeft: 10, 
+    borderWidth: 1, 
+    borderColor: '#bbb', 
+    borderRadius: 5, 
+    paddingVertical: 5, 
+    paddingHorizontal: 10,
+    backgroundColor: '#f8f8f8' 
+  },
+  removeButtonText: { color: '#555', fontSize: 14 },
+  addressContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 15, borderTopWidth: 1, borderTopColor: '#ddd' },
+  addressText: { fontSize: 14, color: '#555' },
+  arrowIconContainer: { marginLeft: 10 },
+  deliveryContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 15, borderTopWidth: 1, borderTopColor: '#ddd' },
+  deliveryIcon: { marginRight: 10 },
+  deliveryText: { fontSize: 14, color: '#555' },
+  deliveryFee: { fontSize: 14, color: '#555' },
   footer: { flexDirection: 'row', justifyContent: 'space-between', padding: 15, borderTopWidth: 1, borderTopColor: '#ddd' },
   totalText: { fontSize: 16, fontWeight: 'bold' },
   totalPrice: { fontSize: 16, fontWeight: 'bold', color: '#E53935' },

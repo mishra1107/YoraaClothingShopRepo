@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { getCart, addToCart, removeFromCart, updateCartItem } from "./CartService";
 
+
 export const CartContext = createContext();
 
 export const useCart = () => {
@@ -12,6 +13,7 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
+   
     const [cart, setCart] = useState([]);
     const [cartCount, setCartCount] = useState(0);
 
@@ -38,7 +40,7 @@ export const CartProvider = ({ children }) => {
                 const existingItem = cart.find(cartItem => cartItem.item === itemId);
                 // console.log("existing item",existingItem);
             if (existingItem) {
-               console.log("already existed")
+               console.log("already existed") 
             } else {
                 await addToCart(itemId, 1);
             }
@@ -49,7 +51,7 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart }}>
+        <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart,removeFromCart,updateCartItem }}>
             {children}
         </CartContext.Provider>
     );
