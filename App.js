@@ -38,9 +38,8 @@ import ActiveScreen from './src/Screens/ActiveScreen';
 // Navigation
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import ItemListScreen from './src/Screens/ItemListScreen';
+import { CartProvider } from './src/services/cart/CartContext';
 // import { CartProvider } from "./src/services/context/CartContext";
-import { CartProvider } from "./src/services/cart/CartContext";
-
 
 
 const Stack = createStackNavigator();

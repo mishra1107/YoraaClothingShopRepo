@@ -1,21 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
-import { WishlistContext } from '../services/context/WishlistContext'; //  Import WishlistContext
+import { WishlistContext } from '../services/context/WishlistContext';
+import { CartContext } from '../services/cart/CartContext';
+import { useCart } from '../services/cart/CartContext';
 
 const FilterSection = () => {
   const navigation = useNavigation();
-  const { wishlistCount } = useContext(WishlistContext); // ✅ Get count from context
-  const [cartCount, setCartCount] = React.useState(0); 
+  const { wishlistCount } = useContext(WishlistContext);
+  
+
+
+  const { cartCount, fetchCart } = useCart(); // ✅ Get cart count from context
+
+  useEffect(() => {
+    fetchCart(); // ✅ Fetch cart count when component mounts
+  }, []);
 
   const handleWishlistPress = () => {
     navigation.navigate('Wishlist');
   };
 
   const handleCartPress = () => {
-    setCartCount(cartCount + 1);
     navigation.navigate('Cart');
   };
 
@@ -38,11 +46,7 @@ const FilterSection = () => {
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <Icon name="search-outline" size={20} style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search Items"
-          placeholderTextColor="#999"
-        />
+        <TextInput style={styles.searchInput} placeholder="Search Items" placeholderTextColor="#999" />
       </View>
 
       <TouchableOpacity onPress={handleShare}>
@@ -60,6 +64,7 @@ const FilterSection = () => {
 
       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
         <Icon name="cart-outline" size={24} style={styles.icon} />
+      
         {cartCount > 0 && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{cartCount}</Text>
@@ -71,64 +76,15 @@ const FilterSection = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  searchContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 8,
-    marginRight: 10,
-  },
-  searchIcon: {
-    marginRight: 5,
-    color: '#999',
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    color: '#000',
-  },
-  icon: {
-    marginHorizontal: 5,
-    color: '#000',
-  },
-  icon1: {
-    width: 25,
-    height: 25,
-  },
-  cartContainer: {
-    position: 'relative',
-  },
-  wishlistContainer: {
-    position: 'relative',
-  },
-  badge: {
-    position: 'absolute',
-    top: -5,
-    right: -10,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+  container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, borderBottomWidth: 1, borderColor: '#ddd' },
+  searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', borderRadius: 5, paddingHorizontal: 8, marginRight: 10 },
+  searchIcon: { marginRight: 5, color: '#999' },
+  searchInput: { flex: 1, height: 40, color: '#000' },
+  icon1: { width: 25, height: 25 },
+  cartContainer: { position: 'relative' },
+  wishlistContainer: { position: 'relative' },
+  badge: { position: 'absolute', top: -5, right: -10, backgroundColor: 'red', borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center' },
+  badgeText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
 });
 
 export default FilterSection;

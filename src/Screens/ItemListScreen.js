@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WishlistContext } from '../services/context/WishlistContext';
+import { useCart } from '../services/cart/CartContext';
 import { BASE_URL } from '../constants/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 const ItemListScreen = ({ route }) => {
     const navigation = useNavigation();
     const { wishlist, toggleWishlist } = useContext(WishlistContext);
+    const { toggleCart, fetchCart } = useCart();
+
     const { subcategoryId } = route.params;
     const [items, setItems] = useState([]);
 
@@ -28,22 +31,22 @@ const ItemListScreen = ({ route }) => {
 
             const data = await response.json();
             if (response.ok) setItems(data?.data || []);
-            else console.error(" Error fetching items:", data.message);
         } catch (error) {
-            console.error(" Fetch Items Error:", error);
+            console.error("Fetch Items Error:", error);
         }
     };
 
     return (
         <View style={styles.container}>
-            {/* Back Button with Centered Title */}
+            {/* ✅ Header with Back Button & Centered Title */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Icon name="arrow-back" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>ITEMS LISTING</Text>
+                <Text style={styles.headerTitle}>ITEM LISTING</Text>
             </View>
 
+            {/* Item Listing */}
             <FlatList
                 data={items}
                 keyExtractor={(item) => item._id}
@@ -52,30 +55,24 @@ const ItemListScreen = ({ route }) => {
                     <View style={styles.itemContainer}>
                         <View style={styles.imageContainer}>
                             <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
-
-                            {/* Icons Inside Image (Vertically Positioned Bottom-Right) */}
                             <View style={styles.iconOverlay}>
                                 <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
-                                    <Icon
-                                        name={wishlist[item._id] ? "heart" : "heart-outline"}
-                                        size={18}
-                                        color={wishlist[item._id] ? "red" : "black"}
-                                    />
+                                    <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.iconButton}>
-                                    <Icon name="eye-outline" size={18} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.iconButton}>
+                                <TouchableOpacity 
+                                    style={styles.iconButton} 
+                                    onPress={async () => {
+                                        await toggleCart(item._id);
+                                        // await fetchCart(); // ✅ Ensure badge updates immediately
+                                    }}
+                                >
                                     <Icon name="cart-outline" size={18} color="black" />
                                 </TouchableOpacity>
                             </View>
                         </View>
-
-                        {/* Product Name & Price (Left-Aligned) */}
                         <View style={styles.textContainer}>
                             <Text style={styles.itemName}>{item.name}</Text>
                             <Text style={styles.itemPrice}>₹{item.price}</Text>
-                            <Text style={styles.itemDescription}>{item.description}</Text>
                         </View>
                     </View>
                 )}
@@ -85,17 +82,15 @@ const ItemListScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f9f9f9",
-    },
+    container: { flex: 1, backgroundColor: "#f9f9f9" },
+
+    // ✅ Header with Proper Alignment
     header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        padding: 15,
+        paddingVertical: 15,
         backgroundColor: "#fff",
-        elevation: 3,
         borderBottomWidth: 1,
         borderBottomColor: "#ddd",
     },
@@ -104,56 +99,23 @@ const styles = StyleSheet.create({
         left: 15,
     },
     headerTitle: {
+      
         fontSize: 18,
         fontWeight: "bold",
-        textAlign: "center",
         color: "#333",
-    },
-    itemContainer: {
-        flex: 1,
-        margin: 8,
-    },
-    imageContainer: {
-        position: "relative",
-    },
-    itemImage: {
-        width: "100%",
-        height: 220,
-        resizeMode: "cover",
-    },
-    iconOverlay: {
         position: "absolute",
-        bottom: 10, // Placed at the bottom-right inside the image
-        right: 10,
-        flexDirection: "column",
-        alignItems: "center",
+        left: "50%",
+        transform: [{ translateX: -50 }],
     },
-    iconButton: {
-        backgroundColor: "white",
-        padding: 5,
-        borderRadius: 15,
-        marginVertical: 5,
-        elevation: 5,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    textContainer: {
-        paddingVertical: 5,
-        paddingHorizontal: 10, // Adjusted to align left
-    },
-    itemName: {
-        fontSize: 14,
-        fontWeight: "bold",
-        color: "#333",
-        textAlign: "left", // Left-aligned text
-    },
-    itemPrice: {
-        color: "#ff5733",
-        fontSize: 16,
-        fontWeight: "bold",
-        marginTop: 2,
-        textAlign: "left", // Left-aligned text
-    },
+
+    itemContainer: { flex: 1, margin: 8 },
+    imageContainer: { position: "relative" },
+    itemImage: { width: "100%", height: 220, resizeMode: "cover" },
+    iconOverlay: { position: "absolute", bottom: 10, right: 10, flexDirection: "column", alignItems: "center" },
+    iconButton: { backgroundColor: "white", padding: 5, borderRadius: 15, marginVertical: 5, elevation: 5, alignItems: "center", justifyContent: "center" },
+    textContainer: { paddingVertical: 5, paddingHorizontal: 10 },
+    itemName: { fontSize: 14, fontWeight: "bold", color: "#333" },
+    itemPrice: { color: "#ff5733", fontSize: 16, fontWeight: "bold", marginTop: 2 },
 });
 
 export default ItemListScreen;

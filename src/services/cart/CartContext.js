@@ -1,67 +1,55 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { addToCart, removeFromCart, updateCartItem, getCart } from "../cart/CartService";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { getCart, addToCart, removeFromCart, updateCartItem } from "./CartService";
 
-const CartContext = createContext();
+export const CartContext = createContext();
 
 export const useCart = () => {
-    return useContext(CartContext);
+    const context = useContext(CartContext);
+    if (!context) {
+        throw new Error("useCart must be used within a CartProvider");
+    }
+    return context;
 };
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
 
-    // ✅ Load Cart Items on Component Mount
     useEffect(() => {
         fetchCart();
     }, []);
 
     const fetchCart = async () => {
-        setLoading(true);
         try {
-            const cartItems = await getCart();
-            setCart(cartItems);
+            // console.log("inside fetch cart")
+            const cartData = await getCart();
+            // console.log("all cart data cart",cartData)
+            setCart(cartData);
+            setCartCount(cartData.reduce((sum, item) => sum + item.quantity, 0)); // ✅ Count total items in the cart
         } catch (error) {
             console.error(" Fetch Cart Error:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
-    // ✅ Add to Cart
-    const handleAddToCart = async (itemId, quantity) => {
+    const toggleCart = async (itemId) => {
         try {
-            const response = await addToCart(itemId, quantity);
-            if (response.success) {
-                await fetchCart(); // ✅ Refresh cart count dynamically
+            // console.log("inside toggler cart",itemId)
+            //     console.log("cart",cart[0].item)
+                const existingItem = cart.find(cartItem => cartItem.item === itemId);
+                // console.log("existing item",existingItem);
+            if (existingItem) {
+               console.log("already existed")
+            } else {
+                await addToCart(itemId, 1);
             }
-            return response;
+            await fetchCart(); //  Ensure cart count updates dynamically
         } catch (error) {
-            console.error(" Add to Cart Error:", error);
-        }
-    };
-
-    // ✅ Remove Item from Cart
-    const handleRemoveFromCart = async (cartItemId) => {
-        try {
-            const response = await removeFromCart(cartItemId);
-            if (response.success) {
-                await fetchCart(); // ✅ Refresh cart count dynamically
-            }
-            return response;
-        } catch (error) {
-            console.error(" Remove from Cart Error:", error);
+            console.error(" Toggle Cart Error:", error);
         }
     };
 
     return (
-        <CartContext.Provider value={{
-            cart,
-            loading,
-            fetchCart,
-            handleAddToCart,
-            handleRemoveFromCart,
-        }}>
+        <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart }}>
             {children}
         </CartContext.Provider>
     );

@@ -12,6 +12,6 @@ export const API_ENDPOINTS = {
     ADD_CART:"/cart",
     UPDATE_CART:"/cart",
     REMOVE_CART:"/cart",
-    GET_CART:"/cart"
+    GET_CART:"/cart/user"
 
 };
