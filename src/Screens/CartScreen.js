@@ -21,9 +21,6 @@ const CartScreen = () => {
     fetchCart();
   }, []);
 
-
-
-
   const handleCheckout = () => {
     navigation.navigate('Payment');
     // const options = {
@@ -107,7 +104,7 @@ const CartScreen = () => {
         <Text style={styles.itemPrice}>₹{item.price * item.quantity}</Text>
       </View>
       <TouchableOpacity
-        onPress={() => handleRemoveItem(item.id)}
+        onPress={() => handleRemoveItem(item.cartId)}
         style={styles.removeButton}>
         <Text style={styles.removeButtonText}>Remove Item</Text>
       </TouchableOpacity>
@@ -130,20 +127,21 @@ const CartScreen = () => {
         renderItem={renderCartItem}
         keyExtractor={item => item.cartId.toString()} 
       />
-
+   <TouchableOpacity onPress={handleAddress}>
       <View style={styles.addressContainer}>
-        <TouchableOpacity onPress={handleAddress}>
+     
           <View>
             <Text style={styles.addressText}>606-3727 ULLAMCORPER. STREET</Text>
             <Text style={styles.addressText}>ROSEVILLE NH 11523</Text>
             <Text style={styles.addressText}>(786) 713-8616</Text>
           </View>
-        </TouchableOpacity>
+     
 
         <TouchableOpacity style={styles.arrowIconContainer}>
           <Icon name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
       </View>
+      </TouchableOpacity>
 
       <View style={styles.deliveryContainer}>
         <Icon

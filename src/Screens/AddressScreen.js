@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,17 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { createAddress } from '../api/auth';  // Import the function to create address
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddressScreen = () => {
   const navigation = useNavigation();
 
-  // State variables for input fields
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState('');
@@ -22,14 +24,46 @@ const AddressScreen = () => {
   const [state, setState] = useState('');
   const [pinCode, setPinCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [currentAddress, setCurrentAddress] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Function to handle Confirm Address button press
+  useEffect(() => {
+    fetchCurrentAddress();
+  }, []);
+
+  const fetchCurrentAddress = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+
+      const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      const data = await response.json();
+
+      if (data && data.data && data.data.length > 0) {
+        setCurrentAddress(data.data[0]);
+      } else {
+        setCurrentAddress(null);
+      }
+    } catch (error) {
+      console.error("Fetch Address Error:", error);
+      Alert.alert("Error", "Failed to fetch address.");
+      setCurrentAddress(null);
+    }
+  };
+
   const handleConfirmAddress = async () => {
     if (!firstName || !lastName || !address || !city || !state || !pinCode || !phoneNumber) {
       Alert.alert("Validation Error", "Please fill all fields.");
       return;
     }
-  
+
     const addressData = {
       firstName,
       lastName,
@@ -41,118 +75,200 @@ const AddressScreen = () => {
       country: 'USA',
       phoneNumber,
     };
-  
+
     try {
-      const response = await createAddress(addressData);
-      if (response.success) {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+
+      const response = await fetch('http://10.0.2.2:8080/api/address/createAddress', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(addressData)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
         Alert.alert("Success", "Address added successfully!");
-        navigation.goBack();
+        fetchCurrentAddress();
       } else {
-        Alert.alert("Error", response.message || "Failed to add address.");
+        Alert.alert("Error", data.message || "Failed to add address.");
       }
     } catch (error) {
+      console.error("Create Address Error:", error);
       Alert.alert("Error", "Something went wrong!");
     }
   };
-  
- 
+
+  const handleEditAddress = () => {
+    setIsEditing(true);
+    setFirstName(currentAddress.firstName);
+    setLastName(currentAddress.lastName);
+    setAddress(currentAddress.address);
+    setCity(currentAddress.city);
+    setState(currentAddress.state);
+    setPinCode(currentAddress.pinCode);
+    setPhoneNumber(currentAddress.phoneNumber);
+  };
+
+  const handleUpdateAddress = async () => {
+    if (!firstName || !lastName || !address || !city || !state || !pinCode || !phoneNumber) {
+      Alert.alert("Validation Error", "Please fill all fields.");
+      return;
+    }
+
+    const addressData = {
+      firstName,
+      lastName,
+      type: 'new',
+      address,
+      city,
+      state,
+      pinCode,
+      country: 'USA',
+      phoneNumber,
+    };
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+    
+      const response = await fetch(`http://10.0.2.2:8080/api/address/updateById/${currentAddress._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(addressData)
+      });
+    
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const errorText = await response.text();  // Get the raw HTML or text for debugging
+        console.error("Unexpected response:", errorText);  // Log the response to identify the issue
+        throw new Error('Unexpected response format from server');
+      }
+    
+      const data = await response.json();
+    
+      if (data.success) {
+        Alert.alert("Success", "Address updated successfully!");
+        setIsEditing(false);
+        fetchCurrentAddress();
+      } else {
+        Alert.alert("Error", data.message || "Failed to update address.");
+      }
+    } catch (error) {
+      console.error("Update Address Error:", error);
+      Alert.alert("Error", error.message || "Something went wrong!");
+    }
+
+
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>ADD ADDRESS</Text>
-      </View>
-
-      {/* Current Address Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>CURRENT ADDRESS</Text>
-        <Text style={styles.currentAddress}>
-          606-3727 ULLAMCORPER. STREET{'\n'}
-          ROSEVILLE NH 11523{'\n'}
-          (786) 713-8616
-        </Text>
-      </View>
-
-      {/* New Address Form */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>NEW ADDRESS</Text>
-        <View style={styles.row}>
-          <TextInput
-            style={styles.inputHalf}
-            placeholder="First name"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
-          <TextInput
-            style={styles.inputHalf}
-            placeholder="Last name"
-            value={lastName}
-            onChangeText={setLastName}
-          />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>ADD ADDRESS</Text>
         </View>
-        <TextInput
-          style={styles.inputFull}
-          placeholder="Address"
-          value={address}
-          onChangeText={setAddress}
-        />
-        <TextInput
-          style={styles.inputFull}
-          placeholder="City"
-          value={city}
-          onChangeText={setCity}
-        />
-        <View style={styles.row}>
-          <TextInput
-            style={styles.inputHalf}
-            placeholder="State"
-            value={state}
-            onChangeText={setState}
-          />
-          <TextInput
-            style={styles.inputHalf}
-            placeholder="PIN CODE"
-            value={pinCode}
-            onChangeText={setPinCode}
-            keyboardType="numeric"
-          />
-        </View>
-        <TextInput
-          style={styles.inputFull}
-          placeholder="Phone number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="phone-pad"
-        />
-      </View>
 
-      {/* Confirm Button */}
+        {currentAddress && !isEditing ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>CURRENT ADDRESS</Text>
+            <Text style={styles.currentAddress}>
+              {currentAddress.address}, {'\n'}
+              {currentAddress.city}, {currentAddress.state} {currentAddress.pinCode} {'\n'}
+              {currentAddress.country} {'\n'}
+              {currentAddress.phoneNumber}
+            </Text>
+            <TouchableOpacity style={styles.button} onPress={handleEditAddress}>
+              <Text style={styles.buttonText}>EDIT ADDRESS</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{isEditing ? 'EDIT ADDRESS' : 'NEW ADDRESS'}</Text>
+            <View style={styles.row}>
+              <TextInput
+                style={styles.inputHalf}
+                placeholder="First name"
+                value={firstName}
+                onChangeText={setFirstName}
+              />
+              <TextInput
+                style={styles.inputHalf}
+                placeholder="Last name"
+                value={lastName}
+                onChangeText={setLastName}
+              />
+            </View>
+            <TextInput
+              style={styles.inputFull}
+              placeholder="Address"
+              value={address}
+              onChangeText={setAddress}
+            />
+            <TextInput
+              style={styles.inputFull}
+              placeholder="City"
+              value={city}
+              onChangeText={setCity}
+            />
+            <View style={styles.row}>
+              <TextInput
+                style={styles.inputHalf}
+                placeholder="State"
+                value={state}
+                onChangeText={setState}
+              />
+              <TextInput
+                style={styles.inputHalf}
+                placeholder="PIN CODE"
+                value={pinCode}
+                onChangeText={setPinCode}
+                keyboardType="numeric"
+              />
+            </View>
+            <TextInput
+              style={styles.inputFull}
+              placeholder="Phone number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+            />
+          </View>
+        )}
+      </ScrollView>
       <TouchableOpacity
-        style={styles.button}
-        onPress={handleConfirmAddress}
+        style={styles.buttonBottom}
+        onPress={isEditing ? handleUpdateAddress : handleConfirmAddress}
       >
-        <Text style={styles.buttonText}>CONFIRM ADDRESS</Text>
+        <Text style={styles.buttonText}>{isEditing ? 'UPDATE ADDRESS' : 'CONFIRM ADDRESS'}</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   backButton: {
     marginRight: 10,
@@ -165,6 +281,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 20,
+    paddingHorizontal: 20,
   },
   sectionTitle: {
     fontSize: 14,
@@ -208,13 +325,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 20,
   },
+  buttonBottom: {
+    backgroundColor: '#000',
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
 });
-
-
 
 export default AddressScreen;
