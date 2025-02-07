@@ -6,7 +6,7 @@ const Pagination = ({ totalPages, onPageChange }) => {
 
   const handlePagePress = (page) => {
     setSelectedPage(page);
-    onPageChange(page); // Notify parent component
+    onPageChange(page); 
   };
 
   return (

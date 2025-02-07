@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 15,
     paddingVertical: 12,
-    backgroundColor: '#fff', // Ensure the content has a white background
+    backgroundColor: '#fff', 
   },
   descriptionText: {
     fontSize: 14,

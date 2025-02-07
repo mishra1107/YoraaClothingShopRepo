@@ -91,9 +91,6 @@
 // export default PaymentGatewayScreen;
 
 
-
-
-
 import React, { useState, useEffect } from "react";
 import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
 import RazorpayCheckout from "react-native-razorpay";

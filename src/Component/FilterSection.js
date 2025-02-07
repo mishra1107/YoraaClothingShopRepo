@@ -13,10 +13,10 @@ const FilterSection = () => {
   
 
 
-  const { cartCount, fetchCart } = useCart(); // ✅ Get cart count from context
+  const { cartCount, fetchCart } = useCart(); 
 
   useEffect(() => {
-    fetchCart(); // ✅ Fetch cart count when component mounts
+    fetchCart(); 
   }, []);
 
   const handleWishlistPress = () => {

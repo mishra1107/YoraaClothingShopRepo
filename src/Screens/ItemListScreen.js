@@ -38,7 +38,7 @@ const ItemListScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            {/* ✅ Header with Back Button & Centered Title */}
+            {/*  Header with Back Button & Centered Title */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Icon name="arrow-back" size={24} color="black" />
@@ -63,7 +63,7 @@ const ItemListScreen = ({ route }) => {
                                     style={styles.iconButton} 
                                     onPress={async () => {
                                         await toggleCart(item._id);
-                                        // await fetchCart(); // ✅ Ensure badge updates immediately
+                                        // await fetchCart(); //  Ensure badge updates immediately
                                     }}
                                 >
                                     <Icon name="cart-outline" size={18} color="black" />

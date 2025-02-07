@@ -124,7 +124,7 @@ const AddressScreen = () => {
       firstName,
       lastName,
       type: 'new',
-      address,
+      address,  
       city,
       state,
       pinCode,
@@ -164,8 +164,6 @@ const AddressScreen = () => {
       console.error("Update Address Error:", error);
       Alert.alert("Error", error.message || "Something went wrong!");
     }
-
-
   };
 
   return (

@@ -4,7 +4,7 @@ import { BASE_URL, API_ENDPOINTS } from "../constants/config";
 export const getAuthHeaders = async () => {
     const token = await AsyncStorage.getItem('token');
     console.log(" Auth Token:", token);
-    if (!token) throw new Error("⚠️ No token found. Please login again.");
+    if (!token) throw new Error(" No token found. Please login again.");
     return {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const addToWishlist = async (itemId) => {
         });
 
         const data = await response.json();
-        console.log("✅ Add to Wishlist Response:", data);
+        console.log(" Add to Wishlist Response:", data);
         return data;
     } catch (error) {
         console.error(" Add to Wishlist Error:", error);
@@ -30,14 +30,14 @@ export const addToWishlist = async (itemId) => {
     }
 };
 
-// ✅ Remove from Wishlist
+//  Remove from Wishlist
 export const removeFromWishlist = async (itemId) => {
     console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
     try {
         const headers = await getAuthHeaders();
         const url = `${BASE_URL}${API_ENDPOINTS.REMOVE_WISHLIST}/${itemId}`;
 
-        console.log("🗑️ DELETE Request URL:", url);
+        console.log(" DELETE Request URL:", url);
 
         const response = await fetch(url, {
             method: "DELETE",
@@ -45,16 +45,16 @@ export const removeFromWishlist = async (itemId) => {
         });
 
         const data = await response.json();
-        console.log("🗑️ Remove Wishlist Response:", data);
+        console.log(" Remove Wishlist Response:", data);
 
         if (!response.ok) {
-            console.warn("⚠️ API Error Message:", data.message);
+            console.warn(" API Error Message:", data.message);
             throw new Error(data.message || "Failed to remove item from wishlist");
         }
 
         return { success: true, message: "Removed from wishlist" };
     } catch (error) {
-        console.error("🚨 Remove from Wishlist Error:", error);
+        console.error(" Remove from Wishlist Error:", error);
         return { success: false, message: error.message || "Failed to remove item from wishlist" };
     }
 };
@@ -69,7 +69,7 @@ export const getWishlist = async () => {
         });
 
         const data = await response.json();
-        console.log("📦 fetch the  wishlist response yha aayyyaaa:", data);
+        console.log(" fetch the  wishlist response yha aayyyaaa:", data);
 
         if (!data.success) {
             throw new Error("Failed to fetch wishlist");

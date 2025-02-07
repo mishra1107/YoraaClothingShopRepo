@@ -153,7 +153,7 @@ const EditProfileScreen = () => {
       Alert.alert('Success', 'Profile updated successfully');
       navigation.goBack();
     } catch (error) {
-      console.error('❌ Error updating profile:', error);
+      console.error(' Error updating profile:', error);
       Alert.alert('Error', error.message);
     }
   };

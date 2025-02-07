@@ -41,13 +41,13 @@ const ProfileScreen = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const responseData = await response.json(); // ✅ Properly parse JSON
+        const responseData = await response.json(); //  Properly parse JSON
         console.log("Response Data:", responseData);
-        setData(responseData); // ✅ Store actual response data
+        setData(responseData); //  Store actual response data
 
       } catch (error) {
         console.error("Error fetching profile:", error);
-        setData([]); // ✅ Ensure UI doesn't break
+        setData([]); //  Ensure UI doesn't break
       }
     };
 
@@ -60,16 +60,16 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('user');
 
-      console.log("🔴 User logged out. Token removed.");
+      console.log(" User logged out. Token removed.");
 
       // Show logout confirmation
-      Alert.alert("✅ Logged Out", "You have been logged out successfully.", [
+      Alert.alert(" Logged Out", "You have been logged out successfully.", [
         { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
       ]);
 
     } catch (error) {
-      console.error("❌ Error logging out:", error);
-      Alert.alert("⚠️ Error", "Something went wrong while logging out.");
+      console.error(" Error logging out:", error);
+      Alert.alert(" Error", "Something went wrong while logging out.");
     }
   };
 

@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     height: 35,
     marginRight: 8,
     resizeMode: 'contain',
-    opacity: 0.5,  // ✅ Default opacity
+    opacity: 0.5,  //  Default opacity
   },
   highlightedImage: {
-    opacity: 1,  // ✅ Fully visible when selected
+    opacity: 1,  //  Fully visible when selected
     borderWidth: 2, 
     borderColor: 'black', 
     borderRadius: 8, 

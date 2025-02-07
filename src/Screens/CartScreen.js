@@ -158,7 +158,6 @@ const CartScreen = () => {
         <Text style={styles.totalText}>TOTAL</Text>
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
       </View>
-
       <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
         <Text style={styles.checkoutText}>CHECKOUT</Text>
       </TouchableOpacity>

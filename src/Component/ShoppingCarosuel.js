@@ -22,7 +22,7 @@ const ShoppingCarousel = () => {
       if (flatListRef.current) {
         currentIndex.current = (currentIndex.current + 1) % data.length;
         flatListRef.current.scrollToOffset({
-          offset: currentIndex.current * width, // ✅ Ensure full scroll per item
+          offset: currentIndex.current * width, // 
           animated: true,
         });
       }

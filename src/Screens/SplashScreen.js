@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff', 
-    // backgroundColor: COLORS.background,
+  
   },
   image: {
     width: '80%', 

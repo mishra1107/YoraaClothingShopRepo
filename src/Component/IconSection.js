@@ -17,7 +17,7 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
         }
 
         const apiUrl = `${BASE_URL}/categories/`;
-        console.log("🌍 Fetching Categories from:", apiUrl);
+        console.log(" Fetching Categories from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           method: "GET",
@@ -60,7 +60,7 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
               styles.text, 
               selectedCategory?._id === category._id && styles.selectedText
             ]}
-            numberOfLines={1} // ✅ Prevents breaking into two lines
+            numberOfLines={1} //  Prevents breaking into two lines
             ellipsizeMode="tail"
           >
             {category.name.toUpperCase()}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   touchable: {
-    flex: 1,  // ✅ Fix text wrapping issue
+    flex: 1,  //  Fix text wrapping issue
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "black",
-    textAlign: 'center', // ✅ Keeps text in one line
+    textAlign: 'center', // Keeps text in one line
   },
   selectedText: {
     color: "white",

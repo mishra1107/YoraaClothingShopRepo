@@ -4,8 +4,8 @@ import { BASE_URL, API_ENDPOINTS } from "../../constants/config";
 // ✅ Get Authorization Headers
 export const getAuthHeaders = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log("🔑 Auth Token:", token);
-    if (!token) throw new Error("⚠️ No token found. Please login again.");
+    console.log(" Auth Token:", token);
+    if (!token) throw new Error(" No token found. Please login again.");
     return {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
