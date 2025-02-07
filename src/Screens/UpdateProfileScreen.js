@@ -24,6 +24,7 @@ const UpdateProfileScreen = () => {
     return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
   };
 
+
   //  sir code logic is here
 
   // useEffect(() => {
@@ -75,12 +76,12 @@ const UpdateProfileScreen = () => {
       try {
         const token = await AsyncStorage.getItem("token");
         if (!token) {
-          console.warn("⚠️ No token found in AsyncStorage.");
+          console.warn(" No token found in AsyncStorage.");
           return;
         }
 
         const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
-        console.log("📡 Fetching user profile from:", apiUrl);
+        console.log(" Fetching user profile from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           method: "GET",
