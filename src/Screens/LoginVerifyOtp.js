@@ -96,7 +96,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 
     try {
         // Ensure the request format is exactly as needed
-        const response = await postRequest(API_ENDPOINTS.VERIFY_OTP, {
+        const response = await postRequest("http://10.0.2.2:8080/api/auth/verif-otp", {
             phNo: String(phNo).trim(),  // Ensure phNo is a string
             otp: String(otpCode).trim() // Ensure OTP is a string
         });

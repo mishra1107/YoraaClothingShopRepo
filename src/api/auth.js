@@ -1,51 +1,16 @@
 import {postRequest} from './api';
 import {BASE_URL, API_ENDPOINTS} from '../constants/config';
 
-//  Function for User Signup
-// export const signupUser = async (name, phNo, password) => {
-//   console.log("Signing up user with:", { name, phNo, password });
-//   const url = "http://10.0.2.2:8080/api/auth/signup";
-//   const data = {
-//     phNo: "545454",
-//     name: "pushkar",
-//     password: "2002"
-//   };
-
-//   try {
-//     console.log(`Sending POST request to: ${url}`);
-//     console.log("Request Body:", data);
-
-//     const response = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//     });
-
-//    console.log("response" ,response);
-// if (!response) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-
-//     const responseData = await response.json();
-//     console.log("Response:", responseData);
-//     return responseData;
-//   } catch (error) {
-//     if (error instanceof TypeError) {
-//       console.error("Network error: Unable to connect to the server.");
-//     } else {
-//       console.error("Error:", error.message);
-//     }
-//   }
-// };
-
+// function for signup
 export const signupUser = async (name, phNo, password) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
-    console.log('Signing up user with:', {name, phoneNumber, password});
+    console.log('Signing up user with:', name);
+    console.log('Signing up user with:', phoneNumber);
+    console.log('Signing up user with:', password);
 
-    const response = await postRequest(API_ENDPOINTS.SIGNUP, {
+
+    const response = await postRequest("http://10.0.2.2:8080/api/auth/signup", {
       name,
       phNo: phoneNumber,
       password,
@@ -129,34 +94,18 @@ export const loginUser = async (phNo, password) => {
   }
 };
 
-// export const createAddress = async (addressData) => {
-//   console.log("swalehaaaaaaa:", addressData);
-//   try {
 
-//     const response = await postRequest(API_ENDPOINTS.CREATE_ADDRESS, addressData);
-//     console.log("Address Creation Response:", response);
-//     return response;
-//   } catch (error) {
-//     console.error("Create Address Error:", error);
-//     return { success: false, message: "Address creation failed" };
-//   }
-// };
-
-export const createAddress = async addressData => {
-  console.log('swalehaaaaaaa (Data being sent):', addressData);
+export const createAddress = async (addressData) => {
   try {
-    const response = await postRequest(
-      API_ENDPOINTS.CREATE_ADDRESS,
-      addressData,
-    );
-    console.log('Address Creation Response:', response);
-    return {...response, requestData: addressData}; // Return both response and request data
+    const response = await postRequest(`${BASE_URL}/address/createAddress`, {
+      ...addressData,
+      type: 'new',  // API expects this
+      country: 'USA',  // Hardcoded country as per your request
+    });
+    console.log('Creating Address Response:', response);
+    return response;
   } catch (error) {
     console.error('Create Address Error:', error);
-    return {
-      success: false,
-      message: 'Address creation failed',
-      errorDetails: error,
-    };
+    return { success: false, message: 'Address creation failed' };
   }
 };

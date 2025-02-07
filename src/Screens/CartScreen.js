@@ -22,31 +22,32 @@ const CartScreen = () => {
   }, []);
 
   const handleCheckout = () => {
-    const options = {
-      description: 'Order Payment',
-      image: 'https://your-logo-url.com/logo.png',
-      currency: 'INR',
-      key: 'rzp_test_tICgwjKnkQloxe',
-      amount: calculateTotal() * 100,
-      name: 'Your Business Name',
-      prefill: {
-        email: 'user@example.com',
-        contact: '9876543210',
-        name: 'User Name',
-      },
-      theme: {color: '#F37254'},
-    };
+    navigation.navigate('Payment');
+    // const options = {
+    //   description: 'Order Payment',
+    //   image: 'https://your-logo-url.com/logo.png',
+    //   currency: 'INR',
+    //   key: 'rzp_test_tICgwjKnkQloxe',
+    //   amount: calculateTotal() * 100,
+    //   name: 'Your Business Name',
+    //   prefill: {
+    //     email: 'user@example.com',
+    //     contact: '9876543210',
+    //     name: 'User Name',
+    //   },
+    //   theme: {color: '#F37254'},
+    // };
 
-    RazorpayCheckout.open(options)
-      .then(data => {
-        Alert.alert(
-          'Payment Success',
-          `Payment ID: ${data.razorpay_payment_id}`,
-        );
-      })
-      .catch(error => {
-        Alert.alert('Payment Failure', error.description);
-      });
+    // RazorpayCheckout.open(options)
+    //   .then(data => {
+    //     Alert.alert(
+    //       'Payment Success',
+    //       `Payment ID: ${data.razorpay_payment_id}`,
+    //     );
+    //   })
+    //   .catch(error => {
+    //     Alert.alert('Payment Failure', error.description);
+    //   });
   };
 
   const handleAddress = () => {
@@ -157,7 +158,7 @@ const CartScreen = () => {
         <Text style={styles.totalPrice}>₹{calculateTotal()}</Text>
       </View>
 
-      <TouchableOpacity onPress={handleAddress} style={styles.checkoutButton}>
+      <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton}>
         <Text style={styles.checkoutText}>CHECKOUT</Text>
       </TouchableOpacity>
     </View>

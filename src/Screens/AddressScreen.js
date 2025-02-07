@@ -29,17 +29,19 @@ const AddressScreen = () => {
       Alert.alert("Validation Error", "Please fill all fields.");
       return;
     }
-
+  
     const addressData = {
       firstName,
       lastName,
+      type: 'new',
       address,
       city,
       state,
       pinCode,
+      country: 'USA',
       phoneNumber,
     };
-
+  
     try {
       const response = await createAddress(addressData);
       if (response.success) {
@@ -52,7 +54,8 @@ const AddressScreen = () => {
       Alert.alert("Error", "Something went wrong!");
     }
   };
-
+  
+ 
   return (
     <View style={styles.container}>
       {/* Header */}

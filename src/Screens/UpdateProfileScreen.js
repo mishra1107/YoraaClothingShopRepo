@@ -23,6 +23,53 @@ const UpdateProfileScreen = () => {
     const date = new Date(timestamp);
     return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
   };
+
+  //  sir code logic is here
+
+  // useEffect(() => {
+  //   const fetchUserProfile = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem("token");
+  //       if (!token) {
+  //         console.warn("⚠️ No token found in AsyncStorage.");
+  //         return;
+  //       }
+
+  //       const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
+  //       console.log(" zaiba  Fetching user profile from:", apiUrl);
+
+  //       const response = await fetch(apiUrl, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error(
+  //           `Failed to fetch user profile - Status: ${response.status} ${response.statusText}`
+  //         );
+  //       }
+
+  //       const data = await response.json();
+
+  //       console.log("✅ Data received:", JSON.stringify(data, null, 2));
+
+  //       if (data) {
+  //         setProfile(data); // Store the entire profile data
+  //       } else {
+  //         console.warn("⚠️ No user data found in response.");
+  //       }
+  //     } catch (error) {
+  //       console.error("❌ Error fetching user profile:", error.message);
+  //     }
+  //   };
+
+  //   fetchUserProfile();
+  // }, []);
+
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -33,7 +80,7 @@ const UpdateProfileScreen = () => {
         }
 
         const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
-        console.log("Fetching user profile from:", apiUrl);
+        console.log("📡 Fetching user profile from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           method: "GET",
@@ -45,25 +92,58 @@ const UpdateProfileScreen = () => {
 
         if (!response.ok) {
           throw new Error(
-            `Failed to fetch user profile - Status: ${response.status} ${response.statusText}`
+            ` Failed to fetch user profile - Status: ${response.status} ${response.statusText}`
           );
         }
 
         const data = await response.json();
 
-        console.log("✅ Data received:", JSON.stringify(data, null, 2));
+        console.log(" Data received:", JSON.stringify(data, null, 2));
 
-        if (data) {
+        if (data && data.user) {
           setProfile(data); // Store the entire profile data
+
+          // Extract name, email, and phone number
+          const { name, phNo } = data.user;
+          const { email } = data;
+
+          // Save to AsyncStorage
+          await AsyncStorage.setItem("user_name", name);
+          await AsyncStorage.setItem("user_email", email);
+          await AsyncStorage.setItem("user_phNo", phNo);
+
+          console.log(" User data saved to AsyncStorage:");
+          console.log("Name saved:", name);
+          console.log("Email saved:", email);
+          console.log("Phone Number saved:", phNo);
         } else {
-          console.warn("⚠️ No user data found in response.");
+          console.warn(" No user data found in response.");
         }
       } catch (error) {
-        console.error("❌ Error fetching user profile:", error.message);
+        console.error(" Error fetching user profile:", error.message);
       }
     };
 
     fetchUserProfile();
+  }, []);
+
+  useEffect(() => {
+    const logStoredData = async () => {
+      try {
+        const name = await AsyncStorage.getItem("user_name");
+        const email = await AsyncStorage.getItem("user_email");
+        const phNo = await AsyncStorage.getItem("user_phNo");
+
+        console.log("📦 Retrieved from AsyncStorage:");
+        console.log("Name:", name);
+        console.log("Email:", email);
+        console.log("Phone Number:", phNo);
+      } catch (error) {
+        console.error(" Error retrieving user data from AsyncStorage:", error.message);
+      }
+    };
+
+    logStoredData();
   }, []);
 
   return (

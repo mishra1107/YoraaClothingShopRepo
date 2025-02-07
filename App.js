@@ -39,6 +39,7 @@ import ActiveScreen from './src/Screens/ActiveScreen';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import ItemListScreen from './src/Screens/ItemListScreen';
 import { CartProvider } from './src/services/cart/CartContext';
+import PaymentGatewayScreen from './src/Screens/PaymentGatewayScreen';
 // import { CartProvider } from "./src/services/context/CartContext";
 
 
@@ -119,6 +120,7 @@ const App = () => {
         <Stack.Screen name="Ethic" component={EthicScreen} />
         <Stack.Screen name="Loungewear" component={LoungewearScreen} />
         <Stack.Screen name="Active" component={ActiveScreen} />
+        <Stack.Screen name="Payment" component={PaymentGatewayScreen} />
       </Stack.Navigator>
       
       <Toast />
