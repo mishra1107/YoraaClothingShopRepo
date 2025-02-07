@@ -21,6 +21,9 @@ const CartScreen = () => {
     fetchCart();
   }, []);
 
+
+
+
   const handleCheckout = () => {
     navigation.navigate('Payment');
     // const options = {
@@ -129,7 +132,7 @@ const CartScreen = () => {
       />
 
       <View style={styles.addressContainer}>
-        <TouchableOpacity onPress={handleCheckout}>
+        <TouchableOpacity onPress={handleAddress}>
           <View>
             <Text style={styles.addressText}>606-3727 ULLAMCORPER. STREET</Text>
             <Text style={styles.addressText}>ROSEVILLE NH 11523</Text>

@@ -124,7 +124,6 @@ const EditProfileScreen = () => {
           } else {
             formData.append(key, value);
           }
-
         }
       });
 
