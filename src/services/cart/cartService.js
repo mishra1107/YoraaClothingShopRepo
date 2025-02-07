@@ -78,7 +78,7 @@ export const getCart = async () => {
 
         // ✅ Extract only required details
         const cartItems = data.data.map(item => ({
-            id: item._id,
+            cartId: item._id,
             name: item.item.name,
             description: item.item.description,
             price: item.item.price,
@@ -97,38 +97,42 @@ export const getCart = async () => {
 };
 
 // ✅ Update Cart Item by ID
-export const updateCartItem = async (cartItemId, quantity) => {
+export const updateCartItem = async (cartId, quantity) => {
     try {
-        const headers = await getAuthHeaders();
-        const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartItemId}`;
-        
-        // Log the formed URL
-        console.log("Updating Cart Item URL:", url);
-        console.log("Payload:", JSON.stringify({ quantity }));
-
-        const response = await fetch(url, {
-            method: "PUT",
-            headers,
-            body: JSON.stringify({ quantity }),
-        });
-
-        const responseText = await response.text();
-        console.log("Update Cart Item Raw Response:", responseText);
-
-        if (!response.ok) {
-            throw new Error(`Server Error: ${response.status}`);
-        }
-
-        const data = JSON.parse(responseText);
-        console.log("Parsed Update Cart Item Response:", data);
-
-        if (!data.success) {
-            throw new Error(data.message || "Failed to update cart item");
-        }
-
-        return data;
+      const headers = await getAuthHeaders();
+      const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartId}`;
+      
+      // Log the URL and payload for debugging
+      console.log("Updating Cart Item URL:", url);
+      console.log("Payload:", JSON.stringify({ quantity }));
+  
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ quantity }),
+      });
+  
+      const responseText = await response.text();
+      console.log("Update Cart Item Raw Response:", responseText);
+  
+      if (!response.ok) {
+        throw new Error(`Server Error: ${response.status}`);
+      }
+  
+      const data = JSON.parse(responseText);
+      console.log("Parsed Update Cart Item Response:", data);
+  
+      if (!data.success) {
+        throw new Error(data.message || "Failed to update cart item");
+      }
+  
+      return data;
     } catch (error) {
-        console.error("Update Cart Item Error:", error);
-        return { success: false, message: "Failed to update cart item" };
+      console.error("Update Cart Item Error:", error);
+      return { success: false, message: "Failed to update cart item" };
     }
-};
+  };
+  
+
+
+

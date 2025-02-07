@@ -426,12 +426,12 @@ export default function LoginScreen({ navigation }) {
   // Handle Login Button Click
   const handleLogin = async () => {
     if (!phNo || !password) {
-      Alert.alert("⚠️ Error", "Please enter your phone number and password.");
+      Alert.alert(" Error", "Please enter your phone number and password.");
       return;
     }
     setLoading(true); // Start loading
     try {
-      console.log("📤 Sending login request to API...");
+      console.log(" Sending login request to API...");
       const response = await fetch('http:/10.0.2.2:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -439,7 +439,7 @@ export default function LoginScreen({ navigation }) {
       });
 
       const responseData = await response.json();
-      console.log("📥 API Response:", responseData);
+      console.log(" API Response:", responseData);
 
       if (response.ok && responseData.success === true) {
         const { token, user } = responseData.data;
@@ -448,17 +448,17 @@ export default function LoginScreen({ navigation }) {
         await AsyncStorage.setItem('token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
 
-        Alert.alert("✅ Success", "Login Successful!");
+        Alert.alert(" Success", "Login Successful!");
         navigation.replace('Home'); // Navigate to Home Screen
       } else if (responseData.success === false) {
-        Alert.alert("⚠️ Not Verified", "User is not verified. Go to the signup page.");
+        Alert.alert(" Not Verified", "User is not verified. Go to the signup page.");
         navigation.navigate('Signup');
       } else {
-        Alert.alert("❌ Login Failed", responseData.message || "Invalid credentials.");
+        Alert.alert(" Login Failed", responseData.message || "Invalid credentials.");
       }
     } catch (error) {
-      console.error("❌ Login Error:", error);
-      Alert.alert("⚠️ Error", "Something went wrong. Please try again.");
+      console.error(" Login Error:", error);
+      Alert.alert(" Error", "Something went wrong. Please try again.");
     } finally {
       setLoading(false); // Stop loading
     }
