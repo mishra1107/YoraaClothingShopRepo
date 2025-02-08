@@ -1,10 +1,8 @@
 import React, { useState } from 'react'; 
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import ImageSection from './../Component/ImageSection';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import WomenScreen from '../Screens/WomenScreen';
 import KidScreen from '../Screens/KidScreen';
 import AccessoriesScreen from '../Screens/AccessoriesScreen';
-import WishlistScreen from './WishlistScreen';
 import ArrivalScreen from './ArrivalScreen';
 import Pagination from '../Component/Pagination';
 import JustForYou from '../Component/JustForYou';
@@ -14,24 +12,22 @@ const NewScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
   const [selectedPage, setSelectedPage] = useState(1);
 
-  // Function to render the correct screen based on selected category
-  const renderCategoryContent = () => {
+  // Content to be displayed based on selected category
+  const getCategoryContent = () => {
     switch (selectedCategory) {
       case 'WOMEN':
-        return <WomenScreen />;
+        return [{ key: 'WOMEN', component: <WomenScreen /> }];
       case 'KIDS':
-        return <KidScreen />;
+        return [{ key: 'KIDS', component: <KidScreen /> }];
       case 'ACCESSORIES':
-        return <AccessoriesScreen />;
+        return [{ key: 'ACCESSORIES', component: <AccessoriesScreen /> }];
       default:
-        return (
-          <>
-            <ArrivalScreen />
-            <Pagination totalPages={5} onPageChange={setSelectedPage} />
-            <JustForYou />
-            <CardLayout />
-          </>
-        );
+        return [
+          { key: 'ARRIVAL', component: <ArrivalScreen /> },
+          { key: 'PAGINATION', component: <Pagination totalPages={5} onPageChange={setSelectedPage} /> },
+          { key: 'JUST_FOR_YOU', component: <JustForYou /> },
+          { key: 'CARD_LAYOUT', component: <CardLayout /> },
+        ];
     }
   };
 
@@ -44,39 +40,32 @@ const NewScreen = () => {
 
       {/* Category Tabs */}
       <View style={styles.categoryContainer}>
-        <TouchableOpacity 
-          style={[styles.categoryButton, selectedCategory === 'MEN' && styles.selectedCategory]} 
-          onPress={() => setSelectedCategory('MEN')}
-        >
-          <Text style={[styles.categoryText, selectedCategory === 'MEN' && styles.selectedText]}>MEN</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={[styles.categoryButton, selectedCategory === 'WOMEN' && styles.selectedCategory]} 
-          onPress={() => setSelectedCategory('WOMEN')}
-        >
-          <Text style={[styles.categoryText, selectedCategory === 'WOMEN' && styles.selectedText]}>WOMEN</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={[styles.categoryButton, selectedCategory === 'KIDS' && styles.selectedCategory]} 
-          onPress={() => setSelectedCategory('KIDS')}
-        >
-          <Text style={[styles.categoryText, selectedCategory === 'KIDS' && styles.selectedText]}>KIDS</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={[styles.categoryButton, selectedCategory === 'ACCESSORIES' && styles.selectedCategory]} 
-          onPress={() => setSelectedCategory('ACCESSORIES')}
-        >
-          <Text style={[styles.categoryText, selectedCategory === 'ACCESSORIES' && styles.selectedText]}>ACCESSORIES</Text>
-        </TouchableOpacity>
+        {['MEN', 'WOMEN', 'KIDS', 'ACCESSORIES'].map(category => (
+          <TouchableOpacity 
+            key={category}
+            style={[
+              styles.categoryButton,
+              selectedCategory === category && styles.selectedCategory
+            ]}
+            onPress={() => setSelectedCategory(category)}
+          >
+            <Text style={[
+              styles.categoryText,
+              selectedCategory === category && styles.selectedText
+            ]}>
+              {category}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Dynamic Content Based on Category */}
-      <ScrollView>
-        {renderCategoryContent()}
-      </ScrollView>
+      {/* Dynamic Content rendered using FlatList */}
+      <FlatList
+        data={getCategoryContent()}
+        renderItem={({ item }) => <View>{item.component}</View>}
+        keyExtractor={item => item.key}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      />
     </View>
   );
 };

@@ -17,12 +17,13 @@ const CardLayout = () => {
       <View style={styles.card}>
         <Image source={item.image} style={styles.image} />
         <View style={styles.iconsContainer}>
-          <TouchableOpacity style={styles.iconButton}>
+          {/* <TouchableOpacity style={styles.iconButton}>
             <Image 
               source={require('../assests/images/like.png')} 
               style={styles.iconImage} 
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          
           <TouchableOpacity onPress={() => navigation.navigate('Product')}  style={styles.iconButton}>
             <Image
               source={require('../assests/images/eye.png')} 

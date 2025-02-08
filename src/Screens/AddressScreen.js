@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddressScreen = () => {
   const navigation = useNavigation();
-
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState('');
@@ -144,13 +144,6 @@ const AddressScreen = () => {
         body: JSON.stringify(addressData)
       });
     
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const errorText = await response.text();  // Get the raw HTML or text for debugging
-        console.error("Unexpected response:", errorText);  // Log the response to identify the issue
-        throw new Error('Unexpected response format from server');
-      }
-    
       const data = await response.json();
     
       if (data.success) {
@@ -181,16 +174,18 @@ const AddressScreen = () => {
 
         {currentAddress && !isEditing ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>CURRENT ADDRESS</Text>
+            <View style={styles.addressHeader}>
+              <Text style={styles.sectionTitle}>CURRENT ADDRESS</Text>
+              <TouchableOpacity onPress={handleEditAddress}>
+                <Icon name="edit" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
             <Text style={styles.currentAddress}>
               {currentAddress.address}, {'\n'}
               {currentAddress.city}, {currentAddress.state} {currentAddress.pinCode} {'\n'}
               {currentAddress.country} {'\n'}
               {currentAddress.phoneNumber}
             </Text>
-            <TouchableOpacity style={styles.button} onPress={handleEditAddress}>
-              <Text style={styles.buttonText}>EDIT ADDRESS</Text>
-            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.section}>
@@ -281,17 +276,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 20,
   },
+  addressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 10,
     color: '#000',
   },
   currentAddress: {
     fontSize: 12,
     color: '#555',
     lineHeight: 20,
-    marginBottom: 20,
+    marginTop: 10,
   },
   row: {
     flexDirection: 'row',
@@ -315,13 +314,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: '#000',
-    padding: 15,
-    alignItems: 'center',
-    borderRadius: 5,
-    marginTop: 20,
   },
   buttonBottom: {
     backgroundColor: '#000',

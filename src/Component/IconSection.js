@@ -12,12 +12,12 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
       try {
         const token = await AsyncStorage.getItem('token');
         if (!token) {
-          console.warn(" No token found in AsyncStorage.");
+          console.warn("No token found in AsyncStorage.");
           return;
         }
 
         const apiUrl = `${BASE_URL}/categories/`;
-        console.log(" Fetching Categories from:", apiUrl);
+        console.log("Fetching Categories from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           method: "GET",
@@ -27,17 +27,19 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
           },
         });
 
-        if (!response.ok) throw new Error(" Failed to fetch categories");
+        if (!response.ok) throw new Error("Failed to fetch categories");
 
         const data = await response.json();
-        console.log(" Categories Data:", data);
+        console.log("Categories Data:", data);
 
         if (data?.data?.length > 0) {
           setCategories(data.data);
-          setSelectedCategory(data.data[0]); 
+          setSelectedCategory(data.data[0]);  // Default to the first category
+          console.log("Categories Data:", data.data.map(cat => cat.name));  // Log category names
+
         }
       } catch (error) {
-        console.error(" Error fetching categories:", error.message);
+        console.error("Error fetching categories:", error.message);
       }
     };
 
@@ -60,7 +62,7 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
               styles.text, 
               selectedCategory?._id === category._id && styles.selectedText
             ]}
-            numberOfLines={1} //  Prevents breaking into two lines
+            numberOfLines={1}
             ellipsizeMode="tail"
           >
             {category.name.toUpperCase()}
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   touchable: {
-    flex: 1,  //  Fix text wrapping issue
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "black",
-    textAlign: 'center', // Keeps text in one line
+    textAlign: 'center',
   },
   selectedText: {
     color: "white",

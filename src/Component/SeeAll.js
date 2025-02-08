@@ -1,10 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign'; 
+import Icon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native'; 
 
 const SeeAll = () => {
+  const navigation=useNavigation();
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity  onPress={() => navigation.navigate("New")} style={styles.button}>
       <View style={styles.leftBorder} />
       <View style={styles.content}>
         <Text style={styles.text}>SEE ALL</Text>

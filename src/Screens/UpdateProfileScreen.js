@@ -24,53 +24,6 @@ const UpdateProfileScreen = () => {
     return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
   };
 
-
-  //  sir code logic is here
-
-  // useEffect(() => {
-  //   const fetchUserProfile = async () => {
-  //     try {
-  //       const token = await AsyncStorage.getItem("token");
-  //       if (!token) {
-  //         console.warn("⚠️ No token found in AsyncStorage.");
-  //         return;
-  //       }
-
-  //       const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
-  //       console.log(" zaiba  Fetching user profile from:", apiUrl);
-
-  //       const response = await fetch(apiUrl, {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error(
-  //           `Failed to fetch user profile - Status: ${response.status} ${response.statusText}`
-  //         );
-  //       }
-
-  //       const data = await response.json();
-
-  //       console.log("✅ Data received:", JSON.stringify(data, null, 2));
-
-  //       if (data) {
-  //         setProfile(data); // Store the entire profile data
-  //       } else {
-  //         console.warn("⚠️ No user data found in response.");
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching user profile:", error.message);
-  //     }
-  //   };
-
-  //   fetchUserProfile();
-  // }, []);
-
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -156,10 +109,7 @@ const UpdateProfileScreen = () => {
         </TouchableOpacity>
         <Text style={styles.header}>PROFILE</Text>
       </View>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: profile?.imageUrl }} style={styles.profileImage} editable={false} />
 
-      </View>
       {/* Input Fields */}
       <TextInput style={styles.input} placeholder="Rithik" value={profile?.user?.name || ""} editable={false} />
       <TextInput style={styles.input} placeholder="Address" value={profile?.address} editable={false} />
@@ -169,23 +119,15 @@ const UpdateProfileScreen = () => {
         value={profile?.user?.phNo || ""}
         keyboardType="phone-pad"
         editable={false}
-
-      />      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" value={profile?.email} editable={false} />
+      />
+      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" value={profile?.email} editable={false} />
 
       {/* Other Details Section */}
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
       <TextInput style={styles.input} placeholder="Date of Birth" value={convertToDateFormat(profile?.dob)} editable={false} />
       <TextInput style={styles.input} placeholder="Anniversary" value={convertToDateFormat(profile?.anniversary)} editable={false} />
       <TextInput style={styles.input} placeholder="Gender" value={profile?.gender} editable={false}/>
-      {/* <TextInput style={styles.input} placeholder="Style Preference" value={profile?.stylePreferences ? JSON.parse(profile?.stylePreferences) : ""} /> */}
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Style Preference"
-        value={profile?.stylePreferences
-          ? JSON.parse(profile?.stylePreferences).join(', ')
-          : ""}
-        editable={false} 
-      /> */}
+      <TextInput style={styles.input} placeholder="Style Preference" value={profile?.stylePreferences || ""} editable={false} />
 
       {/* Note Text */}
       <Text style={styles.note}>
@@ -195,13 +137,12 @@ const UpdateProfileScreen = () => {
 
       {/* Edit Profile Button */}
       <TouchableOpacity onPress={() => navigation.navigate('EditProfile', { profile })} style={styles.button}>
-        <Text style={styles.buttonText} >EDIT PROFILE</Text>
+        <Text style={styles.buttonText}>EDIT PROFILE</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -212,7 +153,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     marginBottom: 20,
   },
   backButton: {
@@ -222,6 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
+    marginLeft: 10,
   },
   input: {
     borderWidth: 1,
@@ -252,17 +193,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontWeight: "bold",
-  },
-  imageContainer: {
-    alignSelf: 'center',
-    position: 'relative',
-    marginBottom: 20,
-  },
-  profileImage: {
-
-    width: 90,
-    height: 90,
-    borderRadius: 45,
   },
 });
 

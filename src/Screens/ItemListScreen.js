@@ -11,7 +11,7 @@ const ItemListScreen = ({ route }) => {
     const navigation = useNavigation();
     const { wishlist, toggleWishlist } = useContext(WishlistContext);
     const { toggleCart, fetchCart } = useCart();
-
+    
     const { subcategoryId } = route.params;
     const [items, setItems] = useState([]);
 
@@ -40,11 +40,11 @@ const ItemListScreen = ({ route }) => {
         <View style={styles.container}>
             {/*  Header with Back Button & Centered Title */}
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Icon name="arrow-back" size={24} color="black" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>ITEM LISTING</Text>
-            </View>
+    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Icon name="arrow-back" size={24} color="black" />
+    </TouchableOpacity>
+    <Text style={styles.headerTitle}>ITEM LISTING</Text>
+</View>
 
             {/* Item Listing */}
             <FlatList
@@ -84,12 +84,12 @@ const ItemListScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#f9f9f9" },
 
-    // ✅ Header with Proper Alignment
+    // ✅ Header with Adjusted Back Icon
     header: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "center",  // Keep text vertically centered
         justifyContent: "center",
-        paddingVertical: 15,
+        paddingVertical: 20,
         backgroundColor: "#fff",
         borderBottomWidth: 1,
         borderBottomColor: "#ddd",
@@ -97,15 +97,12 @@ const styles = StyleSheet.create({
     backButton: {
         position: "absolute",
         left: 15,
+        marginTop: 4,  // Push the back icon slightly downward
     },
     headerTitle: {
-      
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: "bold",
         color: "#333",
-        position: "absolute",
-        left: "50%",
-        transform: [{ translateX: -50 }],
     },
 
     itemContainer: { flex: 1, margin: 8 },
@@ -117,5 +114,7 @@ const styles = StyleSheet.create({
     itemName: { fontSize: 14, fontWeight: "bold", color: "#333" },
     itemPrice: { color: "#ff5733", fontSize: 16, fontWeight: "bold", marginTop: 2 },
 });
+
+
 
 export default ItemListScreen;

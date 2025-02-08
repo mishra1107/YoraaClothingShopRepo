@@ -3,18 +3,21 @@ import { View, Image, StyleSheet } from 'react-native';
 
 const ImageSection = ({ selectedCategory }) => {
   const images = {
-    MEN: require('../assests/images/men.png'),
-    WOMEN: require('../assests/images/women.png'),
+    MENS: require('../assests/images/men.png'),
+    WOMENS: require('../assests/images/women.png'),
     KIDS: require('../assests/images/kid.png'),
-    ACCESSORIES: require('../assests/images/cap.png'),
+    ACCESSROIES: require('../assests/images/cap.png'),  // Using the same typo from API
   };
 
-  console.log("Selected Category:", selectedCategory?.name?.trim().toUpperCase()); // Debugging Log
+  // Normalize the selected category name for comparison
+  const selectedCategoryName = selectedCategory?.name?.trim().toUpperCase();
+  console.log("Selected Category (Normalized):", selectedCategoryName); // Debugging log
 
   return (
     <View style={styles.container}>
       {Object.keys(images).map((category, index) => {
-        const isSelected = selectedCategory?.name?.trim().toUpperCase() === category; 
+        // Compare normalized selectedCategoryName with image keys
+        const isSelected = selectedCategoryName === category;
 
         return (
           <Image
@@ -34,19 +37,19 @@ const ImageSection = ({ selectedCategory }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     paddingVertical: 10,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
   },
   image: {
     width: 35,
     height: 35,
-    marginRight: 8,
+    marginHorizontal: 8,
     resizeMode: 'contain',
-    opacity: 0.5,  //  Default opacity
+    opacity: 0.5,  // Default faded appearance for unselected icons
   },
   highlightedImage: {
-    opacity: 1,  //  Fully visible when selected
+    opacity: 1,  // Fully visible when selected
     borderWidth: 2, 
     borderColor: 'black', 
     borderRadius: 8, 

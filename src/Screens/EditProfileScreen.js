@@ -36,7 +36,7 @@ const EditProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(
     profileData.imageUrl ? { uri: profileData.imageUrl } : null
   );
-  // Request Camera Permission (For Android)
+
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(
@@ -51,16 +51,17 @@ const EditProfileScreen = () => {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     }
-    return true; // iOS doesn't require explicit permission check
+    return true;
   };
+
   const convertToDateFormat = (timestamp) => {
     if (!timestamp || timestamp.trim() === '') {
       return "";
     }
     const date = new Date(timestamp);
-    return date.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+    return date.toISOString().split('T')[0];
   };
-  // Open Camera or Gallery
+
   const handleImagePick = async () => {
     Alert.alert('Upload Image', 'Choose an option', [
       {
@@ -78,7 +79,7 @@ const EditProfileScreen = () => {
               console.log('Camera Error: ', response.errorMessage);
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
-              setProfileImage({ uri: response.assets[0].uri });
+              setProfileImage({ uri: newImageUri });
               setProfileData({ ...profileData, imageUrl: newImageUri });
             }
           });
@@ -94,7 +95,7 @@ const EditProfileScreen = () => {
               console.log('Gallery Error: ', response.errorMessage);
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
-              setProfileImage({ uri: response.assets[0].uri });
+              setProfileImage({ uri: newImageUri });
               setProfileData({ ...profileData, imageUrl: newImageUri });
             }
           }),
@@ -102,41 +103,27 @@ const EditProfileScreen = () => {
       { text: 'Cancel', style: 'cancel' },
     ]);
   };
+
   const handleInputChange = (key, value) => {
-    if (key === "stylePreferences") {
-      const arrayValue = value.split(',').map(item => item.trim()); // Convert string to array
-      setProfileData({ ...profileData, [key]: arrayValue });
-    } else {
-      setProfileData({ ...profileData, [key]: value });
-    }
+    setProfileData({ ...profileData, [key]: value });
   };
-  
+
   const handleSaveProfile = async () => {
-    console.log("qqqqqqqqqqqqqqqqqqqqqqq")
     try {
       const formData = new FormData();
-
       Object.entries(profileData).forEach(([key, value]) => {
         if (value) {
-
-          if (key === "stylePreferences") {
-            formData.append(key,JSON.stringify(value) ); // Convert array to JSON string
-          } else {
-            formData.append(key, value);
-          }
+          formData.append(key, value);
         }
       });
 
-      // Ensure the image is properly added
       if (profileImage && profileImage.uri) {
-        console.log("profile image", profileImage)
         formData.append('image', {
           uri: profileImage.uri,
           type: 'image/jpeg',
           name: 'profile.jpg',
         });
       }
-      console.log("formData", formData);
 
       const token = await AsyncStorage.getItem('token');
       const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
@@ -153,44 +140,42 @@ const EditProfileScreen = () => {
       Alert.alert('Success', 'Profile updated successfully');
       navigation.goBack();
     } catch (error) {
-      console.error(' Error updating profile:', error);
+      console.error('Error updating profile:', error);
       Alert.alert('Error', error.message);
     }
   };
 
   return (
     <ScrollView style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Icon name="arrow-left" size={20} color="#000" />
-      </TouchableOpacity>
-
-      {/* Header */}
-      <Text style={styles.header}>PROFILE</Text>
-
-      {/* Profile Image with Camera Icon Overlay */}
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: profileData?.imageUrl }} style={styles.profileImage} />
-        <TouchableOpacity style={styles.cameraIcon} onPress={handleImagePick}>
-          <Icon name="camera" size={18} color="#fff" />
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-left" size={20} color="#000" />
         </TouchableOpacity>
+        <Text style={styles.header}>PROFILE</Text>
       </View>
 
-      {/* Input Fields */}
+      <View style={styles.avatarContainer}>
+        <View style={styles.imageBorder}>
+          <Image source={profileImage} style={styles.profileImage} />
+          <TouchableOpacity style={styles.cameraIcon} onPress={handleImagePick}>
+            <Icon name="camera" size={18} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <TextInput style={styles.input} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
       <TextInput style={styles.input} placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
       <TextInput style={styles.input} placeholder="Phone" keyboardType="phone-pad" value={profileData.phone} onChangeText={(text) => handleInputChange('phone', text)} />
       <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" value={profileData.email} onChangeText={(text) => handleInputChange('email', text)} />
 
-      {/* Other Details */}
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
-      {/* <TextInput style={styles.input} placeholder="Date of Birth" value={convertToDateFormat(profileData.dob)} onChangeText={(text) => handleInputChange('dob', text)} /> */}
+
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <TextInput
           style={styles.input}
           placeholder="Date of Birth"
           value={profileData.dob ? convertToDateFormat(profileData.dob) : ""}
-          editable={false} // Prevent manual text input
+          editable={false}
         />
       </TouchableOpacity>
       {showDatePicker && (
@@ -206,9 +191,14 @@ const EditProfileScreen = () => {
           }}
         />
       )}
-      <TouchableOpacity onPress={() => setAnniversaryDate(true)}>
-        <TextInput style={styles.input} placeholder="Anniversary" value={profileData.anniversary ? convertToDateFormat(profileData.anniversary) : ""} editable={false} />
 
+      <TouchableOpacity onPress={() => setAnniversaryDate(true)}>
+        <TextInput
+          style={styles.input}
+          placeholder="Anniversary"
+          value={profileData.anniversary ? convertToDateFormat(profileData.anniversary) : ""}
+          editable={false}
+        />
       </TouchableOpacity>
       {anniversaryDate && (
         <DateTimePicker
@@ -226,9 +216,6 @@ const EditProfileScreen = () => {
 
       <TextInput style={styles.input} placeholder="Gender" value={profileData.gender} onChangeText={(text) => handleInputChange('gender', text)} />
 
-
-
-      {/* Save Button */}
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
         <Text style={styles.saveButtonText}>SAVE PROFILE</Text>
       </TouchableOpacity>
@@ -236,7 +223,6 @@ const EditProfileScreen = () => {
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -244,23 +230,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 40,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   backButton: {
-    position: 'absolute',
-    top: 15,
-    left: 15,
-    zIndex: 10,
+    padding: 10,
   },
   header: {
     fontSize: 18,
     fontWeight: 'bold',
-    alignSelf: 'center',
     color: '#000',
-    marginBottom: 20,
+    marginLeft: 10,
   },
-  imageContainer: {
+  avatarContainer: {
     alignSelf: 'center',
     position: 'relative',
     marginBottom: 20,
+  },
+  imageBorder: {
+    borderWidth: 2,
+    borderColor: '#000',
+    borderRadius: 50,
+    padding: 3,
   },
   profileImage: {
     width: 90,
@@ -269,8 +262,8 @@ const styles = StyleSheet.create({
   },
   cameraIcon: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 5,
+    right: 5,
     backgroundColor: '#000',
     width: 25,
     height: 25,
@@ -294,10 +287,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   saveButton: {
-    position: 'relative',
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: 'black',
     padding: 16,
     borderRadius: 0,
@@ -308,7 +297,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
 });
 
 export default EditProfileScreen;
