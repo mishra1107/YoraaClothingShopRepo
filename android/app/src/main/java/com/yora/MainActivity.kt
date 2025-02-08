@@ -1,4 +1,4 @@
-package com.yora
+package com.yoraa
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

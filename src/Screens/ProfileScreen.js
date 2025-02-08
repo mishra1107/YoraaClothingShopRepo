@@ -25,6 +25,7 @@ const ProfileScreen = () => {
           console.error("No token found!");
           return;
         }
+        console.log("Token found:", token);
 
         const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
         console.log("Fetching user profile from:", apiUrl);

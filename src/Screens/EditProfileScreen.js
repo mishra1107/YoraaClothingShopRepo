@@ -25,7 +25,7 @@ const EditProfileScreen = () => {
   const { profile } = route.params || {};
   const [profileData, setProfileData] = useState({
     name: profile?.user?.name || '',
-    phone: profile?.user?.phNo || '',
+    phNo: profile?.user?.phNo || '',
     address: profile?.address || '',
     email: profile?.email || '',
     dob: profile?.dob || '',
@@ -126,6 +126,7 @@ const EditProfileScreen = () => {
       }
 
       const token = await AsyncStorage.getItem('token');
+      console.log("formData", formData);
       const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
         method: 'PUT',
         headers: {
@@ -165,7 +166,7 @@ const EditProfileScreen = () => {
 
       <TextInput style={styles.input} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
       <TextInput style={styles.input} placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
-      <TextInput style={styles.input} placeholder="Phone" keyboardType="phone-pad" value={profileData.phone} onChangeText={(text) => handleInputChange('phone', text)} />
+      <TextInput style={styles.input} placeholder="Phone" keyboardType="phone-pad" value={profileData.phNo} onChangeText={(text) => handleInputChange('phNo', text)} />
       <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" value={profileData.email} onChangeText={(text) => handleInputChange('email', text)} />
 
       <Text style={styles.subHeader}>OTHER DETAILS</Text>

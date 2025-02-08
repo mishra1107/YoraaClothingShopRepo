@@ -1,11 +1,68 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity ,Image,Dimensions} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity ,Image,Dimensions,  Alert,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
 const { width, height } = Dimensions.get("window");
 import { RFPercentage } from "react-native-responsive-fontsize";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '841829729642-5vo1cbgnrsl83sm8c8h63s7c0hf0i3mi.apps.googleusercontent.com', // Replace with your Web Client ID
+});
 const WelcomeScreen = ({ navigation }) => {
+    const [loading, setLoading] = useState(false);
+  
+  const handleSignUpFirebase = async () => {
+   
+    console.log("Inside Firebase Sign-In");
+  
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('Google Sign-In userInfo:', userInfo);
+  
+      const  idToken = userInfo.data.idToken;
+      if (!idToken) throw new Error('Failed to retrieve Google ID Token');
+  
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      console.log('Firebase Google Credential:', googleCredential);
+  
+      const userCredential = await auth().signInWithCredential(googleCredential);
+      console.log('Firebase User Credential:', userCredential);
+  
+      const firebaseIdToken = await userCredential.user.getIdToken();
+      console.log('Firebase ID Token:', firebaseIdToken);
+  
+      const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken: firebaseIdToken }),
+      });
+  
+      const responseData = await response.json();
+      console.log('API Response:', responseData);
+
+      if (response.ok) {
+        const { token, user } = responseData.data;
+
+        Alert.alert('Success', 'User signed up successfully');
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        navigation.replace('Home');
+      } else {
+        Alert.alert('Error', responseData.message || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+      Alert.alert('Error', error.message || 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <Image 
@@ -26,7 +83,7 @@ const WelcomeScreen = ({ navigation }) => {
   <Text style={styles.dividerText}>Or</Text>
   <View style={styles.divider} />
 </View>
-        <TouchableOpacity style={styles.googleButton}>
+        <TouchableOpacity  onPress={handleSignUpFirebase} style={styles.googleButton}>
        
           <Image 
         source={require('../assests/images/Gmail.png')} 

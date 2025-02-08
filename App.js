@@ -40,6 +40,28 @@ import ItemListScreen from './src/Screens/ItemListScreen';
 import { CartProvider } from './src/services/cart/CartContext';
 import PaymentGatewayScreen from './src/Screens/PaymentGatewayScreen';
 // import { CartProvider } from "./src/services/context/CartContext";
+import { initializeApp } from '@react-native-firebase/app';
+import FirebaseApp from '@react-native-firebase/app';
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBAEJSB5QJl_0MEr13gjLzBNYxdXuUliSk",
+  authDomain: "ecommerce-e038c.firebaseapp.com",
+  projectId: "ecommerce-e038c",
+  storageBucket: "ecommerce-e038c.firebasestorage.app",
+  messagingSenderId: "841829729642",
+  appId: "1:841829729642:web:ecd6b4d97b2796617cd113",
+  measurementId: "G-T9C3WQSSP3"
+};
+
+// Initialize Firebase if not already initialized
+if (!FirebaseApp.apps.length) {
+  initializeApp(firebaseConfig);
+} else {
+  FirebaseApp.app(); // If already initialized
+}
+
+
 
 
 const Stack = createStackNavigator();

@@ -22,7 +22,7 @@
 
 //     try {
 //       // Call backend to create an order
-//       const orderResponse = await fetch("http://10.0.2.2:8080/api/razorpay/create-order", {
+//       const orderResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/create-order", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify({ amount: paymentDetails.amount }),
@@ -51,7 +51,7 @@
 //       const paymentResponse = await RazorpayCheckout.open(options);
 
 //       // Send payment details to backend for verification
-//       const verifyResponse = await fetch("http://10.0.2.2:8080/api/razorpay/verify-payment", {
+//       const verifyResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/verify-payment", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify(paymentResponse),
