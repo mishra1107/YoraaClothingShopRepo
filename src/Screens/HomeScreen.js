@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <ScrollView>
         <FilterSection />
-        <ImageSection selectedCategory={selectedCategory} />
+        {/* <ImageSection selectedCategory={selectedCategory} /> */}
         <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
         <SubCategoryList subcategories={subcategories} navigation={navigation} /> 
         <View style={styles.row}>
