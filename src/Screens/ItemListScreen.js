@@ -59,15 +59,16 @@ const ItemListScreen = ({ route }) => {
                                 <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
                                     <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
                                 </TouchableOpacity>
+                               
                                 <TouchableOpacity 
-                                    style={styles.iconButton} 
-                                    onPress={async () => {
-                                        await toggleCart(item._id);
-                                        // await fetchCart(); //  Ensure badge updates immediately
-                                    }}
-                                >
-                                    <Icon name="cart-outline" size={18} color="black" />
-                                </TouchableOpacity>
+    style={styles.iconButton} 
+    onPress={async () => {
+        await toggleCart(item._id);
+        navigation.navigate('Cart');  // Directly navigate to the cart screen
+    }}>
+    <Icon name="cart-outline" size={18} color="black" />
+</TouchableOpacity>
+
                             </View>
                         </View>
                         <View style={styles.textContainer}>

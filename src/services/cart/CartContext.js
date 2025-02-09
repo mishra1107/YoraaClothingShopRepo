@@ -23,16 +23,14 @@ export const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
         try {
-            // console.log("inside fetch cart")
             const cartData = await getCart();
-            // console.log("all cart data cart",cartData)
             setCart(cartData);
-            setCartCount(cartData.reduce((sum, item) => sum + item.quantity, 0)); // ✅ Count total items in the cart
+            setCartCount(cartData.length);  // Count only the unique items
         } catch (error) {
-            console.error(" Fetch Cart Error:", error);
+            console.error("Fetch Cart Error:", error);
         }
     };
-
+    
     const toggleCart = async (itemId) => {
         try {
             // console.log("inside toggler cart",itemId)
@@ -49,6 +47,8 @@ export const CartProvider = ({ children }) => {
             console.error(" Toggle Cart Error:", error);
         }
     };
+
+
 
     return (
         <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart,removeFromCart,updateCartItem }}>

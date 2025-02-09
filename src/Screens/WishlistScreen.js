@@ -1,17 +1,21 @@
 import React, { useEffect, useState,useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getWishlist, removeFromWishlist } from '../services/wishlistService'; // ✅ Import removeFromWishlist function
 import { WishlistContext } from '../services/context/WishlistContext';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useCart } from '../services/cart/CartContext';
 
 const WishlistScreen = () => {
   const navigation = useNavigation();
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
-    const { wishlist, toggleWishlist } = useContext(WishlistContext);
+  const { wishlist, toggleWishlist } = useContext(WishlistContext);
+    
 
-  useEffect(() => {
+   const { toggleCart, fetchCart } = useCart();
+    useEffect(() => {
     fetchWishlist();
   }, []);
 
@@ -48,11 +52,19 @@ const WishlistScreen = () => {
             onPress={() => handleToggleWishlist(item.item._id)}
 
           >
-            <Icon name="favorite" size={20} color="red" />
+            <Icon1 name="favorite" size={20} color="red" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.iconButton}>
-            <Icon name="shopping-cart" size={20} color="black" />
-          </TouchableOpacity>
+        
+          <TouchableOpacity 
+    style={styles.iconButton} 
+    onPress={async () => {
+        await toggleCart(item.item._id);  // Corrected to item.item._id
+        await fetchCart();  // Ensure cart count updates immediately
+        navigation.navigate('Cart');
+    }}>
+    <Icon name="cart-outline" size={18} color="black" />
+</TouchableOpacity>
+
         </View>
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.item.name}</Text>

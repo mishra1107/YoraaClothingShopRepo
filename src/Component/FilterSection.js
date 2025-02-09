@@ -11,8 +11,6 @@ const FilterSection = () => {
   const navigation = useNavigation();
   const { wishlistCount } = useContext(WishlistContext);
   
-
-
   const { cartCount, fetchCart } = useCart(); 
 
   useEffect(() => {

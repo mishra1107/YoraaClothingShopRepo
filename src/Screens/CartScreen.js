@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import RazorpayCheckout from 'react-native-razorpay';
 import { useCart } from '../services/cart/CartContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,35 +20,78 @@ const CartScreen = () => {
 
   useEffect(() => {
     fetchCart();
-    fetchAddress();
-    const unsubscribe = navigation.addListener('focus', fetchAddress);
-    return unsubscribe;
+    fetchAddress();  // Fetch address when screen loads
   }, [navigation]);
 
+  // const fetchAddress = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('token');
+  //     if (!token) throw new Error('No token found');
+
+  //     const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to fetch address: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+
+  //     if (data && data.data && data.data.length > 0) {
+  //       setAddress(data.data[0]);  // Set the first address in response
+  //     } else {
+  //       setAddress(null);  // No address found
+  //     }
+  //   } catch (error) {
+  //     console.error('Fetch Address Error:', error);
+  //     // Alert.alert('Error', 'Failed to fetch address.');
+  //     setAddress(null);
+  //   }
+  // };
+
+  
   const fetchAddress = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
-
-      const response = await fetch('http://localhost:8080/api/address/user', {
+  
+      const response = await fetch('http://10.0.2.2:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
       });
-
+  
+      if (!response.ok) {
+        // Handle 404 specifically without throwing an error
+        if (response.status === 404) {
+          setAddress(null);  // No address found
+          return;  // Exit gracefully
+        }
+        throw new Error(`Failed to fetch address: ${response.status}`);
+      }
+  
       const data = await response.json();
+  
       if (data && data.data && data.data.length > 0) {
-        setAddress(data.data[0]);
+        setAddress(data.data[0]);  // Set the first address in response
       } else {
-        setAddress(null);
+        setAddress(null);  // No address found
       }
     } catch (error) {
-      console.error('Fetch Address Error:', error);
-      Alert.alert('Error', 'Failed to fetch address.');
+      console.log('Address fetch failed, but continuing without showing an error to the user.');
+      // Removed all alerts and error logs that show up on the UI
+      setAddress(null);
     }
   };
+  
+
 
   const handleCheckout = () => {
     navigation.navigate('Payment');
@@ -77,7 +119,6 @@ const CartScreen = () => {
       await handleRemoveItem(cartId);
     } else {
       try {
-        console.log(`Updating cart ID: ${cartId} to quantity: ${newQuantity}`);
         await updateCartItem(cartId, newQuantity);
         await fetchCart();
       } catch (error) {
@@ -104,9 +145,7 @@ const CartScreen = () => {
         </View>
         <Text style={styles.itemPrice}>₹{item.price * item.quantity}</Text>
       </View>
-      <TouchableOpacity
-        onPress={() => handleRemoveItem(item.cartId)}
-        style={styles.removeButton}>
+      <TouchableOpacity onPress={() => handleRemoveItem(item.cartId)} style={styles.removeButton}>
         <Text style={styles.removeButtonText}>Remove Item</Text>
       </TouchableOpacity>
     </View>
@@ -115,19 +154,13 @@ const CartScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>CART</Text>
       </View>
 
-      <FlatList
-        data={cart}
-        renderItem={renderCartItem}
-        keyExtractor={item => item.cartId.toString()} 
-      />
+      <FlatList data={cart} renderItem={renderCartItem} keyExtractor={item => item.cartId.toString()} />
 
       <TouchableOpacity onPress={handleAddress}>
         <View style={styles.addressContainer}>
@@ -148,12 +181,7 @@ const CartScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.deliveryContainer}>
-        <Icon
-          name="local-shipping"
-          size={20}
-          color="black"
-          style={styles.deliveryIcon}
-        />
+        <Icon name="local-shipping" size={20} color="black" style={styles.deliveryIcon} />
         <Text style={styles.deliveryText}>DELIVERY</Text>
         <Text style={styles.deliveryFee}>Free</Text>
       </View>
@@ -168,6 +196,8 @@ const CartScreen = () => {
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
