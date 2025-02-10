@@ -35,6 +35,7 @@
     "react-native-screens": "^4.5.0",
     "react-native-share": "^12.0.3",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-swiper": "^1.6.0",
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
     "react-redux": "^9.2.0",
