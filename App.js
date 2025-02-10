@@ -42,6 +42,7 @@ import PaymentGatewayScreen from './src/Screens/PaymentGatewayScreen';
 // import { CartProvider } from "./src/services/context/CartContext";
 import { initializeApp } from '@react-native-firebase/app';
 import FirebaseApp from '@react-native-firebase/app';
+import SubCategoryScreen from './src/Screens/SubCategoryScreen';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -142,6 +143,7 @@ const App = () => {
         <Stack.Screen name="Loungewear" component={LoungewearScreen} />
         <Stack.Screen name="Active" component={ActiveScreen} />
         <Stack.Screen name="Payment" component={PaymentGatewayScreen} />
+        <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
       </Stack.Navigator>
       
       <Toast />
