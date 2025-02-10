@@ -29,9 +29,6 @@
 //         <View style={styles.imageContainer}>
 //           <Image source={require('../assests/images/Shopping.png')} style={styles.productImage} />
 
-          
-          
-
 //            {/* <ShoppingCarousel/> */}
 //           {/* Cart Icon at Bottom Right */}
 //           <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
@@ -166,13 +163,13 @@ const ProductDetailScreen = () => {
         const response = await fetch(`http://10.0.2.2:8080/api/items/${id}`);
         const data = await response.json();
         setProduct(data);
+        console.log(data.response)
       } catch (error) {
         console.error('Error fetching product details:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [id]);
 
@@ -215,21 +212,17 @@ const ProductDetailScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-
         <AccordionItem title="DESCRIPTION & RETURNS" content={product.details || ''} />
         <AccordionItem title="MANUFACTURER DETAI4LS" content=   {product.details || ''}  />
         <AccordionItem title="SHIPPING, RETURNS AND EXCHANGES" content="Shipping details here..." />
-
         <YouMayAlsoLike />
       </ScrollView>
-
       <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
     </View>
   );
 };
 
 export default ProductDetailScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
