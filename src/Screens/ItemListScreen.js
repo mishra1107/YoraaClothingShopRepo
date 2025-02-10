@@ -58,9 +58,8 @@ const ItemListScreen = ({ route }) => {
                             <View style={styles.iconOverlay}>
                                 <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
                                     <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
-                                </TouchableOpacity>
-                               
-                                <TouchableOpacity 
+                                </TouchableOpacity>  
+                             <TouchableOpacity 
     style={styles.iconButton} 
     onPress={async () => {
         await toggleCart(item._id);
@@ -106,14 +105,44 @@ const styles = StyleSheet.create({
         color: "#333",
     },
 
-    itemContainer: { flex: 1, margin: 8 },
-    imageContainer: { position: "relative" },
-    itemImage: { width: "100%", height: 220, resizeMode: "cover" },
-    iconOverlay: { position: "absolute", bottom: 10, right: 10, flexDirection: "column", alignItems: "center" },
-    iconButton: { backgroundColor: "white", padding: 5, borderRadius: 15, marginVertical: 5, elevation: 5, alignItems: "center", justifyContent: "center" },
-    textContainer: { paddingVertical: 5, paddingHorizontal: 10 },
-    itemName: { fontSize: 14, fontWeight: "bold", color: "#333" },
-    itemPrice: { color: "#ff5733", fontSize: 16, fontWeight: "bold", marginTop: 2 },
+    itemContainer: { 
+        flex: 1,
+         margin: 8 
+        },
+    imageContainer: { 
+        position: "relative"
+     },
+    itemImage: {
+         width: "100%", 
+         height: 220, 
+         resizeMode: "cover"
+         },
+    iconOverlay: { 
+        position: "absolute", 
+        bottom: 10, right: 10,
+         flexDirection: "column", 
+         alignItems: "center" },
+    iconButton: {
+         backgroundColor: "white",
+         padding: 5, borderRadius: 15,
+         marginVertical: 5,
+        elevation: 5, 
+           alignItems: "center",
+            justifyContent: "center" },
+    textContainer: { 
+        paddingVertical: 5, 
+        paddingHorizontal: 10 
+    },
+    itemName: { 
+        fontSize: 14,
+         fontWeight: "bold", 
+         color: "#333"
+         },
+    itemPrice: { 
+        color: "#ff5733",
+        fontSize: 16, 
+        fontWeight: "bold",
+        marginTop: 2 },
 });
 
 

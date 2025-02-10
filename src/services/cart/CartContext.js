@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { getCart, addToCart, removeFromCart, updateCartItem } from "./CartService";
 
-
 export const CartContext = createContext();
 
 export const useCart = () => {
@@ -25,7 +24,7 @@ export const CartProvider = ({ children }) => {
         try {
             const cartData = await getCart();
             setCart(cartData);
-            setCartCount(cartData.length);  // Count only the unique items
+            setCartCount(cartData.length);  
         } catch (error) {
             console.error("Fetch Cart Error:", error);
         }
@@ -47,8 +46,6 @@ export const CartProvider = ({ children }) => {
             console.error(" Toggle Cart Error:", error);
         }
     };
-
-
 
     return (
         <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart,removeFromCart,updateCartItem }}>
