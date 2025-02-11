@@ -84,11 +84,10 @@ const ProductDetailScreen = () => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
+        
+      
         <ShoppingCarousel images={productDetails.images} />
 
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
-          <Icon name="shopping-cart" size={22} color="#000" />
-        </TouchableOpacity>
 
         <View style={styles.detailsContainer}>
           <Text style={styles.productTitle}>{productDetails.items.name}</Text>
@@ -117,11 +116,9 @@ const ProductDetailScreen = () => {
           title="SHIPPING, RETURNS AND EXCHANGES" 
           content={renderShippingAndReturns(productDetails.shippingAndReturns)} 
         />
-
         <YouMayAlsoLike />
         <CardLayout />
       </ScrollView>
-
       <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
     </View>
   );

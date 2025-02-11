@@ -91,8 +91,6 @@ const CartScreen = () => {
     }
   };
   
-
-
   const handleCheckout = () => {
     navigation.navigate('Payment');
   };

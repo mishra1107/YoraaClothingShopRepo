@@ -9,6 +9,7 @@ import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import HeaderContent from '../Component/HeaderContent';
 import SeeAll from '../Component/SeeAll';
 import SubCategoryList from './../Component/SubCategoryList';
+import ItemCarousel from '../Component/ItemCarousel';
 
 const HomeScreen = ({ navigation }) => {    
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -57,7 +58,8 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <CardLayout />
         <View style={styles.row}>
-          <ShoppingCarousel />
+    
+          <ItemCarousel />
         </View>
         <HeaderContent />
       </ScrollView>
