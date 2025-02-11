@@ -29,6 +29,9 @@
 //         <View style={styles.imageContainer}>
 //           <Image source={require('../assests/images/Shopping.png')} style={styles.productImage} />
 
+          
+          
+
 //            {/* <ShoppingCarousel/> */}
 //           {/* Cart Icon at Bottom Right */}
 //           <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
@@ -141,45 +144,88 @@
 //   },
 // });
 
-import React, { useState, useEffect } from 'react';  
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AccordionItem from '../Component/AccordianItem'; 
+import { useNavigation, useRoute } from '@react-navigation/native';
 import YouMayAlsoLike from '../Component/YouMayAlsoLike';
+import CardLayout from '../Component/CardLayout';
 import SizeChartModal from '../Component/SizeChartModal';
+import ShoppingCarousel from '../Component/ShoppingCarosuel';
 
 const ProductDetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { id } = route.params;  // Get the ID from navigation params
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = route.params;
   const [sizeChartVisible, setSizeChartVisible] = useState(false);
+  const [productDetails, setProductDetails] = useState(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProductDetails = async () => {
+      const token = await AsyncStorage.getItem('token');
       try {
-        const response = await fetch(`http://10.0.2.2:8080/api/items/${id}`);
+        const response = await fetch(`http://10.0.2.2:8080/api/itemDetails/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
         const data = await response.json();
-        setProduct(data);
-        console.log(data.response)
+        setProductDetails(data);
       } catch (error) {
         console.error('Error fetching product details:', error);
-      } finally {
-        setLoading(false);
       }
     };
-    fetchProduct();
+
+    fetchProductDetails();
   }, [id]);
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#FF5722" style={{ marginTop: 50 }} />;
+  if (!productDetails) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
-  if (!product) {
-    return <Text style={{ textAlign: 'center', marginTop: 50 }}>Product not found.</Text>;
-  }
+  const renderManufacturerDetails = (details) => {
+    return (
+      <View>
+        <Text style={styles.detailText}>Name: {details.name}</Text>
+        <Text style={styles.detailText}>Address: {details.address}</Text>
+        <Text style={styles.detailText}>Country of Origin: {details.countryOfOrigin}</Text>
+        <Text style={styles.detailText}>Phone: {details.contactDetails.phone}</Text>
+        <Text style={styles.detailText}>Email: {details.contactDetails.email}</Text>
+      </View>
+    );
+  };
+
+  const renderShippingAndReturns = (data) => {
+    return (
+      <View>
+        <Text style={styles.subHeader}>Shipping Details:</Text>
+        {data.shippingDetails.map((item, index) => (
+          <Text key={index} style={styles.detailText}>- {item}</Text>
+        ))}
+
+        <Text style={styles.subHeader}>Return Policy:</Text>
+        {data.returnPolicy.map((item, index) => (
+          <Text key={index} style={styles.detailText}>- {item}</Text>
+        ))}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -191,38 +237,51 @@ const ProductDetailScreen = () => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.imageContainer}>
-          <Image 
-            source={product.imageUrl ? { uri: product.imageUrl } : require('../assests/images/Shopping.png')} 
-            style={styles.productImage} 
-          />
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
-            <Icon name="shopping-cart" size={22} color="#000" />
-          </TouchableOpacity>
-        </View>
+        <ShoppingCarousel images={productDetails.images} />
+
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.cartIcon}>
+          <Icon name="shopping-cart" size={22} color="#000" />
+        </TouchableOpacity>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.productTitle}>{product.name}</Text>
-          <Text style={styles.productDescription}>{product.description || 'No description available'}</Text>
+          <Text style={styles.productTitle}>{productDetails.items.name}</Text>
+          <Text style={styles.productDescription}>{productDetails.items.description}</Text>
 
           <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>₹{product.price}</Text>
-            <TouchableOpacity onPress={() => setSizeChartVisible(true)}> 
+            <Text style={styles.productPrice}>₹{productDetails.items.price}</Text>
+            <TouchableOpacity onPress={() => setSizeChartVisible(true)}>
               <Text style={styles.selectSize}>SELECT SIZE</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <AccordionItem title="DESCRIPTION & RETURNS" content={product.details || ''} />
-        <AccordionItem title="MANUFACTURER DETAI4LS" content=   {product.details || ''}  />
-        <AccordionItem title="SHIPPING, RETURNS AND EXCHANGES" content="Shipping details here..." />
+
+        <AccordionItem 
+          title="DESCRIPTION & RETURNS" 
+          content={productDetails.descriptionAndReturns} 
+          fitDetails={productDetails.fitDetails} 
+          careInstructions={productDetails.careInstructions} 
+          sizeDetails={productDetails.size} 
+        />
+        <AccordionItem 
+          title="MANUFACTURER DETAILS" 
+          content={renderManufacturerDetails(productDetails.manufacturerDetails)} 
+        />
+        <AccordionItem 
+          title="SHIPPING, RETURNS AND EXCHANGES" 
+          content={renderShippingAndReturns(productDetails.shippingAndReturns)} 
+        />
+
         <YouMayAlsoLike />
+        <CardLayout />
       </ScrollView>
+
       <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
     </View>
   );
 };
 
 export default ProductDetailScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -245,14 +304,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  imageContainer: {
-    position: 'relative',
-  },
-  productImage: {
-    width: '100%',
-    height: 350,
-    resizeMode: 'cover',
-  },
   cartIcon: {
     position: 'absolute',
     bottom: 15,
@@ -260,7 +311,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 50,
     padding: 10,
-    elevation: 5,
+    elevation: 5, 
   },
   detailsContainer: {
     padding: 15,
@@ -277,7 +328,7 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between', 
     alignItems: 'center',
     marginVertical: 10,
   },
@@ -292,12 +343,19 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: '#000',
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  detailText: {
+    fontSize: 14,
+    color: '#333',
+    marginVertical: 2,
+  },
+  subHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
 });
-
-
-
-
-
-
-
-
