@@ -1,4 +1,3 @@
-
 import { useNavigation } from '@react-navigation/native'; 
 import React, { useEffect, useState,useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
@@ -59,9 +58,9 @@ const CardLayout = () => {
         <View style={styles.iconsContainer}>
           <TouchableOpacity 
             onPress={() => navigation.navigate('Product', { id: item.id })} 
-            style={styles.iconButton}
+            style={styles.iconButton1}
           >
-            <Image source={require('../assests/images/eye.png')} style={styles.iconImage} />
+            <Icon  name="eye"  size={18} color="black"/>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 1,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -142,13 +141,13 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: 13,
+    right: 7,
     flexDirection: 'column',
     alignItems: 'center',
   },
   iconButton: {
-    marginBottom: 10,
+    marginBottom: 1,
   },
   iconImage: {
     width: 24,
@@ -156,6 +155,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   name: {
+    marginStart:10,
     marginTop: 5,
     fontSize: 12,
     fontWeight: 'bold',
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   price: {
+    marginStart:10,
     fontSize: 14,
     fontWeight: 'bold',
     color: '#FF5722',

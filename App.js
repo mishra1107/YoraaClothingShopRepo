@@ -25,15 +25,7 @@ import ProductDetailScreen from './src/Screens/ProductDetailScreen';
 import ArrivalScreen from './src/Screens/ArrivalScreen';
 import { WishlistProvider } from "./src/services/context/WishlistContext";
 // Categories
-import KidScreen from './src/Screens/KidScreen';
-import AccessoriesScreen from './src/Screens/AccessoriesScreen';
-import WomenScreen from './src/Screens/WomenScreen';
-import TopScreen from './src/Screens/TopScreen';
-import BottomScreen from './src/Screens/BottomScreen';
-import OutwearScreen from './src/Screens/OutwearScreen';
-import EthicScreen from './src/Screens/EthicScreen';
-import LoungewearScreen from './src/Screens/LoungewearScreen';
-import ActiveScreen from './src/Screens/ActiveScreen';
+
 // Navigation
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import ItemListScreen from './src/Screens/ItemListScreen';
@@ -43,6 +35,7 @@ import PaymentGatewayScreen from './src/Screens/PaymentGatewayScreen';
 import { initializeApp } from '@react-native-firebase/app';
 import FirebaseApp from '@react-native-firebase/app';
 import SubCategoryScreen from './src/Screens/SubCategoryScreen';
+import GetLatestScreen from './src/Screens/GetLatestScreen';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -61,9 +54,6 @@ if (!FirebaseApp.apps.length) {
 } else {
   FirebaseApp.app(); // If already initialized
 }
-
-
-
 
 const Stack = createStackNavigator();
 
@@ -133,17 +123,10 @@ const App = () => {
         <Stack.Screen name="Arrival" component={ArrivalScreen} />
 
         {/* Categories */}
-        <Stack.Screen name="Kid" component={KidScreen} />
-        <Stack.Screen name="Accessories" component={AccessoriesScreen} />
-        <Stack.Screen name="Women" component={WomenScreen} />
-        <Stack.Screen name="Top" component={TopScreen} />
-        <Stack.Screen name="Bottom" component={BottomScreen} />
-        <Stack.Screen name="Outwear" component={OutwearScreen} />
-        <Stack.Screen name="Ethic" component={EthicScreen} />
-        <Stack.Screen name="Loungewear" component={LoungewearScreen} />
-        <Stack.Screen name="Active" component={ActiveScreen} />
+        
         <Stack.Screen name="Payment" component={PaymentGatewayScreen} />
         <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
+        <Stack.Screen name="GetLatest" component={GetLatestScreen} />
       </Stack.Navigator>
       
       <Toast />

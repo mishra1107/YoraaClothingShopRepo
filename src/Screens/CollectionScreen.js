@@ -1,13 +1,16 @@
+
+
+
 // import React, { useEffect, useState } from 'react';
-// import { 
-//   FlatList, 
-//   ImageBackground, 
-//   StyleSheet, 
-//   Text, 
-//   View, 
-//   Dimensions, 
-//   TouchableOpacity, 
-//   ActivityIndicator 
+// import {
+//   FlatList,
+//   ImageBackground,
+//   StyleSheet,
+//   Text,
+//   View,
+//   Dimensions,
+//   TouchableOpacity,
+//   ActivityIndicator
 // } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useNavigation } from '@react-navigation/native';
@@ -20,10 +23,9 @@
 //   const [loading, setLoading] = useState(true);
 //   const navigation = useNavigation();
 
-//   // Function to fetch categories
 //   const fetchCategories = async () => {
 //     try {
-//       const token = await AsyncStorage.getItem('token');  // Ensure token is stored in AsyncStorage
+//       const token = await AsyncStorage.getItem('token');
 //       const response = await fetch(`${BASE_URL}/categories`, {
 //         method: 'GET',
 //         headers: {
@@ -39,7 +41,6 @@
 //           id: item._id,
 //           title: item.name,
 //           image: { uri: item.imageUrl },
-//           subtitle: 'COLLECTION',
 //         }));
 //         setCollections(categoryData);
 //       } else {
@@ -56,13 +57,16 @@
 //     fetchCategories();
 //   }, []);
 
+//   const handleCategoryPress = (categoryId) => {
+//     navigation.navigate('SubCategoryScreen', { categoryId });
+//   };
+
 //   const renderItem = ({ item }) => (
-//     <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.card}>
+//     <TouchableOpacity onPress={() => handleCategoryPress(item.id)} style={styles.card}>
 //       <ImageBackground source={item.image} style={styles.imageBackground} imageStyle={styles.image}>
 //         <View style={styles.overlay} />
 //         <View style={styles.textContainer}>
 //           <Text style={styles.title}>{item.title}</Text>
-
 //         </View>
 //       </ImageBackground>
 //     </TouchableOpacity>
@@ -134,11 +138,6 @@
 //     fontWeight: 'bold',
 //     textTransform: 'uppercase',
 //   },
-//   subtitle: {
-//     color: '#fff',
-//     fontSize: 14,
-//     textTransform: 'uppercase',
-//   },
 //   loaderContainer: {
 //     flex: 1,
 //     justifyContent: 'center',
@@ -147,7 +146,6 @@
 // });
 
 // export default CollectionScreen;
-
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -212,9 +210,9 @@ const CollectionScreen = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleCategoryPress(item.id)} style={styles.card}>
       <ImageBackground source={item.image} style={styles.imageBackground} imageStyle={styles.image}>
-        <View style={styles.overlay} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.subtitle}>COLLECTION</Text>
         </View>
       </ImageBackground>
     </TouchableOpacity>
@@ -248,32 +246,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 16,
-    marginLeft: 16,
+    marginLeft: 20,
     color: '#000',
   },
   listContainer: {
-    paddingHorizontal: 0,
+    paddingHorizontal: 16,
   },
   card: {
     marginBottom: 16,
     borderRadius: 0,
     overflow: 'hidden',
+    backgroundColor: '#f5f5f5',
   },
   imageBackground: {
-    width: width,
-    height: width * 0.9,
+    width: width - 32,
+    height: (width - 32) * 0.6,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
   image: {
     resizeMode: 'cover',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   textContainer: {
     position: 'absolute',
@@ -282,9 +277,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
+    fontFamily: 'serif',
+  },
+  subtitle: {
+    color: '#fff',
+    fontSize: 14,
+    letterSpacing: 2,
+    fontFamily: 'sans-serif',
   },
   loaderContainer: {
     flex: 1,
@@ -294,4 +295,3 @@ const styles = StyleSheet.create({
 });
 
 export default CollectionScreen;
-

@@ -1,33 +1,47 @@
-import React, { useState } from 'react'; 
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import WomenScreen from '../Screens/WomenScreen';
-import KidScreen from '../Screens/KidScreen';
-import AccessoriesScreen from '../Screens/AccessoriesScreen';
-import ArrivalScreen from './ArrivalScreen';
+import React, { useState,useEffect } from 'react'; 
+import { View, Text,  StyleSheet, } from 'react-native';
 import Pagination from '../Component/Pagination';
 import JustForYou from '../Component/JustForYou';
 import CardLayout from '../Component/CardLayout';
+import IconSection from '../Component/IconSection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ArrivalCategoryList from '../Component/ArrivalCategoryList';
 
-const NewScreen = () => {
+const NewScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
   const [selectedPage, setSelectedPage] = useState(1);
 
   // Content to be displayed based on selected category
-  const getCategoryContent = () => {
-    switch (selectedCategory) {
-      case 'WOMEN':
-        return [{ key: 'WOMEN', component: <WomenScreen /> }];
-      case 'KIDS':
-        return [{ key: 'KIDS', component: <KidScreen /> }];
-      case 'ACCESSORIES':
-        return [{ key: 'ACCESSORIES', component: <AccessoriesScreen /> }];
-      default:
-        return [
-          { key: 'ARRIVAL', component: <ArrivalScreen /> },
-          { key: 'PAGINATION', component: <Pagination totalPages={5} onPageChange={setSelectedPage} /> },
-          { key: 'JUST_FOR_YOU', component: <JustForYou /> },
-          { key: 'CARD_LAYOUT', component: <CardLayout /> },
-        ];
+ 
+  const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => { 
+    if (selectedCategory) {
+      fetchSubcategories(selectedCategory._id);
+    }
+  }, [selectedCategory]); 
+
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.warn(" No token found in AsyncStorage.");
+        return;
+      }
+      const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+      console.log(" Fetching Subcategories from:", apiUrl);
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) throw new Error(" Failed to fetch subcategories");
+      const data = await response.json();
+      setSubcategories(data?.data || []);
+    } catch (error) {
+      // console.error(" Error fetching subcategories:", error.message);
     }
   };
 
@@ -38,34 +52,11 @@ const NewScreen = () => {
         <Text style={styles.heading}>NEW ARRIVAL</Text>
       </View>
 
-      {/* Category Tabs */}
-      <View style={styles.categoryContainer}>
-        {['MEN', 'WOMEN', 'KIDS', 'ACCESSORIES'].map(category => (
-          <TouchableOpacity 
-            key={category}
-            style={[
-              styles.categoryButton,
-              selectedCategory === category && styles.selectedCategory
-            ]}
-            onPress={() => setSelectedCategory(category)}
-          >
-            <Text style={[
-              styles.categoryText,
-              selectedCategory === category && styles.selectedText
-            ]}>
-              {category}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* Dynamic Content rendered using FlatList */}
-      <FlatList
-        data={getCategoryContent()}
-        renderItem={({ item }) => <View>{item.component}</View>}
-        keyExtractor={item => item.key}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
+      <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+      <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
+      <Pagination totalPages={5} onPageChange={setSelectedPage} />
+      <JustForYou/>
+      <CardLayout/>
     </View>
   );
 };
