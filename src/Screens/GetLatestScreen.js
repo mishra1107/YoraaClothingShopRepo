@@ -1,171 +1,193 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { WishlistContext } from '../services/context/WishlistContext';
-import { useCart } from '../services/cart/CartContext';
-import { BASE_URL } from '../constants/config';
+import {WishlistContext} from '../services/context/WishlistContext';
+import {useCart} from '../services/cart/CartContext';
+import {BASE_URL} from '../constants/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-const GetLatestScreen = ({ route }) => {
-    const navigation = useNavigation();
-    const { wishlist, toggleWishlist } = useContext(WishlistContext);
-    const { toggleCart, fetchCart } = useCart();
-    
-    const { subcategoryId } = route.params;
-    const [items, setItems] = useState([]);
+const GetLatestScreen = ({route}) => {
+  const navigation = useNavigation();
+  const {wishlist, toggleWishlist} = useContext(WishlistContext);
+  const {toggleCart, fetchCart} = useCart();
 
-    useEffect(() => {
-        fetchItems();
-    }, []);
+  const {subcategoryId} = route.params;
+  const [items, setItems] = useState([]);
 
-    const fetchItems = async () => { 
-        try {
-            // Log the API URL before making the request
-            const apiUrl = `${BASE_URL}/items/latest-items/${subcategoryId}?page=1&limit=5`;
-            console.log("Fetching from URL:", apiUrl);
-            
-            // Get the token and log it for debugging
-            const token = await AsyncStorage.getItem('token');
-            console.log("Authorization Token:", token);
-            
-            // Make the API call
-            const response = await fetch(apiUrl, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-    
-            // Log the status code and raw response before parsing
-            console.log("Response Status:", response.status);
-            const rawResponse = await response.text();  // Read the raw response as text
-            console.log("Raw API Response:", rawResponse);
-    
-            // Try to parse the response as JSON
-            const data = JSON.parse(rawResponse);
-            if (response.ok) {
-                console.log("Parsed Data:", data);
-                setItems(data?.data || []);
-            } else {
-                console.error("API responded with an error status.");
-            }
-        } catch (error) {
-            console.error("Fetch Items Error:", error.message);
-        }
-    };
-    
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
-    return (
-        <View style={styles.container}>
-            {/*  Header with Back Button & Centered Title */}
-            <View style={styles.header}>
-    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="black" />
-    </TouchableOpacity>
-    <Text style={styles.headerTitle}>NEW ARRIVAL</Text>
-</View>
+  const fetchItems = async () => {
+    try {
+      // Log the API URL before making the request
+      const apiUrl = `${BASE_URL}/items/latest-items/${subcategoryId}?page=1&limit=5`;
+      console.log('Fetching from URL:', apiUrl);
 
-            {/* Item Listing */}
-            <FlatList
-                data={items}
-                keyExtractor={(item) => item._id}
-                numColumns={2}
-                renderItem={({ item }) => (
-                    <View style={styles.itemContainer}>
-                        <View style={styles.imageContainer}>
-                            <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
-                            <View style={styles.iconOverlay}>
-                                <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
-                                    <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
-                                </TouchableOpacity>  
-                             <TouchableOpacity 
-    style={styles.iconButton} 
-    onPress={async () => {
-        await toggleCart(item._id);
-        navigation.navigate('Cart');  // Directly navigate to the cart screen
-    }}>
-    <Icon name="cart-outline" size={18} color="black" />
-</TouchableOpacity>
+      // Get the token and log it for debugging
+      const token = await AsyncStorage.getItem('token');
+      console.log('Authorization Token:', token);
 
-                            </View>
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.itemName}>{item.name}</Text>
-                            <Text style={styles.itemPrice}>₹{item.price}</Text>
-                        </View>
-                    </View>
-                )}
-            />
-        </View>
-    );
+      // Make the API call
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Log the status code and raw response before parsing
+      console.log('Response Status:', response.status);
+      const rawResponse = await response.text(); // Read the raw response as text
+      console.log('Raw API Response:', rawResponse);
+
+      // Try to parse the response as JSON
+      const data = JSON.parse(rawResponse);
+      if (response.ok) {
+        console.log('Parsed Data:', data);
+        setItems(data?.data || []);
+      } else {
+        console.error('API responded with an error status.');
+      }
+    } catch (error) {
+      console.error('Fetch Items Error:', error.message);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      {/*  Header with Back Button & Centered Title */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>NEW ARRIVAL</Text>
+      </View>
+
+      {/* Item Listing */}
+      <FlatList
+        data={items}
+        keyExtractor={item => item._id}
+        numColumns={2}
+        renderItem={({item}) => (
+          <View style={styles.itemContainer}>
+            <View style={styles.imageContainer}>
+              <Image source={{uri: item.imageUrl}} style={styles.itemImage} />
+              <View style={styles.iconOverlay}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Product', {id: item.id})}
+                  style={styles.iconButton}>
+                  <Icon name="eye" size={18} color="black" />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => toggleWishlist(item._id)}
+                  style={styles.iconButton}>
+                  <Icon
+                    name={wishlist[item._id] ? 'heart' : 'heart-outline'}
+                    size={18}
+                    color={wishlist[item._id] ? 'red' : 'black'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.iconButton}
+                  onPress={async () => {
+                    await toggleCart(item._id);
+                    navigation.navigate('Cart'); // Directly navigate to the cart screen
+                  }}>
+                  <Icon name="cart-outline" size={18} color="black" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemPrice}>₹{item.price}</Text>
+            </View>
+          </View>
+        )}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#f9f9f9" },
+  container: {flex: 1, backgroundColor: '#f9f9f9'},
 
-    // ✅ Header with Adjusted Back Icon
-    header: {
-        flexDirection: "row",
-        alignItems: "center",  // Keep text vertically centered
-        justifyContent: "center",
-        paddingVertical: 20,
-        backgroundColor: "#fff",
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
-    backButton: {
-        position: "absolute",
-        left: 15,
-        marginTop: 4,  // Push the back icon slightly downward
-    },
-    headerTitle: {
-        fontSize: 22,
-        fontWeight: "bold",
-        color: "#333",
-    },
+  // ✅ Header with Adjusted Back Icon
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center', // Keep text vertically centered
+    justifyContent: 'center',
+    paddingVertical: 20,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 15,
+    marginTop: 4, // Push the back icon slightly downward
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
 
-    itemContainer: { 
-        flex: 1,
-         margin: 8 
-        },
-    imageContainer: { 
-        position: "relative"
-     },
-    itemImage: {
-         width: "100%", 
-         height: 220, 
-         resizeMode: "cover"
-         },
-    iconOverlay: { 
-        position: "absolute", 
-        bottom: 10, right: 10,
-         flexDirection: "column", 
-         alignItems: "center" },
-    iconButton: {
-         backgroundColor: "white",
-         padding: 5, borderRadius: 15,
-         marginVertical: 5,
-        elevation: 5, 
-           alignItems: "center",
-            justifyContent: "center" },
-    textContainer: { 
-        paddingVertical: 5, 
-        paddingHorizontal: 10 
-    },
-    itemName: { 
-        fontSize: 14,
-         fontWeight: "bold", 
-         color: "#333"
-         },
-    itemPrice: { 
-        color: "#ff5733",
-        fontSize: 16, 
-        fontWeight: "bold",
-        marginTop: 2 },
+  itemContainer: {
+    flex: 1,
+    margin: 8,
+  },
+  imageContainer: {
+    position: 'relative',
+  },
+  itemImage: {
+    width: '100%',
+    height: 220,
+    resizeMode: 'cover',
+  },
+  iconOverlay: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  iconButton: {
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 15,
+    marginVertical: 5,
+    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textContainer: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  itemName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  itemPrice: {
+    color: '#ff5733',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 2,
+  },
 });
-
-
 
 export default GetLatestScreen;

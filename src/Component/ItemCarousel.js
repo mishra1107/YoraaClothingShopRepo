@@ -51,14 +51,17 @@ const ItemCarousel = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
+   
+
       <Image source={item.image} style={styles.image} />
     </View>
   );
 
   return (
+    
     <View style={styles.container}>
       {/* NEW ARRIVALS Header */}
-      <Text style={styles.headerText}>NEW ARRIVALS</Text>
+    
 
       <FlatList
         ref={flatListRef}
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
   card: {
     width: width,
     height: height * 0.5,
-    borderRadius: 15,
+    borderRadius: 0,
     overflow: "hidden",
     backgroundColor: "#fff",
     elevation: 3,

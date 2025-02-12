@@ -72,8 +72,7 @@ const CardLayout = () => {
             }}
           >
             <Icon name="cart-outline" size={18} color="black" />
-          </TouchableOpacity>
-
+           </TouchableOpacity>
           <TouchableOpacity onPress={() => toggleWishlist(item.id)} style={styles.iconButton1}>
   <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
 </TouchableOpacity>

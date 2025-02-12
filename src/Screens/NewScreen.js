@@ -1,9 +1,11 @@
 import React, { useState,useEffect } from 'react'; 
-import { View, Text,  StyleSheet, } from 'react-native';
+import { View, Text,  StyleSheet,ScrollView, } from 'react-native';
+
 import Pagination from '../Component/Pagination';
 import JustForYou from '../Component/JustForYou';
 import CardLayout from '../Component/CardLayout';
 import IconSection from '../Component/IconSection';
+import SubCategoryList from '../Component/SubcategoryList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ArrivalCategoryList from '../Component/ArrivalCategoryList';
 
@@ -41,21 +43,24 @@ const NewScreen = ({navigation}) => {
       const data = await response.json();
       setSubcategories(data?.data || []);
     } catch (error) {
-      // console.error(" Error fetching subcategories:", error.message);
+      console.error(" Error fetching subcategories:", error.message);
     }
   };
 
   return (
     <View style={{ flex: 1 }}>
       {/* Header Section */}
+         <ScrollView>
       <View style={styles.header}>
         <Text style={styles.heading}>NEW ARRIVAL</Text>
       </View>
+
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
       <Pagination totalPages={5} onPageChange={setSelectedPage} />
       <JustForYou/>
       <CardLayout/>
+      </ScrollView>
     </View>
   );
 };

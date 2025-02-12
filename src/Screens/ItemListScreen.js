@@ -45,7 +45,6 @@ const ItemListScreen = ({ route }) => {
     </TouchableOpacity>
     <Text style={styles.headerTitle}>ITEM LISTING</Text>
 </View>
-
             {/* Item Listing */}
             <FlatList
                 data={items}
@@ -56,6 +55,11 @@ const ItemListScreen = ({ route }) => {
                         <View style={styles.imageContainer}>
                             <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
                             <View style={styles.iconOverlay}>
+                                 <TouchableOpacity 
+                                            onPress={() => navigation.navigate('Product', { id: item.id })} 
+                                            style={styles.iconButton} >
+                                            <Icon  name="eye"  size={18} color="black"/>
+                                          </TouchableOpacity>
                                 <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
                                     <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
                                 </TouchableOpacity>  

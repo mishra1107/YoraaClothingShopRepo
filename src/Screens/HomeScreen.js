@@ -57,7 +57,9 @@ const HomeScreen = ({ navigation }) => {
           <SeeAll />
         </View>
         <CardLayout />
+        <Text style={styles.heading1}>NEW ARRIVAL</Text>
         <View style={styles.row}>
+       
           <ItemCarousel />
         </View>
         <HeaderContent />
@@ -67,6 +69,12 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  heading1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginStart:20,
+   
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -77,6 +85,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
+   
   },
 });
 
