@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
     },
     subcategoryImage: {
-        width: 40,
-        height: 40,
+        width: 25,
+        height: 25,
         marginRight: 15,
     },
     subcategoryName: {

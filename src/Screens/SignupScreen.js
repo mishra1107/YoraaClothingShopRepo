@@ -278,8 +278,6 @@
 
 
 
-
-
 import React, {useState} from 'react';
 import {
   View,
@@ -305,30 +303,55 @@ const SignupScreen = ({navigation}) => {
 
   const handleSignup = async () => {
     console.log("Initiating Signup...");
-
+  
     const validationError = validateSignup(fullName, mobileNumber, password, confirmPassword);
     if (validationError) {
       Alert.alert("Validation Error", validationError);
       console.error("Validation Failed:", validationError);
       return;
     }
-
+  
     setLoading(true);
     try {
-      const response = await signupUser(fullName, mobileNumber, password);
+      const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          phNo: String(mobileNumber),
+          password: password,
+        }),
+      });
+  
+      const responseData = await response.json();
+      console.log('Signup Response:', responseData);
+  
       setLoading(false);
-      if (response.success) {
+      if (response.ok && responseData.success) {
         Alert.alert("Success", "Signup successful!");
-        navigation.navigate("LoginVerifyOtp", {phNo: mobileNumber});
-      } else {
-        Alert.alert("Signup Failed", response.message || "Something went wrong!");
+        navigation.navigate("LoginVerifyOtp", { phNo: mobileNumber });
+      } else if (responseData.errorDetails === "") {
+        console.log("Unexpected empty error details.");
+      } else if(responseData.message==="User is not verified. Please verify your account first.") {
+        Alert.alert("Signup Failed", responseData.message || "Something went wrong!");
+        navigation.navigate("LoginVerifyOtp", { phNo: mobileNumber });
+
       }
+      else if(responseData.message==="User is  verified registered. Please login") {
+        Alert.alert("Signup Failed", responseData.message || "Something went wrong!");
+        navigation.navigate("Login");
+
+      }
+      
     } catch (error) {
       console.error("Signup API Error:", error);
       Alert.alert("Error", "Could not complete signup. Please try again.");
     }
     setLoading(false);
   };
+  
 
   return (
     <View style={styles.container}>
@@ -367,9 +390,9 @@ const SignupScreen = ({navigation}) => {
         <Text style={styles.label}>Password</Text>
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, {flex: 1}]}
+            style={[styles.input, {flex: 1,fontSize:12}]}
               placeholder="⭐⭐⭐⭐⭐⭐⭐"
-            placeholderTextColor="#aaa"
+              placeholderTextColor="rgba(171, 171, 171, 1)" 
             secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
@@ -388,9 +411,9 @@ const SignupScreen = ({navigation}) => {
         <Text style={styles.label}>Confirm Password</Text>
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, {flex: 1}]}
+            style={[styles.input, {flex: 1,fontSize:12}]}
                placeholder="⭐⭐⭐⭐⭐⭐⭐"
-            placeholderTextColor="#aaa"
+               placeholderTextColor="rgba(171, 171, 171, 1)" 
             secureTextEntry={!showConfirmPassword}
             value={confirmPassword}
             onChangeText={setConfirmPassword}

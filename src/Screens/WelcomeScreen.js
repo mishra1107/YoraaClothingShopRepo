@@ -302,10 +302,10 @@ const WelcomeScreen = ({ navigation }) => {
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.appleButton}>
+        {/* <TouchableOpacity style={styles.appleButton}>
           <MaterialCommunityIcons name="apple" size={20} color="#FFFFFF" />
           <Text style={styles.appleButtonText}>Continue with Apple</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.skipButton}>

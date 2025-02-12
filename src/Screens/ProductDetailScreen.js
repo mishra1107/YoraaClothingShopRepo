@@ -85,9 +85,7 @@ const ProductDetailScreen = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         
-      
         <ShoppingCarousel images={productDetails.images} />
-
 
         <View style={styles.detailsContainer}>
           <Text style={styles.productTitle}>{productDetails.items.name}</Text>

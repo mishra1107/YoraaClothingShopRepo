@@ -51,7 +51,6 @@ const NewScreen = ({navigation}) => {
       <View style={styles.header}>
         <Text style={styles.heading}>NEW ARRIVAL</Text>
       </View>
-
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
       <Pagination totalPages={5} onPageChange={setSelectedPage} />

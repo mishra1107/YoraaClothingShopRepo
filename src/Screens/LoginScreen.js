@@ -370,11 +370,14 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleSignUpFirebase = async () => {
-    setLoading(true);
+    console.log('Inside Firebase Sign-In');
+
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      const idToken = userInfo.idToken;
+      const idToken = userInfo.data.idToken;
+
+      if (!idToken) throw new Error('Failed to retrieve Google ID Token');
 
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       const userCredential = await auth().signInWithCredential(googleCredential);
@@ -417,8 +420,9 @@ export default function LoginScreen({ navigation }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
       });
-
+      console.log("qwertyuiop")
       const responseData = await response.json();
+      console.log("qwertyuiop11111111111111",responseData.success)
 
       if (response.ok && responseData.success) {
         const { token, user } = responseData.data;
@@ -427,8 +431,9 @@ export default function LoginScreen({ navigation }) {
         Alert.alert('Success', 'Login Successful!');
         navigation.replace('Home');
       } else if (!responseData.success) {
+        console.log("dfghjkhghjkhgjkhg546789897654",phNo)
         Alert.alert('Not Verified', 'User is not verified. Go to the signup page.');
-        navigation.navigate('Signup');
+        navigation.navigate('LoginVerifyOtp',{phNo: phNo});
       } else {
         Alert.alert('Login Failed', responseData.message || 'Invalid credentials.');
       }
@@ -459,8 +464,10 @@ export default function LoginScreen({ navigation }) {
       <Text style={styles.label}>Password</Text>
       <View style={styles.passwordContainer}>
         <TextInput
-          style={styles.passwordInput}
+          // style={styles.passwordInput}
+          style={[styles.passwordInput, {fontSize:12}]}
           placeholder="⭐⭐⭐⭐⭐⭐⭐"
+          placeholderTextColor="rgba(171, 171, 171, 1)" 
           secureTextEntry={!passwordVisible}
           value={password}
           onChangeText={setPassword}
@@ -494,10 +501,10 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.googleButtonText}>Continue with Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.appleButton}>
+      {/* <TouchableOpacity style={styles.appleButton}>
         <FontAwesome name="apple" size={20} color="white" />
         <Text style={styles.appleButtonText}>Continue with Apple</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.signupContainer} onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupText}>Don't have an account? <Text style={styles.signupLink}>Sign-up</Text></Text>

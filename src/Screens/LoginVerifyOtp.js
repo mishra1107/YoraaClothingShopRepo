@@ -245,24 +245,32 @@
 // });
 
 // export default LoginVerifyOtp;
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import { postRequest } from "../api/api"; 
 import { API_ENDPOINTS } from "../constants/config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
+import axios from 'axios';
 
 const LoginVerifyOtp = ({ navigation, route }) => {
+  console.log("xzxzxzxzxzxzx")
   const { phNo } = route.params;
-  const [otp, setOtp] = useState(['', '', '', '']);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(45);
   const [resendDisabled, setResendDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-
+  const [verificationId,setVerificationId] = useState(null);
   const inputs = useRef([]);
+  const BACKEND_URL = 'http://10.0.2.2:8080/api/auth/verifyFirebaseOtp';
+
+  console.log("Phone Number from route params:", phNo);
 
   useEffect(() => {
     startTimer();
+    handleSendOtp();
   }, []);
 
   const startTimer = () => {
@@ -282,62 +290,110 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     return () => clearInterval(countdown);
   };
 
-  const handleOTPChange = (text, index) => {
+  const handleOtpChange = (text, index) => {
+    if (isNaN(text)) return;
+
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
 
-    if (text.length === 1 && index < otp.length - 1) {
+    if (text && index < 5) {
       inputs.current[index + 1]?.focus();
-    } else if (text.length === 0 && index > 0) {
-      inputs.current[index - 1]?.focus();
     }
   };
+
 
   const handleResendOTP = async () => {
-    if (!resendDisabled) {
-      setOtp(['', '', '', '']);
-      startTimer();
-
-      try {
-        const response = await postRequest("http://10.0.2.2:8080/api/auth/generate-otp", { phNo });
-        if (response.success) {
-          Alert.alert("Success", "OTP Resent Successfully. Please enter the new OTP.");
-        } else {
-          Alert.alert("Error", response.message || "Failed to resend OTP.");
-        }
-      } catch (error) {
-        Alert.alert("Error", "Something went wrong while resending OTP.");
-      }
+    console.log("Resending OTP to:", phNo);
+  
+    if (!phNo || phNo.length !== 10) {
+      Alert.alert('Error', 'Please enter a valid 10-digit phone number.');
+      return;
+    }
+  
+    setLoading(true);
+    startTimer(); // Restart the timer
+  
+    try {
+      console.log("Initiating Firebase OTP resend process...");
+      const confirmation = await auth().signInWithPhoneNumber(`+91${phNo}`);
+      console.log("Firebase OTP resent successfully, verificationId:", confirmation.verificationId);
+  
+      setVerificationId(confirmation.verificationId); // Update verificationId with the new one
+      Alert.alert('OTP Resent', `A new OTP has been sent to +91 ${phNo}`);
+    } catch (error) {
+      console.error('Error resending OTP:', error);
+      Alert.alert('Error', 'Failed to resend OTP. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
+  
 
-  const handleVerifyOTP = async () => {
-    if (otp.some((digit) => digit === '')) {
-      Alert.alert("Error", "Please enter the complete OTP.");
+  const handleSendOtp = async () => {
+    console.log("Attempting to send OTP to:", phNo);
+    if (!phNo || phNo.length !== 10) {
+      Alert.alert('Error', 'Please enter a valid 10-digit phone number.');
       return;
     }
 
     setLoading(true);
-    const otpCode = otp.join("");
 
     try {
-      const response = await postRequest("http://10.0.2.2:8080/api/auth/verify-otp", {
-        phNo: String(phNo).trim(),
-        otp: String(otpCode).trim()
+      console.log("Starting Firebase OTP process...");
+      const confirmation = await auth().signInWithPhoneNumber(`+91${phNo}`);
+      console.log("Firebase OTP sent successfully, verificationId:", confirmation.verificationId);
+
+      setVerificationId(confirmation.verificationId);
+      Alert.alert('OTP Sent', 'Please check your phone for the OTP.');
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      Alert.alert('Error', 'Failed to send OTP. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    const fullOtp = otp.join('');
+    console.log("Entered OTP:", fullOtp);
+
+    if (fullOtp.length !== 6) {
+      Alert.alert('Error', 'Please enter a valid 6-digit OTP.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      console.log("Verification ID:", verificationId);
+
+      const credential = auth.PhoneAuthProvider.credential(verificationId, fullOtp);
+      console.log("Firebase Credential created:", credential);
+
+      const userCredential = await auth().signInWithCredential(credential);
+      const idToken = await userCredential.user.getIdToken();
+
+      console.log("Sending to backend:", { idToken, phNo: `+91${phNo}` });
+
+      const response = await axios.post(BACKEND_URL, {
+        idToken,
+        phNo: `+91${phNo}`,
       });
 
-      if (response.success === true) {
-        const { token, user } = response.data;
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('user', JSON.stringify(user));
-        Alert.alert("Success", "OTP Verified Successfully!");
-        navigation.replace('Home');
-      } else {
-        Alert.alert("Verification Failed", response.message || "Invalid OTP.");
-      }
+      console.log("Backend response:", response);
+
+      const { token, user } = response.data.data;
+      Alert.alert('Success', 'Phone number verified successfully!');
+
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+
+      console.log("Token stored in AsyncStorage:", await AsyncStorage.getItem('token'));
+      navigation.replace('Home');
     } catch (error) {
-      Alert.alert("Error", "Something went wrong. Please try again.");
+      console.error('Error verifying OTP:', error);
+      Alert.alert('Error', 'Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -345,14 +401,12 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Welcome')}
-        style={styles.backButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('Welcome')} style={styles.backButton}>
         <MaterialIcons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Verify OTP</Text>
-      <Text style={styles.subtitle}>Enter the OTP sent to +91 ******333</Text>
+      <Text style={styles.subtitle}>Enter the OTP sent to +91 {phNo}</Text>
 
       <View style={styles.otpContainer}>
         {otp.map((digit, index) => (
@@ -362,26 +416,26 @@ const LoginVerifyOtp = ({ navigation, route }) => {
             keyboardType="number-pad"
             maxLength={1}
             value={digit}
-            onChangeText={(text) => handleOTPChange(text, index)}
+            onChangeText={(text) => handleOtpChange(text, index)}
             ref={(input) => (inputs.current[index] = input)}
           />
         ))}
       </View>
 
       <Text style={styles.resendText}>
-        Didn’t you receive the OTP?{' '}
+        Didn’t receive the OTP?{' '}
         <Text
           style={[styles.resendLink, { color: resendDisabled ? '#cccccc' : '#000000' }]}
-          onPress={handleResendOTP}
+          onPress={!resendDisabled ? handleResendOTP : null}
         >
           Resend OTP
         </Text>
       </Text>
 
-      <Text style={styles.timerText}> 00 : {timer.toString().padStart(2, '0')}</Text>
+      <Text style={styles.timerText}>00 : {timer.toString().padStart(2, '0')}</Text>
 
       <TouchableOpacity
-        onPress={handleVerifyOTP}
+        onPress={handleVerifyOtp}
         style={styles.verifyButton}
         disabled={loading}
       >

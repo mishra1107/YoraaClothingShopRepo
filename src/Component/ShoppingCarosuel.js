@@ -21,7 +21,7 @@ const ShoppingCarousel = ({ images = [] }) => {
             animated: true,
           });
         }
-      }, 1000);
+      }, 3000);
       return () => clearInterval(interval);
     }
   }, [images]);
