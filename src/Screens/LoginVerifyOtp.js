@@ -60,7 +60,7 @@
 //       startTimer(); // Restart the timer
 
 //       try {
-//         const response = await postRequest("http://10.0.2.2:8080/api/auth/generate-otp", { phNo });
+//         const response = await postRequest("http://18.144.80.232:8080/api/auth/generate-otp", { phNo });
 //         console.log("Resend OTP Response:", response);
 
 //         if (response.success) {
@@ -90,7 +90,7 @@
 
 //     try {
 //         // Ensure the request format is exactly as needed
-//         const response = await postRequest("http://10.0.2.2:8080/api/auth/verify-otp", {
+//         const response = await postRequest("http://18.144.80.232:8080/api/auth/verify-otp", {
 //             phNo: String(phNo).trim(),  // Ensure phNo is a string
 //             otp: String(otpCode).trim() // Ensure OTP is a string
 //         });
@@ -246,6 +246,7 @@
 
 // export default LoginVerifyOtp;
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
@@ -264,7 +265,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [verificationId,setVerificationId] = useState(null);
   const inputs = useRef([]);
-  const BACKEND_URL = 'http://10.0.2.2:8080/api/auth/verifyFirebaseOtp';
+  const BACKEND_URL = 'http://18.144.80.232:8080/api/auth/verifyFirebaseOtp';
 
   console.log("Phone Number from route params:", phNo);
 

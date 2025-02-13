@@ -17,7 +17,7 @@ const CardLayout = () => {
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 
-        const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
+        const response = await fetch('http://18.144.80.232:8080/api/items?page=1&limit=20', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -82,6 +82,7 @@ const CardLayout = () => {
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
       <Text style={styles.price}>₹{item.price}</Text>
+      <Text style={styles.name}>{item.description}</Text>
     </View>
   );
 

@@ -21,7 +21,7 @@ const ProductDetailScreen = () => {
     const fetchProductDetails = async () => {
       const token = await AsyncStorage.getItem('token');
       try {
-        const response = await fetch(`http://10.0.2.2:8080/api/itemDetails/${id}`, {
+        const response = await fetch(`http://18.144.80.232:8080/api/itemDetails/${id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

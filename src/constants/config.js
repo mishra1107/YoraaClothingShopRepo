@@ -1,7 +1,7 @@
 
 // (emulator local ip)
 
-export const BASE_URL = 'http://10.0.2.2:8080/api';
+export const BASE_URL = 'http://18.144.80.232:8080/api';
 
 // (physical device  local ip)
 
@@ -21,4 +21,5 @@ export const API_ENDPOINTS = {
   REMOVE_CART: '/cart',
   GET_CART: '/cart/user',
   CREATE_ADDRESS: '/address/createAddress',
+   FIREBASE_SIGNUP: '/auth/signup/firebase'
 };

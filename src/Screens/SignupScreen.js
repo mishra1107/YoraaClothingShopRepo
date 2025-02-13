@@ -313,7 +313,7 @@ const SignupScreen = ({navigation}) => {
   
     setLoading(true);
     try {
-      const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
+      const response = await fetch("http://18.144.80.232:8080/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -391,8 +391,8 @@ const SignupScreen = ({navigation}) => {
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.input, {flex: 1,fontSize:12}]}
-              placeholder="⭐⭐⭐⭐⭐⭐⭐"
-              placeholderTextColor="rgba(171, 171, 171, 1)" 
+            placeholder="★★★★★★★"
+            placeholderTextColor="rgba(171, 171, 171, 1)" 
             secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
@@ -412,8 +412,8 @@ const SignupScreen = ({navigation}) => {
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.input, {flex: 1,fontSize:12}]}
-               placeholder="⭐⭐⭐⭐⭐⭐⭐"
-               placeholderTextColor="rgba(171, 171, 171, 1)" 
+            placeholder="★★★★★★★"
+            placeholderTextColor="rgba(171, 171, 171, 1)" 
             secureTextEntry={!showConfirmPassword}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
   },
   signupText: {
     fontSize: 40,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
   },
   loginLink: {
     color: '#000',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   signupButton: {
     position: 'absolute',

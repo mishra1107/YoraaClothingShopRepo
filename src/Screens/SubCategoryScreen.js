@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FlatList,
   View,
   Text,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   Image,
   ActivityIndicator
@@ -12,8 +10,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../constants/config';
-
-const { width } = Dimensions.get('window');
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const SubCategoryScreen = () => {
   const [subcategories, setSubcategories] = useState([]);
@@ -60,13 +58,6 @@ const SubCategoryScreen = () => {
     navigation.navigate('ItemList', { subcategoryId });
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card} onPress={() => handleSubCategoryPress(item.id)}>
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.title}>{item.title}</Text>
-    </TouchableOpacity>
-  );
-
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -77,55 +68,84 @@ const SubCategoryScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>SUBCATEGORIES</Text>
-      <FlatList
-        data={subcategories}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-      />
+
+
+  <View style={styles.header}>
+    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Icon name="arrow-back" size={24} color="black" />
+    </TouchableOpacity>
+    <Text style={styles.headerTitle}>SubCategory</Text>
+</View>
+      {subcategories.length > 0 ? (
+        subcategories.map((sub) => (
+          <TouchableOpacity key={sub.id} style={styles.subcategoryCard} onPress={() => handleSubCategoryPress(sub.id)}>
+            <Image source={sub.image} style={styles.subcategoryImage} />
+            <Text style={styles.subcategoryName}>{sub.title}</Text>
+            <AntDesign name="arrowright" size={20} color="black" style={styles.arrowIcon} />
+          </TouchableOpacity>
+        ))
+      ) : (
+        <Text style={styles.noDataText}>No Subcategories Available</Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    alignItems: "center",  // Keep text vertically centered
+    justifyContent: "center",
+    paddingVertical: 20,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+},
+backButton: {
+    position: "absolute",
+    left: 15,
+    marginTop: 4,  // Push the back icon slightly downward
+},
+headerTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+},
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 16,
-    marginLeft: 16,
-    color: '#000',
-  },
-  listContainer: {
-    paddingHorizontal: 16,
-  },
-  card: {
-    marginBottom: 16,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-  },
-  image: {
-    width: width - 32,
-    height: 200,
-    resizeMode: 'cover',
-  },
-  title: {
     padding: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+  },
+  subcategoryCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  subcategoryImage: {
+    width: 20,
+    height: 20,
+    marginRight: 15,
+  },
+  subcategoryName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    flex: 1,
+  },
+  arrowIcon: {
+    padding: 10,
   },
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  noDataText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
+    marginVertical: 10,
   },
 });
 

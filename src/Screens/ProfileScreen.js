@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfileScreen = () => {
-  const navigation = useNavigation();
-
+ const navigation = useNavigation();
 
   const [data, setData] = useState(null);
 
@@ -27,7 +26,7 @@ const ProfileScreen = () => {
         }
         console.log("Token found:", token);
 
-        const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
+        const apiUrl = "http://18.144.80.232:8080/api/userProfile/getProfile";
         console.log("Fetching user profile from:", apiUrl);
 
         const response = await fetch(apiUrl, {

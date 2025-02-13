@@ -84,9 +84,9 @@ const ShoppingCarousel = ({ images = [] }) => {
         })}
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('New')} style={styles.exploreButton}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate('New')} style={styles.exploreButton}>
         <Text style={styles.buttonText}>EXPLORE</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -149,9 +149,10 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#000",
+    backgroundColor: "#fff",  // Change from "#000" to "#fff"
     marginHorizontal: 6,
   },
+  
   exploreButton: {
     position: "absolute",
     bottom: 20,

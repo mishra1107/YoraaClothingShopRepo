@@ -28,7 +28,7 @@ const CartScreen = () => {
   //     const token = await AsyncStorage.getItem('token');
   //     if (!token) throw new Error('No token found');
 
-  //     const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+  //     const response = await fetch('http://18.144.80.232:8080/api/address/user', {
   //       method: 'GET',
   //       headers: {
   //         'Authorization': `Bearer ${token}`,
@@ -60,7 +60,7 @@ const CartScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
   
-      const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+      const response = await fetch('http://18.144.80.232:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

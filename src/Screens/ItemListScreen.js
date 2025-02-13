@@ -43,7 +43,7 @@ const ItemListScreen = ({ route }) => {
     <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Icon name="arrow-back" size={24} color="black" />
     </TouchableOpacity>
-    <Text style={styles.headerTitle}>ITEM LISTING</Text>
+    <Text style={styles.headerTitle}>ITEM LIST</Text>
 </View>
             {/* Item Listing */}
             <FlatList

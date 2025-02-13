@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import { COLORS } from '../utils/constants';
+
+const { width, height } = Dimensions.get('window');
 
 const SplashScreen = ({ navigation }) => {
   useEffect(() => {
-   
     const timer = setTimeout(() => {
       navigation.replace('Welcome'); 
     }, 1000);
@@ -28,12 +29,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff', 
-  
+    backgroundColor: '#fff',
   },
   image: {
-    width: '80%', 
-    height: '50%', 
+    width: width * 0.6, 
+    height: height * 0.2, 
   },
 });
 
