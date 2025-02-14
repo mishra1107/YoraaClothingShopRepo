@@ -14,6 +14,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useColorScheme } from 'react-native';
+
 
 GoogleSignin.configure({
   webClientId: '841829729642-5vo1cbgnrsl83sm8c8h63s7c0hf0i3mi.apps.googleusercontent.com',
@@ -25,6 +27,8 @@ export default function LoginScreen({ navigation }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const colorScheme = useColorScheme();
+const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -124,6 +128,7 @@ export default function LoginScreen({ navigation }) {
 
       <Text style={styles.label}>Mobile No.</Text>
       <TextInput
+       placeholderTextColor={placeholderTextColor} 
         style={styles.input}
         placeholder="+91"
         keyboardType="phone-pad"

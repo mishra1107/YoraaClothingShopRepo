@@ -26,7 +26,9 @@ const ArrivalCategoryList = ({ subcategories, navigation }) => {
                     <TouchableOpacity key={sub._id} style={styles.subcategoryCard} onPress={() => fetchItemsBySubcategory(sub._id)}>
                         <Image source={{ uri: sub.imageUrl }} style={styles.subcategoryImage} />
                         <Text style={styles.subcategoryName}>{sub.name}</Text>
-                        <AntDesign name="arrowright" size={20} color="black" style={styles.arrowIcon} />
+                        {/* <AntDesign name="arrowright" size={20} color="black" style={styles.arrowIcon} /> */}
+
+                          <Text style={styles.optionArrow}>›</Text>
                     </TouchableOpacity>
                 ))
             ) : (
@@ -37,6 +39,10 @@ const ArrivalCategoryList = ({ subcategories, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    optionArrow: {
+        fontSize: 25,
+        color: '#000',
+      },
     subcategoryCard: {
         flexDirection: "row",
         alignItems: "center",

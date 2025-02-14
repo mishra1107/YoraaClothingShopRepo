@@ -78,10 +78,8 @@ const ProductDetailScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Image 
-                                source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
-                                style={styles.backIconImage}  // ✅ Apply styles for proper size
-                              />
+        <Image   source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset  style={styles.backIconImage}  // ✅ Apply styles for proper size
+/>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>DETAILS</Text>
       </View>

@@ -261,8 +261,8 @@
 //     fontWeight: 'bold',
 //   },
 // });
-
 // export default UpdateProfileScreen;
+
 
 import React, {useEffect, useState} from 'react'; 
 import {
@@ -281,11 +281,14 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { useColorScheme } from 'react-native';
 
 const UpdateProfileScreen = () => {
   const navigation = useNavigation();
   const [profile, setProfile] = useState({});
   const [profileImage, setProfileImage] = useState(null);
+  const colorScheme = useColorScheme();
+const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const convertToDateFormat = timestamp => {
     if (!timestamp || timestamp.trim() === '') {
@@ -420,6 +423,7 @@ const UpdateProfileScreen = () => {
         <Text style={styles.headerTitle}>PROFILE</Text>
       </View>
 
+
       <View style={styles.avatarContainer}>
         <View style={styles.imageBorder}>
           <Image source={profileImage || require('../assests/images/Profile.png')} style={styles.profileImage} />
@@ -429,16 +433,16 @@ const UpdateProfileScreen = () => {
         </View>
       </View>
 
-      <TextInput style={styles.input} placeholder="Rithik" value={profile?.user?.name || ''} editable={false} />
-      <TextInput style={styles.input} placeholder="Address" value={profile?.address} editable={false} />
-      <TextInput style={styles.input} placeholder="Phone" value={profile?.user?.phNo || ''} keyboardType="phone-pad" editable={false} />
-      <TextInput style={styles.input} placeholder="@gmail.com" keyboardType="email-address" value={profile?.email} editable={false} />
+      <TextInput style={styles.input} placeholder="Rithik"  placeholderTextColor={placeholderTextColor}   value={profile?.user?.name || ''} editable={false} />
+      <TextInput style={styles.input} placeholder="Address" placeholderTextColor={placeholderTextColor}  value={profile?.address} editable={false} />
+      <TextInput style={styles.input} placeholder="Phone"  placeholderTextColor={placeholderTextColor}  value={profile?.user?.phNo || ''} keyboardType="phone-pad" editable={false} />
+      <TextInput style={styles.input} placeholder="@gmail.com" placeholderTextColor={placeholderTextColor}  keyboardType="email-address" value={profile?.email} editable={false} />
 
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
-      <TextInput style={styles.input} placeholder="Date of Birth" value={convertToDateFormat(profile?.dob)} editable={false} />
-      <TextInput style={styles.input} placeholder="Anniversary" value={convertToDateFormat(profile?.anniversary)} editable={false} />
-      <TextInput style={styles.input} placeholder="Gender" value={profile?.gender} editable={false} />
-      <TextInput style={styles.input} placeholder="Style Preference" value={profile?.stylePreferences || ''} editable={false} />
+      <TextInput style={styles.input} placeholder="Date of Birth" placeholderTextColor={placeholderTextColor}  value={convertToDateFormat(profile?.dob)} editable={false} />
+      <TextInput style={styles.input} placeholder="Anniversary" placeholderTextColor={placeholderTextColor}  value={convertToDateFormat(profile?.anniversary)} editable={false} />
+      <TextInput style={styles.input} placeholder="Gender" placeholderTextColor={placeholderTextColor}  value={profile?.gender} editable={false} />
+      <TextInput style={styles.input} placeholder="Style Preference" placeholderTextColor={placeholderTextColor}   value={profile?.stylePreferences || ''} editable={false} />
 
       <Text style={styles.note}>We need your details to unlock personalized gift cards and exclusive offers tailored just for you</Text>
 
@@ -448,7 +452,6 @@ const UpdateProfileScreen = () => {
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
 
 
@@ -456,10 +459,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center", // Ensures both back icon and title align properly
     justifyContent: "center", // Centers content in row
-    // paddingVertical: 15,
+   
     backgroundColor: "#fff",
-    // borderBottomWidth: 1,
-    // borderBottomColor: "#ddd",
+   
     paddingHorizontal: 10,
   },
   backIcon: {
@@ -545,6 +547,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 export default UpdateProfileScreen;
 

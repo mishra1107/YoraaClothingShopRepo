@@ -8,11 +8,11 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,Image, KeyboardAvoidingView,ScrollView
-
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {signupUser} from '../api/auth';
 import {validateSignup} from '../utils/validator';
+import { useColorScheme } from 'react-native';
 
 const SignupScreen = ({navigation}) => {
   const [fullName, setFullName] = useState('');
@@ -22,8 +22,10 @@ const SignupScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-
+  // Inside your component:
+const colorScheme = useColorScheme();
+const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
+  
 
   const scrollViewRef = useRef();
 
@@ -98,8 +100,6 @@ const SignupScreen = ({navigation}) => {
       contentContainerStyle={{ flexGrow: 1 }} 
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}  >
-
-
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => navigation.goBack()}>
@@ -125,10 +125,11 @@ const SignupScreen = ({navigation}) => {
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Mobile No.</Text>
         <TextInput
+         placeholderTextColor={placeholderTextColor} 
           style={styles.input}
           keyboardType="phone-pad"
           placeholder="+91"
-          placeholderTextColor="#aaa"
+       
           value={mobileNumber}
           onChangeText={setMobileNumber}
         />
@@ -183,7 +184,6 @@ const SignupScreen = ({navigation}) => {
           Already have an account? <Text style={styles.loginLink}>Login</Text>
         </Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         onPress={handleSignup}
         style={styles.signupButton}
@@ -251,13 +251,13 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 20,
+    width: '100%',  // ✅ Ensures full width
     backgroundColor: 'black',
     padding: 16,
     alignItems: 'center',
-  },
+},
+
   signupButtonText: {
     color: 'white',
     fontSize: 16,

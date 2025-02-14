@@ -22,7 +22,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import auth from '@react-native-firebase/auth';
-import axios from 'axios';
+// import axios from 'axios';
+import { useColorScheme } from 'react-native';
 const EditProfileScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -35,6 +36,8 @@ const EditProfileScreen = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState('');
+  const colorScheme = useColorScheme();
+  const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const [profileData, setProfileData] = useState({
     name: profile?.user?.name || '',
@@ -332,15 +335,17 @@ const EditProfileScreen = () => {
       </View> */}
 
 <View style={styles.header}>
-  <TouchableOpacity
-    style={styles.backIcon}
-    onPress={() => navigation.goBack()}
-  >
-    <Image 
-      source={require('../assests/images/BackArrow.png')}
-      style={styles.backIconImage}
-    />
-  </TouchableOpacity>
+<TouchableOpacity
+  style={styles.backIcon}
+  onPress={() => navigation.goBack()}
+  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // ✅ Expands touch area
+>
+  <Image 
+    source={require('../assests/images/BackArrow.png')}
+    style={styles.backIconImage}
+  />
+</TouchableOpacity>
+
   <Text style={styles.headerTitle}>PROFILE</Text>
 </View>
       <View style={styles.avatarContainer}>
@@ -352,13 +357,14 @@ const EditProfileScreen = () => {
         </View>
       </View>
 
-      <TextInput style={styles.input} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
-      <TextInput style={styles.input} placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
+      <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
+      <TextInput style={styles.input} placeholderTextColor={placeholderTextColor}  placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
 
       <View>
   {/* Phone Input */}
   <TextInput
     style={[styles.input, userData.isPhoneVerified && styles.disabledInput]}
+    placeholderTextColor={placeholderTextColor}
     placeholder="Phone"
     keyboardType="phone-pad"
     value={profileData.phNo}
@@ -408,6 +414,7 @@ const EditProfileScreen = () => {
   {/* Phone Input */}
   <TextInput
     style={[styles.input, userData.isEmailVerified && styles.disabledInput]}
+    placeholderTextColor={placeholderTextColor}
     placeholder="Email"
     keyboardType="email-address"
     value={profileData.email}
@@ -430,6 +437,7 @@ const EditProfileScreen = () => {
       {/* OTP Input */}
       <TextInput
         style={styles.input}
+        placeholderTextColor={placeholderTextColor}
         placeholder="Enter OTP"
         keyboardType="numeric"
         maxLength={6}
@@ -452,11 +460,11 @@ const EditProfileScreen = () => {
     </>
   )}
 </View>
-
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
 
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <TextInput
+        placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Date of Birth"
           value={profileData.dob ? convertToDateFormat(profileData.dob) : ""}
@@ -479,6 +487,7 @@ const EditProfileScreen = () => {
 
       <TouchableOpacity onPress={() => setAnniversaryDate(true)}>
         <TextInput
+        placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Anniversary"
           value={profileData.anniversary ? convertToDateFormat(profileData.anniversary) : ""}
@@ -501,6 +510,7 @@ const EditProfileScreen = () => {
 
       <TouchableOpacity style={styles.inputWrapper} onPress={() => setGenderDropdownVisible(!isGenderDropdownVisible)}>
         <TextInput
+        placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Gender"
           value={profileData.gender}
@@ -558,10 +568,14 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    left: 10, // Moves icon to the left
-    alignItems: "center", // Keeps it vertically centered
+    left: 10,
+    alignItems: "center",
     justifyContent: "center",
+    zIndex: 10, 
+    width: 40,  
+    height: 40, 
   },
+  
   backIconImage: {
     width: 24,
     height: 24,
