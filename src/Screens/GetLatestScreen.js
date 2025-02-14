@@ -86,7 +86,7 @@ const GetLatestScreen = ({route}) => {
               <Image source={{uri: item.imageUrl}} style={styles.itemImage} />
               <View style={styles.iconOverlay}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Product', {id: item.id})}
+                  onPress={() => navigation.navigate('Product', {id: item._id})}
                   style={styles.iconButton}>
                   <Icon name="eye" size={18} color="black" />
                 </TouchableOpacity>

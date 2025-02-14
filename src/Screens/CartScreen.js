@@ -151,11 +151,16 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>CART</Text>
+       <View style={styles.header}>
+          <TouchableOpacity
+                       style={styles.backIcon}
+                       onPress={() => navigation.goBack()}>
+                       <Image 
+                         source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+                         style={styles.backIconImage}  // ✅ Apply styles for proper size
+                       />
+                     </TouchableOpacity>
+          <Text style={styles.headerTitle}>CART ITEM</Text>
       </View>
 
       <FlatList data={cart} renderItem={renderCartItem} keyExtractor={item => item.cartId.toString()} />
@@ -200,14 +205,31 @@ const CartScreen = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", // Ensures proper spacing
+    paddingVertical: 15,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
+    paddingHorizontal: 10, // Ensures padding on both sides
   },
-  backButton: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: 'bold' },
+  backIcon: {
+    width: 40, // Ensures it takes proper space
+    alignItems: "flex-start", // Keeps it aligned left
+  },
+  backIconImage: {
+    width: 24,
+    height: 24,
+    tintColor: 'black',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+    flex: 1, // Ensures text remains centered
+  },
   cartItem: {
     flexDirection: 'row',
     alignItems: 'center',

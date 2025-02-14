@@ -36,7 +36,7 @@ const CardLayout = () => {
           price: item.price || '0',
           image: item.imageUrl || '',
         }));
-
+        console.log("items",items)
         setProducts(items);
       } catch (error) {
         console.error('Error fetching items:', error);

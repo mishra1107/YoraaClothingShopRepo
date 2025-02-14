@@ -264,15 +264,6 @@
 
 // export default UpdateProfileScreen;
 
-
-
-
-
-
-
-
-
-
 import React, {useEffect, useState} from 'react'; 
 import {
   Image,
@@ -408,19 +399,33 @@ const UpdateProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-left" size={20} color="#000" />
         </TouchableOpacity>
         <Text style={styles.header}>PROFILE</Text>
+      </View> */}
+
+
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backIcon}
+          onPress={() => navigation.goBack()}
+        >
+          <Image 
+            source={require('../assests/images/BackArrow.png')}
+            style={styles.backIconImage}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>PROFILE</Text>
       </View>
 
       <View style={styles.avatarContainer}>
         <View style={styles.imageBorder}>
           <Image source={profileImage || require('../assests/images/Profile.png')} style={styles.profileImage} />
-          <TouchableOpacity style={styles.cameraIcon} onPress={handleImagePick}>
+          {/* <TouchableOpacity style={styles.cameraIcon} onPress={handleImagePick}>
             <Icon name="camera" size={18} color="#fff" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -445,26 +450,43 @@ const UpdateProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+
+
+  header: {
+    flexDirection: "row",
+    alignItems: "center", // Ensures both back icon and title align properly
+    justifyContent: "center", // Centers content in row
+    // paddingVertical: 15,
+    backgroundColor: "#fff",
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#ddd",
+    paddingHorizontal: 10,
+  },
+  backIcon: {
+    position: "absolute",
+    left: 10, // Moves icon to the left
+    alignItems: "center", // Keeps it vertically centered
+    justifyContent: "center",
+  },
+  backIconImage: {
+    width: 24,
+    height: 24,
+    tintColor: 'black',
+  },
+  headerTitle: {
+   marginBottom:10,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+  },
   container: {
     flexGrow: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  backButton: {
-    padding: 10,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-    marginLeft: 10,
-  },
+ 
   avatarContainer: {
     alignSelf: 'center',
     position: 'relative',

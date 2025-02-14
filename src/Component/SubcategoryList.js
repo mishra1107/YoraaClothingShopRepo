@@ -9,11 +9,11 @@ const BASE_URL = "http://18.144.80.232:8080/api";
 const SubCategoryList = ({ subcategories, navigation }) => {
     const fetchItemsBySubcategory = async (subcategoryId) => {
         try {
-            const token = await AsyncStorage.getItem('token');
-            if (!token) {
-                console.warn(" No token found in AsyncStorage.");
-                return;
-            }
+            // const token = await AsyncStorage.getItem('token');
+            // if (!token) {
+            //     console.warn(" No token found in AsyncStorage.");
+            //     return;
+            // }
             navigation.navigate('ItemList', { subcategoryId });
         } catch (error) {
             console.error(" Error fetching items:", error.message);

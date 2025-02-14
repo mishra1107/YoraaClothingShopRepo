@@ -59,7 +59,7 @@ const EditProfileScreen = () => {
           return;
         }
 
-        const apiUrl = 'http://18.144.80.232:8080/api/userProfile/getProfile';
+        const apiUrl = 'http://192.168.1.13:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -257,7 +257,7 @@ const EditProfileScreen = () => {
       console.log("qqqqqqqqqqqqqqqq22222222", formData)
 
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://18.144.80.232:8080/api/userProfile/updateProfile', {
+      const response = await fetch('http://192.168.1.13:8080/api/userProfile/updateProfile', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -277,7 +277,7 @@ const EditProfileScreen = () => {
   };
   const sendVerificationEmail = async () => {
     try {
-      const response = await fetch('http://18.144.80.232:8080/api/auth/sendVerificationEmail', {
+      const response = await fetch('http://192.168.1.13:8080/api/auth/sendVerificationEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -298,7 +298,7 @@ const EditProfileScreen = () => {
   };
   const verifyEmail = async ( otp) => {
     try {
-      const response = await fetch('http://18.144.80.232:8080/api/auth/verifyEmail', {
+      const response = await fetch('http://192.168.1.13:8080/api/auth/verifyEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -324,13 +324,25 @@ const EditProfileScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-left" size={20} color="#000" />
         </TouchableOpacity>
         <Text style={styles.header}>PROFILE</Text>
-      </View>
+      </View> */}
 
+<View style={styles.header}>
+  <TouchableOpacity
+    style={styles.backIcon}
+    onPress={() => navigation.goBack()}
+  >
+    <Image 
+      source={require('../assests/images/BackArrow.png')}
+      style={styles.backIconImage}
+    />
+  </TouchableOpacity>
+  <Text style={styles.headerTitle}>PROFILE</Text>
+</View>
       <View style={styles.avatarContainer}>
         <View style={styles.imageBorder}>
           <Image source={profileImage} style={styles.profileImage} />
@@ -342,29 +354,6 @@ const EditProfileScreen = () => {
 
       <TextInput style={styles.input} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
       <TextInput style={styles.input} placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       <View>
   {/* Phone Input */}
@@ -415,11 +404,6 @@ const EditProfileScreen = () => {
   )}
 </View>
 
-
-
-
-
-
 <View>
   {/* Phone Input */}
   <TextInput
@@ -468,27 +452,6 @@ const EditProfileScreen = () => {
     </>
   )}
 </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
 
@@ -583,6 +546,34 @@ const EditProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    alignItems: "center", // Ensures both back icon and title align properly
+    justifyContent: "center", // Centers content in row
+    paddingVertical: 15,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    paddingHorizontal: 10,
+  },
+  backIcon: {
+    position: "absolute",
+    left: 10, // Moves icon to the left
+    alignItems: "center", // Keeps it vertically centered
+    justifyContent: "center",
+  },
+  backIconImage: {
+    width: 24,
+    height: 24,
+    tintColor: 'black',
+  },
+  headerTitle: {
+   marginBottom:10,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+  },
   container: {
     flexGrow: 1,
     backgroundColor: '#fff',

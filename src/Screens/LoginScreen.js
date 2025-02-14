@@ -107,9 +107,18 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Welcome')} style={styles.backButton}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate('Welcome')} style={styles.backButton}>
         <Icon name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+<TouchableOpacity
+  style={styles.backIcon}
+  onPress={() => navigation.goBack()}>
+  <Image 
+    source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+    style={styles.backIconImage}  // ✅ Apply styles for proper size
+  />
+</TouchableOpacity>
 
       <Text style={styles.title}>LogIn</Text>
 
@@ -162,10 +171,10 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.googleButtonText}>Continue with Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.appleButton}>
+      {/* <TouchableOpacity style={styles.appleButton}>
         <FontAwesome name="apple" size={20} color="white" />
         <Text style={styles.appleButtonText}>Continue with Apple</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.signupContainer} onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupText}>Don't have an account? <Text style={styles.signupLink}>Sign-up</Text></Text>
@@ -179,6 +188,11 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  backIconImage: {
+    width: 28,   // ✅ Match original icon size
+    height: 28,  // ✅ Keep square dimensions
+    tintColor: 'black', // ✅ Optional: Change color if needed
+  },
   container: {
     flex: 1,
     padding: 20,

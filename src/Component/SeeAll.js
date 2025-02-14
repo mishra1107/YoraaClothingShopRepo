@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const SeeAll = () => {
   const navigation=useNavigation();
-  return (
-    <TouchableOpacity  onPress={() => navigation.navigate("New")} style={styles.button}>
+  return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+    <TouchableOpacity  onPress={() => navigation.navigate("AllCollection")} style={styles.button}>
       <View style={styles.leftBorder} />
       <View style={styles.content}>
         <Text style={styles.text}>SEE ALL</Text>

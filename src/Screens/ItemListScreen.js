@@ -40,9 +40,14 @@ const ItemListScreen = ({ route }) => {
         <View style={styles.container}>
             {/*  Header with Back Button & Centered Title */}
             <View style={styles.header}>
-    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="black" />
-    </TouchableOpacity>
+    <TouchableOpacity
+                 style={styles.backIcon}
+                 onPress={() => navigation.goBack()}>
+                 <Image 
+                   source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+                   style={styles.backIconImage}  // ✅ Apply styles for proper size
+                 />
+               </TouchableOpacity>
     <Text style={styles.headerTitle}>ITEM LIST</Text>
 </View>
             {/* Item Listing */}
@@ -56,7 +61,7 @@ const ItemListScreen = ({ route }) => {
                             <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
                             <View style={styles.iconOverlay}>
                                  <TouchableOpacity 
-                                            onPress={() => navigation.navigate('Product', { id: item.id })} 
+                                            onPress={() => navigation.navigate('Product', { id: item._id })} 
                                             style={styles.iconButton} >
                                             <Icon  name="eye"  size={18} color="black"/>
                                           </TouchableOpacity>
@@ -91,24 +96,30 @@ const styles = StyleSheet.create({
     // ✅ Header with Adjusted Back Icon
     header: {
         flexDirection: "row",
-        alignItems: "center",  // Keep text vertically centered
-        justifyContent: "center",
-        paddingVertical: 20,
+        alignItems: "center",
+        justifyContent: "space-between", // Ensures proper spacing
+        paddingVertical: 15,
         backgroundColor: "#fff",
         borderBottomWidth: 1,
         borderBottomColor: "#ddd",
-    },
-    backButton: {
-        position: "absolute",
-        left: 15,
-        marginTop: 4,  // Push the back icon slightly downward
-    },
-    headerTitle: {
-        fontSize: 22,
+        paddingHorizontal: 10, // Ensures padding on both sides
+      },
+      backIcon: {
+        width: 40, // Ensures it takes proper space
+        alignItems: "flex-start", // Keeps it aligned left
+      },
+      backIconImage: {
+        width: 24,
+        height: 24,
+        tintColor: 'black',
+      },
+      headerTitle: {
+        fontSize: 20,
         fontWeight: "bold",
         color: "#333",
-    },
-
+        textAlign: "center",
+        flex: 1, // Ensures text remains centered
+      },
     itemContainer: { 
         flex: 1,
          margin: 8 

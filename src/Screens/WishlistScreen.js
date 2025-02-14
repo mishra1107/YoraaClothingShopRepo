@@ -76,12 +76,17 @@ const WishlistScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>WISH LIST</Text>
-      </View>
+          <View style={styles.header}>
+         <TouchableOpacity
+                      style={styles.backIcon}
+                      onPress={() => navigation.goBack()}>
+                      <Image 
+                        source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+                        style={styles.backIconImage}  // ✅ Apply styles for proper size
+                      />
+                    </TouchableOpacity>
+         <Text style={styles.headerTitle}>WISHLIST</Text>
+     </View>
 
       {/* Show Loader while fetching data */}
       {loading ? (
@@ -104,23 +109,30 @@ const WishlistScreen = () => {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", // Ensures proper spacing
     paddingVertical: 15,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
+    paddingHorizontal: 10, // Ensures padding on both sides
   },
-  backButton: {
-    padding: 5,
+  backIcon: {
+    width: 40, // Ensures it takes proper space
+    alignItems: "flex-start", // Keeps it aligned left
+  },
+  backIconImage: {
+    width: 24,
+    height: 24,
+    tintColor: 'black',
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-    textAlign: 'right',
-    marginRight: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+    flex: 1, // Ensures text remains centered
   },
   loader: {
     flex: 1,

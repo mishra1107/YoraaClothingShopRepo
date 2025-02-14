@@ -36,6 +36,7 @@ import { initializeApp } from '@react-native-firebase/app';
 import FirebaseApp from '@react-native-firebase/app';
 import SubCategoryScreen from './src/Screens/SubCategoryScreen';
 import GetLatestScreen from './src/Screens/GetLatestScreen';
+import AllCollection from './src/Screens/AllCollection';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -121,6 +122,7 @@ const App = () => {
         <Stack.Screen name="Collection" component={CollectionScreen} />
         <Stack.Screen name="Product" component={ProductDetailScreen} />
         <Stack.Screen name="Arrival" component={ArrivalScreen} />
+        <Stack.Screen name="AllCollection" component={AllCollection} />
 
         {/* Categories */}
         

@@ -248,7 +248,7 @@
 
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert,Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import { postRequest } from "../api/api"; 
 import { API_ENDPOINTS } from "../constants/config";
@@ -402,9 +402,14 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Welcome')} style={styles.backButton}>
-        <MaterialIcons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
+     <TouchableOpacity
+              style={styles.backIcon}
+              onPress={() => navigation.goBack()}>
+              <Image 
+                source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+                style={styles.backIconImage}  // ✅ Apply styles for proper size
+              />
+            </TouchableOpacity>
 
       <Text style={styles.title}>Verify OTP</Text>
       <Text style={styles.subtitle}>Enter the OTP sent to +91 {phNo}</Text>
@@ -447,6 +452,12 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+
+  backIconImage: {
+    width: 28,   // ✅ Match original icon size
+    height: 28,  // ✅ Keep square dimensions
+    tintColor: 'black', // ✅ Optional: Change color if needed
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',

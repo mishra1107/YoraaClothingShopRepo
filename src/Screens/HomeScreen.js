@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, Text ,Image} from 'react-native';
 import FilterSection from './../Component/FilterSection';
 import IconSection from './../Component/IconSection';
 import ImageSection from './../Component/ImageSection';
@@ -23,21 +23,24 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.warn(" No token found in AsyncStorage.");
-        return;
-      }
+      // const token = await AsyncStorage.getItem('token');
+      // if (!token) {
+      //   console.warn(" No token found in AsyncStorage.");
+      //   return;
+      // }
       const apiUrl = `http://18.144.80.232:8080/api/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) throw new Error(" Failed to fetch subcategories");
+      if (!response.ok){
+        setSubcategories(data?.data || []);
+        throw new Error(" Failed to fetch subcategories");
+      } 
       const data = await response.json();
       setSubcategories(data?.data || []);
     } catch (error) {
