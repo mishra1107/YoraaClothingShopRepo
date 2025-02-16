@@ -1,11 +1,15 @@
 
-// (emulator local ip)
+// (physical device ip)
 
-export const BASE_URL = 'http://18.144.80.232:8080/api';
+// export const BASE_URL = 'http://192.168.1.10:8080/api';
 
-// (physical device  local ip)
 
-// export const BASE_URL = 'http://192.168.1.24:8080/api';
+// (localhost  system ip) 
+
+export const BASE_URL='http://10.0.2.2:8080/api';
+
+// (Server Ip)
+
 
 export const API_ENDPOINTS = {
   SIGNUP: '/auth/signup',

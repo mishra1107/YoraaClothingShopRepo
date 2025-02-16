@@ -26,7 +26,7 @@ const ProfileScreen = () => {
         }
         console.log("Token found:", token);
 
-        const apiUrl = "http://18.144.80.232:8080/api/userProfile/getProfile";
+        const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
         console.log("Fetching user profile from:", apiUrl);
 
         const response = await fetch(apiUrl, {
@@ -115,7 +115,7 @@ const ProfileScreen = () => {
 
       <ScrollView contentContainerStyle={styles.optionsContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Track')}
+          onPress={() => navigation.navigate('Order')}
           style={styles.option}>
           <View style={styles.optionContent}>
             <Image

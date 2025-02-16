@@ -18,7 +18,7 @@ import UpdateProfileScreen from './src/Screens/UpdateProfileScreen';
 import ContactusScreen from './src/Screens/ContactusScreen';
 import TermsConditionScreen from './src/Screens/TermsConditionScreen';
 import PrivacyPolicyScreen from './src/Screens/PrivacyPolicyScreen';
-import TrackScreen from './src/Screens/TrackScreen';
+import TrackScreen from './src/Screens/OrderScreen';
 import TrackingOrderScreen from './src/Screens/TrackingOrderScreen';
 import CollectionScreen from './src/Screens/CollectionScreen';
 import ProductDetailScreen from './src/Screens/ProductDetailScreen';
@@ -37,6 +37,8 @@ import FirebaseApp from '@react-native-firebase/app';
 import SubCategoryScreen from './src/Screens/SubCategoryScreen';
 import GetLatestScreen from './src/Screens/GetLatestScreen';
 import AllCollection from './src/Screens/AllCollection';
+import ResetPasswordScreen from './src/Screens/ResetPasswordScreen';
+import OrderScreen from './src/Screens/OrderScreen';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -76,7 +78,6 @@ const App = () => {
         setInitialRoute('Splash'); // Fallback in case of error
       }
     };
-
     checkLoginStatus();
   }, []);
 
@@ -115,7 +116,7 @@ const App = () => {
         <Stack.Screen name="Privacy" component={PrivacyPolicyScreen} />
 
         {/* Order Tracking */}
-        <Stack.Screen name="Track" component={TrackScreen} />
+        <Stack.Screen name="Order" component={OrderScreen} />
         <Stack.Screen name="Tracking" component={TrackingOrderScreen} />
 
         {/* Product Collections */}
@@ -129,6 +130,8 @@ const App = () => {
         <Stack.Screen name="Payment" component={PaymentGatewayScreen} />
         <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
         <Stack.Screen name="GetLatest" component={GetLatestScreen} />
+        <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+
       </Stack.Navigator>
       
       <Toast />

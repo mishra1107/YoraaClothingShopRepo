@@ -29,7 +29,7 @@ const WelcomeScreen = ({ navigation }) => {
 
       const firebaseIdToken = await userCredential.user.getIdToken();
 
-      const response = await fetch('http://18.144.80.232:8080/api/auth/signup/firebase', {
+      const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),

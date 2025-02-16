@@ -1,6 +1,7 @@
 
 import React, {useState,useRef} from 'react';
 import {
+  Keyboard,
   View,
   Text,
   TextInput,
@@ -22,11 +23,11 @@ const SignupScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
   // Inside your component:
 const colorScheme = useColorScheme();
 const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
   
-
   const scrollViewRef = useRef();
 
   const scrollToEnd = () => {
@@ -35,6 +36,26 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     }, 300);
   };
 
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const handleSignup = async () => {
     console.log("Initiating Signup...");
   
@@ -47,7 +68,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
   
     setLoading(true);
     try {
-      const response = await fetch("http://18.144.80.232:8080/api/auth/signup", {
+      const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,15 +112,15 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     // <View style={styles.container}>
 
     <KeyboardAvoidingView 
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}
-    keyboardVerticalOffset={100} // Important for Android
   >
-    <ScrollView 
+    <ScrollView
       ref={scrollViewRef}
-      contentContainerStyle={{ flexGrow: 1 }} 
+      contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}  >
+      showsVerticalScrollIndicator={false}
+    >
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => navigation.goBack()}>
@@ -108,7 +129,6 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
           style={styles.backIconImage}  // ✅ Apply styles for proper size
         />
       </TouchableOpacity>
-
       <Text style={styles.signupText}>Sign-up</Text>
 
       <View style={styles.fieldContainer}>
@@ -125,11 +145,10 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Mobile No.</Text>
         <TextInput
-         placeholderTextColor={placeholderTextColor} 
+          placeholderTextColor={placeholderTextColor}
           style={styles.input}
           keyboardType="phone-pad"
           placeholder="+91"
-       
           value={mobileNumber}
           onChangeText={setMobileNumber}
         />
@@ -139,9 +158,9 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
         <Text style={styles.label}>Password</Text>
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, {flex: 1,fontSize:12}]}
+            style={[styles.input, { flex: 1, fontSize: 12 }]}
             placeholder="★★★★★★★"
-            placeholderTextColor="rgba(171, 171, 171, 1)" 
+            placeholderTextColor="rgba(171, 171, 171, 1)"
             secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
@@ -160,12 +179,15 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
         <Text style={styles.label}>Confirm Password</Text>
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, {flex: 1,fontSize:12}]}
+            style={[styles.input, { flex: 1, fontSize: 12 }]}
             placeholder="★★★★★★★"
-            placeholderTextColor="rgba(171, 171, 171, 1)" 
+            placeholderTextColor="rgba(171, 171, 171, 1)"
             secureTextEntry={!showConfirmPassword}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
+            onFocus={() => {
+              scrollViewRef.current?.scrollToEnd({ animated: true });
+            }} // 🔹 Scrolls to confirm password input
           />
           <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
             <Icon
@@ -179,24 +201,29 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
       <TouchableOpacity
         style={styles.loginContainer}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={() => navigation.navigate('Login')}
+      >
         <Text style={styles.loginText}>
           Already have an account? <Text style={styles.loginLink}>Login</Text>
         </Text>
       </TouchableOpacity>
+    </ScrollView>
+
+    {/* 🔹 Moves Sign-Up Button Above Keyboard When Keyboard is Visible */}
+    {!keyboardVisible && (
       <TouchableOpacity
-        onPress={handleSignup}
+        onPress={() => console.log("Sign Up Pressed")}
         style={styles.signupButton}
-        disabled={loading}>
+        disabled={loading}
+      >
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
           <Text style={styles.signupButtonText}>SIGN-UP</Text>
         )}
       </TouchableOpacity>
-      </ScrollView>
-      </KeyboardAvoidingView>
-    
+    )}
+  </KeyboardAvoidingView>
   );
 };
 
@@ -212,7 +239,6 @@ const styles = StyleSheet.create({
   },
   signupText: {
     fontSize: 40,
-    // fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -247,14 +273,14 @@ const styles = StyleSheet.create({
   },
   loginLink: {
     color: '#000',
-    // fontWeight: 'bold',
   },
   signupButton: {
     position: 'absolute',
-    bottom: 20,
-    width: '100%',  // ✅ Ensures full width
+    bottom: 20, 
+    left: 0,  // Ensures full width
+    right: 0, // Ensures full width
     backgroundColor: 'black',
-    padding: 16,
+    paddingVertical: 16,
     alignItems: 'center',
 },
 

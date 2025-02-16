@@ -37,7 +37,7 @@
 //       const token = await AsyncStorage.getItem('token');
 //       if (!token) throw new Error('No token found');
 
-//       const response = await fetch('http://18.144.80.232:8080/api/address/user', {
+//       const response = await fetch('http://10.0.2.2:8080/api/address/user', {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -81,7 +81,7 @@
 //       const token = await AsyncStorage.getItem('token');
 //       if (!token) throw new Error('No token found');
 
-//       const response = await fetch('http://18.144.80.232:8080/api/address/createAddress', {
+//       const response = await fetch('http://10.0.2.2:8080/api/address/createAddress', {
 //         method: 'POST',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -138,7 +138,7 @@
 //       const token = await AsyncStorage.getItem('token');
 //       if (!token) throw new Error('No token found');
     
-//       const response = await fetch(`http://18.144.80.232:8080/api/address/updateById/${currentAddress._id}`, {
+//       const response = await fetch(`http://10.0.2.2:8080/api/address/updateById/${currentAddress._id}`, {
 //         method: 'PATCH',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -335,6 +335,7 @@
 // export default AddressScreen;
 
 import React, { useState, useEffect } from 'react';
+import { useColorScheme } from 'react-native';
 import {
   View,
   Text,
@@ -352,6 +353,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddressScreen = () => {
   const navigation = useNavigation();
+  const colorScheme = useColorScheme();
+  const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
   
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -372,7 +375,7 @@ const AddressScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
 
-      const response = await fetch('http://18.144.80.232:8080/api/address/user', {
+      const response = await fetch('http://10.0.2.2:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -416,7 +419,7 @@ const AddressScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
 
-      const response = await fetch('http://18.144.80.232:8080/api/address/createAddress', {
+      const response = await fetch('http://10.0.2.2:8080/api/address/createAddress', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -473,7 +476,7 @@ const AddressScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
     
-      const response = await fetch(`http://18.144.80.232:8080/api/address/updateById/${currentAddress._id}`, {
+      const response = await fetch(`http://10.0.2.2:8080/api/address/updateById/${currentAddress._id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -533,12 +536,14 @@ const AddressScreen = () => {
             <Text style={styles.sectionTitle}>{isEditing ? 'EDIT ADDRESS' : 'NEW ADDRESS'}</Text>
             <View style={styles.row}>
               <TextInput
+               placeholderTextColor={placeholderTextColor} 
                 style={styles.inputHalf}
                 placeholder="First name"
                 value={firstName}
                 onChangeText={setFirstName}
               />
               <TextInput
+               placeholderTextColor={placeholderTextColor} 
                 style={styles.inputHalf}
                 placeholder="Last name"
                 value={lastName}
@@ -546,12 +551,14 @@ const AddressScreen = () => {
               />
             </View>
             <TextInput
+             placeholderTextColor={placeholderTextColor} 
               style={styles.inputFull}
               placeholder="Address"
               value={address}
               onChangeText={setAddress}
             />
             <TextInput
+             placeholderTextColor={placeholderTextColor} 
               style={styles.inputFull}
               placeholder="City"
               value={city}
@@ -559,12 +566,14 @@ const AddressScreen = () => {
             />
             <View style={styles.row}>
               <TextInput
+               placeholderTextColor={placeholderTextColor} 
                 style={styles.inputHalf}
                 placeholder="State"
                 value={state}
                 onChangeText={setState}
               />
               <TextInput
+               placeholderTextColor={placeholderTextColor} 
                 style={styles.inputHalf}
                 placeholder="PIN CODE"
                 value={pinCode}
@@ -573,6 +582,7 @@ const AddressScreen = () => {
               />
             </View>
             <TextInput
+             placeholderTextColor={placeholderTextColor} 
               style={styles.inputFull}
               placeholder="Phone number"
               value={phoneNumber}

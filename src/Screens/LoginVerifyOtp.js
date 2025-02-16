@@ -60,7 +60,7 @@
 //       startTimer(); // Restart the timer
 
 //       try {
-//         const response = await postRequest("http://18.144.80.232:8080/api/auth/generate-otp", { phNo });
+//         const response = await postRequest("http://10.0.2.2:8080/api/auth/generate-otp", { phNo });
 //         console.log("Resend OTP Response:", response);
 
 //         if (response.success) {
@@ -90,7 +90,7 @@
 
 //     try {
 //         // Ensure the request format is exactly as needed
-//         const response = await postRequest("http://18.144.80.232:8080/api/auth/verify-otp", {
+//         const response = await postRequest("http://10.0.2.2:8080/api/auth/verify-otp", {
 //             phNo: String(phNo).trim(),  // Ensure phNo is a string
 //             otp: String(otpCode).trim() // Ensure OTP is a string
 //         });
@@ -257,17 +257,22 @@ import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
 const LoginVerifyOtp = ({ navigation, route }) => {
-  console.log("xzxzxzxzxzxzx")
-  const { phNo } = route.params;
+  // const phNo = route?.params?.phNo || '';
+
+  // const { phNo } = route.params;
+
+
+  const { phNo, isForgotPassword } = route.params;
+
+  console.log("Phone Number from route params:", phNo);
+
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(45);
   const [resendDisabled, setResendDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [verificationId,setVerificationId] = useState(null);
   const inputs = useRef([]);
-  const BACKEND_URL = 'http://18.144.80.232:8080/api/auth/verifyFirebaseOtp';
-
-  console.log("Phone Number from route params:", phNo);
+  const BACKEND_URL = 'http://10.0.2.2:8080/api/auth/verifyFirebaseOtp';
 
   useEffect(() => {
     startTimer();
@@ -391,7 +396,14 @@ const LoginVerifyOtp = ({ navigation, route }) => {
       await AsyncStorage.setItem('user', JSON.stringify(user));
 
       console.log("Token stored in AsyncStorage:", await AsyncStorage.getItem('token'));
-      navigation.replace('Home');
+      if (isForgotPassword) {
+        navigation.replace('ResetPasswordScreen', { phNo });
+      } else {
+        navigation.replace('Home');
+      }
+     
+     
+      // navigation.replace('Home');
     } catch (error) {
       console.error('Error verifying OTP:', error);
       Alert.alert('Error', 'Invalid OTP. Please try again.');

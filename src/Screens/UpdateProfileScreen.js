@@ -33,7 +33,7 @@
 //           return;
 //         }
 
-//         const apiUrl = 'http://18.144.80.232:8080/api/userProfile/getProfile';
+//         const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
 //         console.log(' Fetching user profile from:', apiUrl);
 
 //         const response = await fetch(apiUrl, {
@@ -307,7 +307,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
           return;
         }
 
-        const apiUrl = 'http://18.144.80.232:8080/api/userProfile/getProfile';
+        const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {

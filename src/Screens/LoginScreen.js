@@ -16,7 +16,6 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useColorScheme } from 'react-native';
 
-
 GoogleSignin.configure({
   webClientId: '841829729642-5vo1cbgnrsl83sm8c8h63s7c0hf0i3mi.apps.googleusercontent.com',
 });
@@ -28,7 +27,7 @@ export default function LoginScreen({ navigation }) {
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
-const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
+  const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -49,7 +48,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
       const firebaseIdToken = await userCredential.user.getIdToken();
 
-      const response = await fetch('http://18.144.80.232:8080/api/auth/signup/firebase', {
+      const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -80,7 +79,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     }
     setLoading(true);
     try {
-      const response = await fetch('http://18.144.80.232:8080/api/auth/login', {
+      const response = await fetch('http://10.0.2.2:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
@@ -155,14 +154,20 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
       <View style={styles.row}>
         <TouchableOpacity
           style={[styles.checkbox, isChecked && styles.checkedCheckbox]}
-          onPress={() => setIsChecked(!isChecked)}
-        >
+          onPress={() => setIsChecked(!isChecked)} >
           {isChecked && <Text style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
         <Text style={styles.rememberMeText}>Remember me</Text>
-        <TouchableOpacity style={styles.forgotPassword}>
+        {/* <TouchableOpacity   onPress={navigation.navigate("LoginVerifyOtp")}   style={styles.forgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+<TouchableOpacity 
+  onPress={() => navigation.navigate("LoginVerifyOtp", { phNo, isForgotPassword: true })}
+  style={styles.forgotPassword}
+>
+  <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+</TouchableOpacity>
       </View>
 
       <View style={styles.dividerContainer}>

@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import auth from '@react-native-firebase/auth';
-// import axios from 'axios';
+import axios from 'axios';
 import { useColorScheme } from 'react-native';
 const EditProfileScreen = () => {
   const navigation = useNavigation();
@@ -36,7 +36,7 @@ const EditProfileScreen = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState('');
-  const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme();
   const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const [profileData, setProfileData] = useState({
@@ -52,6 +52,10 @@ const EditProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(
     profileData.imageUrl ? { uri: profileData.imageUrl } : null
   );
+
+
+
+  
   console.log("editProfileScreen", profileData);
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -62,7 +66,7 @@ const EditProfileScreen = () => {
           return;
         }
 
-        const apiUrl = 'http://192.168.1.13:8080/api/userProfile/getProfile';
+        const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -260,7 +264,7 @@ const EditProfileScreen = () => {
       console.log("qqqqqqqqqqqqqqqq22222222", formData)
 
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.1.13:8080/api/userProfile/updateProfile', {
+      const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -272,6 +276,16 @@ const EditProfileScreen = () => {
       if (!response.ok) throw new Error(result.message || 'Failed to update profile');
 
       Alert.alert('Success', 'Profile updated successfully');
+       await AsyncStorage.setItem("user_name",profileData.name);
+       await AsyncStorage.setItem("user_email",profileData.email);
+       await AsyncStorage.setItem("user_phNo",profileData.phNo);
+       const name = await AsyncStorage.getItem("user_name");
+       const email = await AsyncStorage.getItem("user_email");
+       const phoneNumber = await AsyncStorage.getItem("user_phNo");
+       console.log(" Retrieved from AsyncStorage:");
+       console.log("10.0.2.2s:", name);
+       console.log("Emailss:", email);
+       console.log("Phone Numbersss:", phoneNumber)
       navigation.navigate('Profile', { refresh: true });
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -280,7 +294,7 @@ const EditProfileScreen = () => {
   };
   const sendVerificationEmail = async () => {
     try {
-      const response = await fetch('http://192.168.1.13:8080/api/auth/sendVerificationEmail', {
+      const response = await fetch('http://10.0.2.2:8080/api/auth/sendVerificationEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -301,7 +315,7 @@ const EditProfileScreen = () => {
   };
   const verifyEmail = async ( otp) => {
     try {
-      const response = await fetch('http://192.168.1.13:8080/api/auth/verifyEmail', {
+      const response = await fetch('http://10.0.2.2:8080/api/auth/verifyEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -335,17 +349,15 @@ const EditProfileScreen = () => {
       </View> */}
 
 <View style={styles.header}>
-<TouchableOpacity
-  style={styles.backIcon}
-  onPress={() => navigation.goBack()}
-  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} // ✅ Expands touch area
->
-  <Image 
-    source={require('../assests/images/BackArrow.png')}
-    style={styles.backIconImage}
-  />
-</TouchableOpacity>
-
+  <TouchableOpacity
+    style={styles.backIcon}
+    onPress={() => navigation.goBack()}
+  >
+    <Image 
+      source={require('../assests/images/BackArrow.png')}
+      style={styles.backIconImage}
+    />
+  </TouchableOpacity>
   <Text style={styles.headerTitle}>PROFILE</Text>
 </View>
       <View style={styles.avatarContainer}>
@@ -357,14 +369,14 @@ const EditProfileScreen = () => {
         </View>
       </View>
 
-      <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} placeholder="Name" value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
-      <TextInput style={styles.input} placeholderTextColor={placeholderTextColor}  placeholder="Address" value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
+      <TextInput style={styles.input} placeholder="Name" placeholderTextColor={placeholderTextColor}  value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
+      <TextInput style={styles.input} placeholder="Address" placeholderTextColor={placeholderTextColor} value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
 
       <View>
   {/* Phone Input */}
   <TextInput
+  placeholderTextColor={placeholderTextColor}
     style={[styles.input, userData.isPhoneVerified && styles.disabledInput]}
-    placeholderTextColor={placeholderTextColor}
     placeholder="Phone"
     keyboardType="phone-pad"
     value={profileData.phNo}
@@ -386,6 +398,7 @@ const EditProfileScreen = () => {
 
       {/* OTP Input */}
       <TextInput
+      placeholderTextColor={placeholderTextColor}
         style={styles.input}
         placeholder="Enter OTP"
         keyboardType="numeric"
@@ -413,8 +426,8 @@ const EditProfileScreen = () => {
 <View>
   {/* Phone Input */}
   <TextInput
+  placeholderTextColor={placeholderTextColor}
     style={[styles.input, userData.isEmailVerified && styles.disabledInput]}
-    placeholderTextColor={placeholderTextColor}
     placeholder="Email"
     keyboardType="email-address"
     value={profileData.email}
@@ -436,8 +449,8 @@ const EditProfileScreen = () => {
 
       {/* OTP Input */}
       <TextInput
+      placeholderTextColor={placeholderTextColor}
         style={styles.input}
-        placeholderTextColor={placeholderTextColor}
         placeholder="Enter OTP"
         keyboardType="numeric"
         maxLength={6}
@@ -460,6 +473,7 @@ const EditProfileScreen = () => {
     </>
   )}
 </View>
+
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
 
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
@@ -568,14 +582,10 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    left: 10,
-    alignItems: "center",
+    left: 10, // Moves icon to the left
+    alignItems: "center", // Keeps it vertically centered
     justifyContent: "center",
-    zIndex: 10, 
-    width: 40,  
-    height: 40, 
   },
-  
   backIconImage: {
     width: 24,
     height: 24,
