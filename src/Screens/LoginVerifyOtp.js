@@ -309,6 +309,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
   };
 
 
+//  firebase otp resend process 
   const handleResendOTP = async () => {
     console.log("Resending OTP to:", phNo);
   
@@ -334,8 +335,8 @@ const LoginVerifyOtp = ({ navigation, route }) => {
       setLoading(false);
     }
   };
-  
 
+  // firebase otp send process
   const handleSendOtp = async () => {
     console.log("Attempting to send OTP to:", phNo);
     if (!phNo || phNo.length !== 10) {

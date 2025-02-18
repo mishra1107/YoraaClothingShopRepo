@@ -3,12 +3,9 @@
 
 // export const BASE_URL = 'http://192.168.1.10:8080/api';
 
-
 // (localhost  system ip) 
 
 export const BASE_URL='http://10.0.2.2:8080/api';
-
-// (Server Ip)
 
 
 export const API_ENDPOINTS = {
@@ -27,3 +24,4 @@ export const API_ENDPOINTS = {
   CREATE_ADDRESS: '/address/createAddress',
    FIREBASE_SIGNUP: '/auth/signup/firebase'
 };
+export const getApiUrl = (endpoint) => `${BASE_URL}${endpoint}`;

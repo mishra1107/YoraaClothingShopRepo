@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {signupUser} from '../api/auth';
 import {validateSignup} from '../utils/validator';
 import { useColorScheme } from 'react-native';
+import { getApiUrl, API_ENDPOINTS } from '../constants/config';
 
 const SignupScreen = ({navigation}) => {
   const [fullName, setFullName] = useState('');
@@ -68,7 +69,9 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
   
     setLoading(true);
     try {
-      const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
+
+        const response = await fetch(getApiUrl(API_ENDPOINTS.SIGNUP), {
+      // const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +113,6 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   return (
     // <View style={styles.container}>
-
     <KeyboardAvoidingView 
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     style={styles.container}
@@ -174,7 +176,6 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
           </TouchableOpacity>
         </View>
       </View>
-
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Confirm Password</Text>
         <View style={styles.passwordContainer}>
@@ -201,8 +202,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
       <TouchableOpacity
         style={styles.loginContainer}
-        onPress={() => navigation.navigate('Login')}
-      >
+        onPress={() => navigation.navigate('Login')}>
         <Text style={styles.loginText}>
           Already have an account? <Text style={styles.loginLink}>Login</Text>
         </Text>
@@ -212,10 +212,9 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     {/* 🔹 Moves Sign-Up Button Above Keyboard When Keyboard is Visible */}
     {!keyboardVisible && (
       <TouchableOpacity
-        onPress={() => console.log("Sign Up Pressed")}
+        onPress={  handleSignup}
         style={styles.signupButton}
-        disabled={loading}
-      >
+        disabled={loading}>
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (

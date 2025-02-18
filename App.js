@@ -39,6 +39,7 @@ import GetLatestScreen from './src/Screens/GetLatestScreen';
 import AllCollection from './src/Screens/AllCollection';
 import ResetPasswordScreen from './src/Screens/ResetPasswordScreen';
 import OrderScreen from './src/Screens/OrderScreen';
+import FilterScreen from './src/Screens/FilterScreen';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -131,6 +132,7 @@ const App = () => {
         <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
         <Stack.Screen name="GetLatest" component={GetLatestScreen} />
         <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+        <Stack.Screen name="Filter" component={FilterScreen} />
 
       </Stack.Navigator>
       

@@ -6,6 +6,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { getApiUrl, API_ENDPOINTS } from '../constants/config';
 
 GoogleSignin.configure({
   webClientId: '841829729642-5vo1cbgnrsl83sm8c8h63s7c0hf0i3mi.apps.googleusercontent.com',
@@ -29,7 +30,8 @@ const WelcomeScreen = ({ navigation }) => {
 
       const firebaseIdToken = await userCredential.user.getIdToken();
 
-      const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
+       const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
+      // const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),

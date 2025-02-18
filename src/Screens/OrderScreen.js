@@ -12,8 +12,10 @@
 // } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
+// import { useNavigation } from '@react-navigation/native';
 
 // const OrderScreen = () => {
+//   const navigation =useNavigation();
 //   const [orders, setOrders] = useState([]);
 //   const [loading, setLoading] = useState(true);
 
@@ -72,34 +74,37 @@
 //       ) : (
 //         <FlatList
 //           data={orders}
-//           keyExtractor={(item) => item._id}
+//           keyExtractor={(order) => order._id}
 //           renderItem={({ item }) => (
-//             <View style={styles.orderContainer}>
-//               {/* Order Item - Image & Details */}
-//               <View style={styles.row}>
-//                 <Image source={{ uri: item.items[0]?.imageUrl }} style={styles.image} />
-//                 <View style={styles.details}>
-//                   {/* <Text style={styles.brandName}>LAMEREI</Text> */}
-//                   <Text style={styles.productName}>{item.items[0]?.name}</Text>
-//                   <Text style={styles.trackingId}>Tracking ID: #{item.awb_code}</Text>
+//             <View>
+//               {item.items.map((product, index) => (
+//                 <View key={index} style={styles.orderContainer}>
+//                   {/* Order Item - Image & Details */}
+//                   <View style={styles.row}>
+//                     <Image source={{ uri: product.imageUrl }} style={styles.image} />
+//                     <View style={styles.details}>
+//                       <Text style={styles.productName}>{product.name}</Text>
+//                       <Text style={styles.trackingId}>Tracking ID: #{item.awb_code}</Text>
 
-//                   {/* Delivery / Cancellation Status */}
-//                   <View style={styles.statusRow}>
-//                     <Icon name="circle" size={8} color="gray" />
-//                     <Text style={styles.statusText}>
-//                       {item.shipping_status === 'Pending'
-//                         ? `Delivery by 12/02/2024`
-//                         : 'Canceled'}
-//                     </Text>
+//                       {/* Delivery / Cancellation Status */}
+//                       <View style={styles.statusRow}>
+//                         <Icon name="circle" size={8} color="gray" />
+//                         <Text style={styles.statusText}>
+//                           {item.shipping_status === 'Pending'
+//                             ? `Delivery by 12/02/2024`
+//                             : 'Canceled'}
+//                         </Text>
+//                       </View>
+//                     </View>
 //                   </View>
-//                 </View>
-//               </View>
 
-//               {/* Track Order Button */}
-//               <TouchableOpacity style={styles.trackButton}>
-//                 <Icon name="local-shipping" size={20} color="white" />
-//                 <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-//               </TouchableOpacity>
+//                   {/* Track Order Button */}
+//                   <TouchableOpacity onPress={()=>navigation.navigate('Tracking')} style={styles.trackButton}>
+//                     <Icon name="local-shipping" size={20} color="white" />
+//                     <Text style={styles.trackButtonText}>TRACK ORDER</Text>
+//                   </TouchableOpacity>
+//                 </View>
+//               ))}
 //             </View>
 //           )}
 //         />
@@ -142,11 +147,6 @@
 //   details: {
 //     flex: 1,
 //   },
-//   brandName: {
-//     fontSize: 14,
-//     fontWeight: 'bold',
-//     color: '#000',
-//   },
 //   productName: {
 //     fontSize: 12,
 //     color: '#333',
@@ -185,7 +185,6 @@
 
 // export default OrderScreen;
 
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -199,8 +198,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderScreen = () => {
+  const navigation = useNavigation();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -284,10 +285,33 @@ const OrderScreen = () => {
                   </View>
 
                   {/* Track Order Button */}
-                  <TouchableOpacity style={styles.trackButton}>
+                  {/* <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('Tracking', {
+                        awbCode: item.awb_code,
+                        address: item.address, // Pass address as prop
+                      })
+                    }
+                    style={styles.trackButton}
+                  >
                     <Icon name="local-shipping" size={20} color="white" />
                     <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
+                  <TouchableOpacity
+   onPress={() =>
+    navigation.navigate('Tracking', {
+      awbCode: item.awb_code,
+      address: item.address, // Pass address as prop
+      imageUrl: product.imageUrl, // Pass image URL as prop
+      productName: product.name, 
+    })
+  }
+  style={styles.trackButton}
+>
+  <Icon name="local-shipping" size={20} color="white" />
+  <Text style={styles.trackButtonText}>TRACK ORDER</Text>
+</TouchableOpacity>
+
                 </View>
               ))}
             </View>
