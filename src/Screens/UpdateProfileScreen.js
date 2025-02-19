@@ -282,13 +282,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { useColorScheme } from 'react-native';
+import { BASE_URL } from '../constants/config';
 
 const UpdateProfileScreen = () => {
   const navigation = useNavigation();
   const [profile, setProfile] = useState({});
   const [profileImage, setProfileImage] = useState(null);
   const colorScheme = useColorScheme();
-const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
+  const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const convertToDateFormat = timestamp => {
     if (!timestamp || timestamp.trim() === '') {
@@ -306,8 +307,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
           console.warn('No token found in AsyncStorage.');
           return;
         }
-
-        const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
+        const apiUrl = `${BASE_URL}/userProfile/getProfile`;
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {

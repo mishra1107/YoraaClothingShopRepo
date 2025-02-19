@@ -251,7 +251,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert,Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import { postRequest } from "../api/api"; 
-import { API_ENDPOINTS } from "../constants/config";
+import { API_ENDPOINTS, BASE_URL } from "../constants/config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
@@ -383,7 +383,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 
       console.log("Sending to backend:", { idToken, phNo: `+91${phNo}` });
 
-      const response = await axios.post(BACKEND_URL, {
+      const response = await axios.post(`${BASE_URL}/auth/verifyFirebaseOtp`, {
         idToken,
         phNo: `+91${phNo}`,
       });

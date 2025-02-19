@@ -9,6 +9,7 @@ import {
   ScrollView, Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '../constants/config';
 const ProfileScreen = () => {
  const navigation = useNavigation();
 
@@ -26,7 +27,7 @@ const ProfileScreen = () => {
         }
         console.log("Token found:", token);
 
-        const apiUrl = "http://10.0.2.2:8080/api/userProfile/getProfile";
+        const apiUrl = `${BASE_URL}/userProfile/getProfile`;
         console.log("Fetching user profile from:", apiUrl);
 
         const response = await fetch(apiUrl, {

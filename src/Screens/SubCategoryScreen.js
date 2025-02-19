@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../constants/config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const SubCategoryScreen = () => {
   const [subcategories, setSubcategories] = useState([]);

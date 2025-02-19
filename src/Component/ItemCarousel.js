@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useEffect, useState } from "react";
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from "../constants/config";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,7 +18,9 @@ const ItemCarousel = () => {
     const fetchItems = async () => {
       const token = await AsyncStorage.getItem('token');
       try {
-        const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=4', {
+
+            const response = await fetch(`${BASE_URL}/api/items?page=1&limit=4`, {
+        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=4', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

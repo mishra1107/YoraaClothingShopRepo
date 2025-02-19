@@ -124,7 +124,7 @@ export default function LoginScreen({ navigation }) {
   onPress={() => navigation.goBack()}>
   <Image 
     source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
-    style={styles.backIconImage}  // ✅ Apply styles for proper size
+    style={styles.backIconImage}  //  Apply styles for proper size
   />
 </TouchableOpacity>
 

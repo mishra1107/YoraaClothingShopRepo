@@ -9,6 +9,7 @@ import YouMayAlsoLike from '../Component/YouMayAlsoLike';
 import CardLayout from '../Component/CardLayout';
 import SizeChartModal from '../Component/SizeChartModal';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
+import { BASE_URL } from '../constants/config';
 
 const ProductDetailScreen = () => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ const ProductDetailScreen = () => {
     const fetchProductDetails = async () => {
       const token = await AsyncStorage.getItem('token');
       try {
-        const response = await fetch(`http://10.0.2.2:8080/api/itemDetails/${id}`, {
+        const response = await fetch(`${BASE_URL}/itemDetails/${id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

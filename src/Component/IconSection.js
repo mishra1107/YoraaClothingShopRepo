@@ -112,9 +112,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '../constants/config';
 
-const BASE_URL = "http://10.0.2.2:8080/api";  
+// const BASE_URL = "http://10.0.2.2:8080/api";  
 
 const IconSection = ({ selectedCategory, setSelectedCategory }) => {
   const [categories, setCategories] = useState([]);

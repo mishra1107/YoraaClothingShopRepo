@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   REMOVE_CART: '/cart',
   GET_CART: '/cart/user',
   CREATE_ADDRESS: '/address/createAddress',
-   FIREBASE_SIGNUP: '/auth/signup/firebase'
+   FIREBASE_SIGNUP: '/auth/signup/firebase',
+   
 };
 export const getApiUrl = (endpoint) => `${BASE_URL}${endpoint}`;

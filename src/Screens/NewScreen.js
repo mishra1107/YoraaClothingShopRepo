@@ -8,6 +8,7 @@ import IconSection from '../Component/IconSection';
 import SubCategoryList from '../Component/SubcategoryList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ArrivalCategoryList from '../Component/ArrivalCategoryList';
+import { BASE_URL } from '../constants/config';
 
 const NewScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
@@ -30,7 +31,7 @@ const NewScreen = ({navigation}) => {
         console.warn(" No token found in AsyncStorage.");
         return;
       }
-      const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+      const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",

@@ -30,7 +30,9 @@ const AllCollection = ({navigation}) => {
         console.warn(" No token found in AsyncStorage.");
         return;
       }
-      const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+
+      const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
+      // const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",

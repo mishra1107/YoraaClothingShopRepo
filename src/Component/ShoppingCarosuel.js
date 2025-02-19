@@ -181,7 +181,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useEffect } from "react";
 import { View, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Text } from "react-native";
-import Icon from 'react-native-vector-icons/Feather';
+
 
 const { width, height } = Dimensions.get("window");
 

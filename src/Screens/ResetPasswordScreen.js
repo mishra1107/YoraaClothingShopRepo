@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { BASE_URL } from '../constants/config';
 
 const ResetPasswordScreen = ({ navigation, route }) => {
   const { phNo } = route.params; // Get phone number from params
@@ -38,7 +39,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         return;
       }
 
-      const response = await fetch('http://10.0.2.2:8080/api/auth/resetPassword', {
+      const response = await fetch(`${BASE_URL}/auth/resetPassword`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

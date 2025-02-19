@@ -127,8 +127,8 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
         style={styles.backIcon}
         onPress={() => navigation.goBack()}>
         <Image 
-          source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
-          style={styles.backIconImage}  // ✅ Apply styles for proper size
+          source={require('../assests/images/BackArrow.png')}  //  Use local asset
+          style={styles.backIconImage}  //  Apply styles for proper size
         />
       </TouchableOpacity>
       <Text style={styles.signupText}>Sign-up</Text>

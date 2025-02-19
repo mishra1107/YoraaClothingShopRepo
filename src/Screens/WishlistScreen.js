@@ -2,7 +2,7 @@ import React, { useEffect, useState,useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { getWishlist, removeFromWishlist } from '../services/wishlistService'; // ✅ Import removeFromWishlist function
+import { getWishlist, removeFromWishlist } from '../services/wishlistService'; //  Import removeFromWishlist function
 import { WishlistContext } from '../services/context/WishlistContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useCart } from '../services/cart/CartContext';
@@ -13,7 +13,6 @@ const WishlistScreen = () => {
   const [loading, setLoading] = useState(true);
   const { wishlist, toggleWishlist } = useContext(WishlistContext);
     
-
    const { toggleCart, fetchCart } = useCart();
     useEffect(() => {
     fetchWishlist();
@@ -37,7 +36,7 @@ const WishlistScreen = () => {
 
       setWishlistItems(prevItems => prevItems.filter(item => item.item._id !== productId)); // Update UI
     } catch (error) {
-      console.error("🚨 Remove from Wishlist Error:", error);
+      console.error(" Remove from Wishlist Error:", error);
     }
   };
   
@@ -49,9 +48,7 @@ const WishlistScreen = () => {
         <View style={styles.iconsContainer}>
           <TouchableOpacity 
             style={styles.iconButton} 
-            onPress={() => handleToggleWishlist(item.item._id)}
-
-          >
+            onPress={() => handleToggleWishlist(item.item._id)}>
             <Icon1 name="favorite" size={20} color="red" />
           </TouchableOpacity>
         
@@ -60,11 +57,9 @@ const WishlistScreen = () => {
     onPress={async () => {
         await toggleCart(item.item._id);  // Corrected to item.item._id
         await fetchCart();  // Ensure cart count updates immediately
-        navigation.navigate('Cart');
-    }}>
+        navigation.navigate('Cart'); }}>
     <Icon name="cart-outline" size={18} color="black" />
 </TouchableOpacity>
-
         </View>
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.item.name}</Text>
@@ -81,8 +76,8 @@ const WishlistScreen = () => {
                       style={styles.backIcon}
                       onPress={() => navigation.goBack()}>
                       <Image 
-                        source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
-                        style={styles.backIconImage}  // ✅ Apply styles for proper size
+                        source={require('../assests/images/BackArrow.png')}  //  Use local asset
+                        style={styles.backIconImage}  //  Apply styles for proper size
                       />
                     </TouchableOpacity>
          <Text style={styles.headerTitle}>WISHLIST</Text>

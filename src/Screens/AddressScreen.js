@@ -375,7 +375,9 @@ const AddressScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
 
-      const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+      const response = await fetch(`${BASE_URL}/address/user`, {
+
+      // const response = await fetch('http://10.0.2.2:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -418,8 +420,8 @@ const AddressScreen = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
-
-      const response = await fetch('http://10.0.2.2:8080/api/address/createAddress', {
+      const response = await fetch(`${BASE_URL}/address/createAddress`, {
+      // const response = await fetch('http://10.0.2.2:8080/api/address/createAddress', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -476,7 +478,9 @@ const AddressScreen = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
     
-      const response = await fetch(`http://10.0.2.2:8080/api/address/updateById/${currentAddress._id}`, {
+      const response = await fetch(`${BASE_URL}/address/updateById/${currentAddress._id}`, {
+
+      // const response = await fetch(`http://10.0.2.2:8080/api/address/updateById/${currentAddress._id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -188,6 +188,7 @@ import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native
 import RazorpayCheckout from "react-native-razorpay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from '@react-navigation/native'; // ✅ Import useRoute
+import { BASE_URL } from "../constants/config";
 
 const PaymentGatewayScreen = () => {
   const route = useRoute(); // ✅ Get route parameters
@@ -265,7 +266,7 @@ const PaymentGatewayScreen = () => {
       console.log("staticAddress",staticAddress)
 
       
-      const orderResponse = await fetch("http://10.0.2.2:8080/api/razorpay/create-order", {
+      const orderResponse = await fetch(`${BASE_URL}/razorpay/create-order`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -296,7 +297,7 @@ const PaymentGatewayScreen = () => {
       const paymentResponse = await RazorpayCheckout.open(options);
   
       // Verify Payment
-      const verifyResponse = await fetch("http://10.0.2.2:8080/api/razorpay/verify-payment", {
+      const verifyResponse = await fetch(`${BASE_URL}/razorpay/verify-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(paymentResponse),

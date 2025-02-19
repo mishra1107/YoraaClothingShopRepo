@@ -24,6 +24,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 import { useColorScheme } from 'react-native';
+import { BASE_URL } from '../constants/config';
 const EditProfileScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -53,9 +54,6 @@ const EditProfileScreen = () => {
     profileData.imageUrl ? { uri: profileData.imageUrl } : null
   );
 
-
-
-  
   console.log("editProfileScreen", profileData);
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -66,7 +64,8 @@ const EditProfileScreen = () => {
           return;
         }
 
-        const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
+        const apiUrl = `${BASE_URL}/userProfile/getProfile`;
+        // const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -98,12 +97,10 @@ const EditProfileScreen = () => {
   const genderOptions = ['Male', 'Female', 'Other'];
   const handleSendOtp = async () => {
     const phone = profileData.phNo.trim();
-
     if (!/^\d{10}$/.test(phone)) {
       Alert.alert('Error', 'Please enter a valid 10-digit phone number.');
       return;
     }
-
     setLoading(true);
 
     try {
@@ -262,9 +259,9 @@ const EditProfileScreen = () => {
         });
       }
       console.log("qqqqqqqqqqqqqqqq22222222", formData)
-
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
+      const response = await fetch(`${BASE_URL}/userProfile/updateProfile`, {
+      // const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -294,7 +291,8 @@ const EditProfileScreen = () => {
   };
   const sendVerificationEmail = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:8080/api/auth/sendVerificationEmail', {
+      const response = await fetch(`${BASE_URL}/auth/sendVerificationEmail`, {
+      // const response = await fetch('http://10.0.2.2:8080/api/auth/sendVerificationEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -315,7 +313,8 @@ const EditProfileScreen = () => {
   };
   const verifyEmail = async ( otp) => {
     try {
-      const response = await fetch('http://10.0.2.2:8080/api/auth/verifyEmail', {
+      const response = await fetch(`${BASE_URL}/auth/verifyEmail`, {
+      // const response = await fetch('http://10.0.2.2:8080/api/auth/verifyEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

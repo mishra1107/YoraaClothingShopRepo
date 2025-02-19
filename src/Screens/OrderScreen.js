@@ -199,6 +199,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import { BASE_URL } from '../constants/config';
 
 const OrderScreen = () => {
   const navigation = useNavigation();
@@ -218,7 +219,7 @@ const OrderScreen = () => {
         return;
       }
 
-      const response = await fetch('http://10.0.2.2:8080/api/orders/getAllByUser?page=1&limit=1', {
+      const response = await fetch(`${BASE_URL}/orders/getAllByUser?page=1&limit=1`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

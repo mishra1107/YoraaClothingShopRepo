@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCart } from '../services/cart/CartContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WishlistContext } from '../services/context/WishlistContext';
+import { BASE_URL } from '../constants/config';
 
 const CardLayout = () => {
   const navigation = useNavigation();
@@ -17,7 +18,8 @@ const CardLayout = () => {
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 
-        const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
+        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
+          const response = await fetch(`${BASE_URL}/api/items?page=1&limit=20`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
