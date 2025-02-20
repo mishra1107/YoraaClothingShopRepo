@@ -1,4 +1,5 @@
 
+
 // import React, { useState, useEffect } from 'react';
 // import {
 //   View,
@@ -13,9 +14,10 @@
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 // import { useNavigation } from '@react-navigation/native';
+// import { BASE_URL } from '../constants/config';
 
 // const OrderScreen = () => {
-//   const navigation =useNavigation();
+//   const navigation = useNavigation();
 //   const [orders, setOrders] = useState([]);
 //   const [loading, setLoading] = useState(true);
 
@@ -32,7 +34,7 @@
 //         return;
 //       }
 
-//       const response = await fetch('http://10.0.2.2:8080/api/orders/getAllByUser?page=1&limit=1', {
+//       const response = await fetch(`${BASE_URL}/orders/getAllByUser?page=1&limit=1`, {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -99,10 +101,33 @@
 //                   </View>
 
 //                   {/* Track Order Button */}
-//                   <TouchableOpacity onPress={()=>navigation.navigate('Tracking')} style={styles.trackButton}>
+//                   {/* <TouchableOpacity
+//                     onPress={() =>
+//                       navigation.navigate('Tracking', {
+//                         awbCode: item.awb_code,
+//                         address: item.address, // Pass address as prop
+//                       })
+//                     }
+//                     style={styles.trackButton}
+//                   >
 //                     <Icon name="local-shipping" size={20} color="white" />
 //                     <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-//                   </TouchableOpacity>
+//                   </TouchableOpacity> */}
+//                   <TouchableOpacity
+//    onPress={() =>
+//     navigation.navigate('Tracking', {
+//       awbCode: item.awb_code,
+//       address: item.address, // Pass address as prop
+//       imageUrl: product.imageUrl, // Pass image URL as prop
+//       productName: product.name, 
+//     })
+//   }
+//   style={styles.trackButton}
+// >
+//   <Icon name="local-shipping" size={20} color="white" />
+//   <Text style={styles.trackButtonText}>TRACK ORDER</Text>
+// </TouchableOpacity>
+
 //                 </View>
 //               ))}
 //             </View>
@@ -185,6 +210,7 @@
 
 // export default OrderScreen;
 
+
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -228,7 +254,7 @@ const OrderScreen = () => {
       });
 
       const responseData = await response.json();
-      console.log('API Response:', responseData);
+      console.log('API Response:', responseData.orders);
 
       if (response.ok && responseData.success) {
         if (responseData.orders.length > 0) {
@@ -271,16 +297,20 @@ const OrderScreen = () => {
                     <Image source={{ uri: product.imageUrl }} style={styles.image} />
                     <View style={styles.details}>
                       <Text style={styles.productName}>{product.name}</Text>
+                      <Text style={styles.productName}>{product.description}</Text>
+
                       <Text style={styles.trackingId}>Tracking ID: #{item.awb_code}</Text>
 
                       {/* Delivery / Cancellation Status */}
                       <View style={styles.statusRow}>
                         <Icon name="circle" size={8} color="gray" />
                         <Text style={styles.statusText}>
-                          {item.shipping_status === 'Pending'
-                            ? `Delivery by 12/02/2024`
-                            : 'Canceled'}
+                          Order at {new Date(item.created_at).toLocaleString("en-IN", {
+                            timeZone: "Asia/Kolkata",
+                            hour12: true, // Optional, for 12-hour format with AM/PM
+                          }).replace(/ GMT.*$/, "")}
                         </Text>
+
                       </View>
                     </View>
                   </View>
@@ -299,19 +329,22 @@ const OrderScreen = () => {
                     <Text style={styles.trackButtonText}>TRACK ORDER</Text>
                   </TouchableOpacity> */}
                   <TouchableOpacity
-   onPress={() =>
-    navigation.navigate('Tracking', {
-      awbCode: item.awb_code,
-      address: item.address, // Pass address as prop
-      imageUrl: product.imageUrl, // Pass image URL as prop
-      productName: product.name, 
-    })
-  }
-  style={styles.trackButton}
->
-  <Icon name="local-shipping" size={20} color="white" />
-  <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-</TouchableOpacity>
+                    onPress={() =>
+                      navigation.navigate('Tracking', {
+                        awbCode: item.awb_code,
+                        address: item.address, // Pass address as prop
+                        imageUrl: product.imageUrl, // Pass image URL as prop
+                        productName: product.name,
+                        description:product.description,
+                        orderPlaced:item.created_at
+
+                      })
+                    }
+                    style={styles.trackButton}
+                  >
+                    <Icon name="local-shipping" size={20} color="white" />
+                    <Text style={styles.trackButtonText}>TRACK ORDER</Text>
+                  </TouchableOpacity>
 
                 </View>
               ))}

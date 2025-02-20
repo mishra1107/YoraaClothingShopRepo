@@ -54,7 +54,6 @@ const AccordionItem = ({ title, content }) => {
 };
 
 export default AccordionItem;
-
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,

@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import {View,Text, FlatList, Image,StyleSheet,TouchableOpacity, Dimensions} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; 
 import { useNavigation } from "@react-navigation/native";
-
 const { width } = Dimensions.get("window");
-
 const categories = [
   {
     id: "1",

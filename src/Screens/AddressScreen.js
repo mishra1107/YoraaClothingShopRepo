@@ -350,6 +350,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from "../constants/config";
 
 const AddressScreen = () => {
   const navigation = useNavigation();

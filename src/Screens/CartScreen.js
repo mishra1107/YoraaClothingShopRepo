@@ -22,10 +22,6 @@
 //     fetchCart();
 //     fetchAddress();  // Fetch address when screen loads
 //   }, [navigation]);
-
-  
-
-  
 //   const fetchAddress = async () => {
 //     try {
 //       const token = await AsyncStorage.getItem('token');
@@ -284,7 +280,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useCart } from '../services/cart/CartContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { BASE_URL } from '../constants/config';
 const CartScreen = () => {
   const navigation = useNavigation();
   const { cart, fetchCart, removeFromCart, updateCartItem } = useCart();
@@ -359,7 +355,7 @@ const CartScreen = () => {
         setAddress(null);  // No address found
       }
     } catch (error) {
-      console.log('Address fetch failed, but continuing without showing an error to the user.');
+      console.log('Address fetch failed, but continuing without showing an error to the user.',error);
       // Removed all alerts and error logs that show up on the UI
       setAddress(null);
     }
