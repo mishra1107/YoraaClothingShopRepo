@@ -347,18 +347,19 @@ const EditProfileScreen = () => {
         <Text style={styles.header}>PROFILE</Text>
       </View> */}
 
+
 <View style={styles.header}>
-  <TouchableOpacity
-    style={styles.backIcon}
-    onPress={() => navigation.goBack()}
-  >
-    <Image 
-      source={require('../assests/images/BackArrow.png')}
-      style={styles.backIconImage}
-    />
-  </TouchableOpacity>
-  <Text style={styles.headerTitle}>PROFILE</Text>
-</View>
+      <TouchableOpacity
+        style={styles.backIcon}
+        onPress={() => navigation.goBack()}
+      >
+        <Image 
+          source={require('../assests/images/BackArrow.png')} 
+          style={styles.backIconImage}
+        />
+      </TouchableOpacity>
+      <Text style={styles.headerTitle}>PROFILE</Text>
+    </View>
       <View style={styles.avatarContainer}>
         <View style={styles.imageBorder}>
           <Image source={profileImage} style={styles.profileImage} />
@@ -387,12 +388,18 @@ const EditProfileScreen = () => {
     <>
       {/* Send OTP / Resend OTP Button */}
       <TouchableOpacity
-        style={styles.otpButton}
+        // style={styles.otpButton}
+        style={[styles.otpButton, { opacity: loading ? 0.5 : 1 }]}
         onPress={otpRequested ? handleResendOTP : handleSendOtp}
+        disabled={loading}
       >
+         {loading ? (
+              <ActivityIndicator color="#ffffff" />
+            ) : (
         <Text style={styles.otpButtonText}>
           {otpRequested ? "Resend OTP" : "Send OTP"}
         </Text>
+         )}
       </TouchableOpacity>
 
       {/* OTP Input */}
@@ -434,43 +441,7 @@ const EditProfileScreen = () => {
     editable={!userData.isEmailVerified} // Disable input if phone is verified
   />
 
-  {!userData.isEmailVerified && (
-    <>
-      {/* Send OTP / Resend OTP Button */}
-      <TouchableOpacity
-        style={styles.otpButton}
-        onPress={otpRequested ? sendVerificationEmail : sendVerificationEmail}
-      >
-        <Text style={styles.otpButtonText}>
-          {otpRequested ? "Resend OTP" : "Send OTP"}
-        </Text>
-      </TouchableOpacity>
-
-      {/* OTP Input */}
-      <TextInput
-      placeholderTextColor={placeholderTextColor}
-        style={styles.input}
-        placeholder="Enter OTP"
-        keyboardType="numeric"
-        maxLength={6}
-        value={otp}
-        onChangeText={setOtp}
-      />
-
-      {/* Verify OTP Button */}
-      <TouchableOpacity
-        style={styles.otpButton}
-        onPress={() => verifyEmail(otp)}
-        disabled={loading || otp.length !== 6}
-      >
-        {loading ? (
-          <ActivityIndicator color="#ffffff" />
-        ) : (
-          <Text style={styles.otpButtonText}>Verify OTP</Text>
-        )}
-      </TouchableOpacity>
-    </>
-  )}
+ 
 </View>
 
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
@@ -571,8 +542,8 @@ const EditProfileScreen = () => {
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
-    alignItems: "center", // Ensures both back icon and title align properly
-    justifyContent: "center", // Centers content in row
+    alignItems: "center", 
+    justifyContent: "center", 
     paddingVertical: 15,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
@@ -581,17 +552,19 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    left: 10, // Moves icon to the left
-    alignItems: "center", // Keeps it vertically centered
+    left: 10, 
+    top: 10,  // Ensure it's clickable
+    padding: 10,  // Increases tap area
+    alignItems: "center",
     justifyContent: "center",
   },
   backIconImage: {
     width: 24,
     height: 24,
-    tintColor: 'black',
+    tintColor: "black",
   },
   headerTitle: {
-   marginBottom:10,
+    marginBottom: 10,
     fontSize: 20,
     fontWeight: "bold",
     color: "#333",

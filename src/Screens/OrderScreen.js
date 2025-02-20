@@ -275,9 +275,18 @@ const OrderScreen = () => {
     <View style={styles.container}>
       {/* Back Icon and Title (DO NOT CHANGE UI) */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('Back pressed')}>
-          <Icon name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        
+
+        <TouchableOpacity
+                style={styles.backIcon}
+                onPress={() => navigation.goBack()}
+              >
+                <Image 
+                  source={require('../assests/images/BackArrow.png')} 
+                  style={styles.backIconImage}
+                />
+              </TouchableOpacity>
+
         <Text style={styles.title}>TRACK ORDER</Text>
       </View>
 
@@ -315,19 +324,7 @@ const OrderScreen = () => {
                     </View>
                   </View>
 
-                  {/* Track Order Button */}
-                  {/* <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('Tracking', {
-                        awbCode: item.awb_code,
-                        address: item.address, // Pass address as prop
-                      })
-                    }
-                    style={styles.trackButton}
-                  >
-                    <Icon name="local-shipping" size={20} color="white" />
-                    <Text style={styles.trackButtonText}>TRACK ORDER</Text>
-                  </TouchableOpacity> */}
+                  
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('Tracking', {

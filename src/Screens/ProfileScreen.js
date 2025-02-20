@@ -20,7 +20,7 @@ const ProfileScreen = () => {
       try {
         console.log("hello");
 
-        const token = await AsyncStorage.getItem("token"); // ✅ Ensure token is fetched
+        const token = await AsyncStorage.getItem("token"); //  Ensure token is fetched
         if (!token) {
           console.error("No token found!");
           return;

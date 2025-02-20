@@ -91,7 +91,6 @@ const App = () => {
     <CartProvider>
     <WishlistProvider>
     <NavigationContainer>
-     
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
         {/* Authentication Screens */}
         <Stack.Screen name="Splash" component={SplashScreen} />
@@ -99,7 +98,6 @@ const App = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="LoginVerifyOtp" component={LoginVerifyOtp} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-
         {/* Main Screens */}
         <Stack.Screen name="Home" component={BottomTabNavigation} />
         <Stack.Screen name="Wishlist" component={WishlistScreen} />
@@ -110,7 +108,6 @@ const App = () => {
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
-
         {/* Support Screens */}
         <Stack.Screen name="Contact" component={ContactusScreen} />
         <Stack.Screen name="Terms" component={TermsConditionScreen} />

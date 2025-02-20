@@ -161,7 +161,7 @@ const FilterSection = () => {
       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
         <Icon name="cart-outline" size={24} style={styles.icon} />
         {cartCount > 0 && (
-          <View style={styles.badge}>
+          <View style={styles.badge1}>
             <Text style={styles.badgeText}>{cartCount}</Text>
           </View>
         )}
@@ -176,10 +176,11 @@ const styles = StyleSheet.create({
   searchIcon: { marginRight: 5, color: '#999' },
   searchInput: { flex: 1, height: 40, color: '#000' },
   icon1: { width: 25, height: 25 },
-  cartContainer: { position: 'relative' },
-  wishlistContainer: { position: 'relative' },
-  badge: { position: 'absolute', top: -5, right: -10, backgroundColor: 'red', borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center' },
-  badgeText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
+  cartContainer: { position: 'relative',justifyContent:'space-between' },
+  wishlistContainer: { position: 'relative',justifyContent:'space-between' },
+  badge: { position: 'absolute', top: -5, left: 0, backgroundColor: 'red', borderRadius: 10, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' },
+  badge1: { position: 'absolute', top: -5, right: -6, backgroundColor: 'red', borderRadius: 10, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' },
+  badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
 });
 
 export default FilterSection;

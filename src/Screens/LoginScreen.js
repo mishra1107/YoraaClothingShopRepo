@@ -123,7 +123,7 @@ export default function LoginScreen({ navigation }) {
   style={styles.backIcon}
   onPress={() => navigation.goBack()}>
   <Image 
-    source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
+    source={require('../assests/images/BackArrow.png')}  //  Use local asset
     style={styles.backIconImage}  //  Apply styles for proper size
   />
 </TouchableOpacity>
@@ -146,7 +146,8 @@ export default function LoginScreen({ navigation }) {
           // style={styles.passwordInput}
           style={[styles.passwordInput, {fontSize:12}]}
           placeholder="★★★★★★★"
-          placeholderTextColor="rgba(171, 171, 171, 1)" 
+          // placeholderTextColor="rgba(171, 171, 171, 1)"   
+           placeholderTextColor={placeholderTextColor}
           secureTextEntry={!passwordVisible}
           value={password}
           onChangeText={setPassword}
