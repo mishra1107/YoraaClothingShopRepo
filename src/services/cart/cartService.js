@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL, API_ENDPOINTS } from "../../constants/config";
 
-// ✅ Get Authorization Headers
+//  Get Authorization Headers
 export const getAuthHeaders = async () => {
     const token = await AsyncStorage.getItem('token');
     console.log(" Auth Token:", token);
@@ -12,7 +12,7 @@ export const getAuthHeaders = async () => {
     };
 };
 
-// ✅ Create Cart (Add Item to Cart)
+//  Create Cart (Add Item to Cart)
 export const addToCart = async (itemId, quantity) => {
     try {
         const headers = await getAuthHeaders();
@@ -31,7 +31,7 @@ export const addToCart = async (itemId, quantity) => {
     }
 };
 
-// ✅ Delete Item from Cart by ID
+//  Delete Item from Cart by ID
 
 export const removeFromCart = async (cartItemId) => {
     try {
@@ -76,7 +76,7 @@ export const getCart = async () => {
             throw new Error("Failed to fetch cart items");
         }
 
-        // ✅ Extract only required details
+        //  Extract only required details
         const cartItems = data.data.map(item => ({
             cartId: item._id,
             name: item.item.name,
@@ -87,7 +87,7 @@ export const getCart = async () => {
             item: item.item._id
         }));
 
-        console.log(" Extracted Cart Items:", cartItems); // ✅ Log extracted data
+        console.log(" Extracted Cart Items:", cartItems); //  Log extracted data
 
         return cartItems;
     } catch (error) {
@@ -96,7 +96,7 @@ export const getCart = async () => {
     }
 };
 
-// ✅ Update Cart Item by ID
+//  Update Cart Item by ID
 export const updateCartItem = async (cartId, quantity) => {
     try {
       const headers = await getAuthHeaders();

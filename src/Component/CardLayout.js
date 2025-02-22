@@ -18,7 +18,7 @@ const CardLayout = () => {
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 
-        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
+        // const response = await fetch('http://192.168.1.40:8080/api/items?page=1&limit=20', {
           const response = await fetch(`${BASE_URL}/items?page=1&limit=20`, {
           headers: {
             'Authorization': `Bearer ${token}`,

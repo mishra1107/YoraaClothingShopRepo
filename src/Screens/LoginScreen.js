@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }) {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
 
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
+      // const response = await fetch('http://192.168.1.40:8080/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -64,6 +64,54 @@ export default function LoginScreen({ navigation }) {
         Alert.alert('Success', 'User signed up successfully');
         await AsyncStorage.setItem('token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
+        const sendFCMTokenToServer = async () => {
+          try {
+              // Retrieve FCM Token
+              const fcmToken = await AsyncStorage.getItem('fcmToken');
+              if (!fcmToken) {
+                  console.log('No FCM token found');
+                  return;
+              }
+      
+              // Retrieve Auth Token
+              const authToken = await AsyncStorage.getItem('token');
+              if (!authToken) {
+                  console.log('No Auth token found');
+                  return;
+              }
+      
+              // API URL
+              const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+      
+              // Request Body
+              const requestBody = JSON.stringify({
+                  token: fcmToken
+              });
+      
+              // API Call
+              const response = await fetch(apiUrl, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${authToken}`
+                  },
+                  body: requestBody
+              });
+      
+              const data = await response.json();
+              console.log('FCM Token Save Response:', data);
+      
+              if (data.success) {
+                  console.log('zaibaaa FCM Token successfully saved to server');
+              } else {
+                  console.error('Error saving FCM token:', data.message);
+              }
+      
+          } catch (error) {
+              console.error('Error sending FCM token to server:', error);
+          }
+      };
+      sendFCMTokenToServer();
         navigation.replace('Home');
       } else {
         Alert.alert('Error', responseData.message || 'Something went wrong');
@@ -84,7 +132,7 @@ export default function LoginScreen({ navigation }) {
     try {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.LOGIN), {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/login', {
+      // const response = await fetch('http://192.168.1.40:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
@@ -98,6 +146,54 @@ export default function LoginScreen({ navigation }) {
         await AsyncStorage.setItem('token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
         Alert.alert('Success', 'Login Successful!');
+        const sendFCMTokenToServer = async () => {
+          try {
+              // Retrieve FCM Token
+              const fcmToken = await AsyncStorage.getItem('fcmToken');
+              if (!fcmToken) {
+                  console.log('No FCM token found');
+                  return;
+              }
+      
+              // Retrieve Auth Token
+              const authToken = await AsyncStorage.getItem('token');
+              if (!authToken) {
+                  console.log('No Auth token found');
+                  return;
+              }
+      
+              // API URL
+              const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+      
+              // Request Body
+              const requestBody = JSON.stringify({
+                  token: fcmToken
+              });
+      
+              // API Call
+              const response = await fetch(apiUrl, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${authToken}`
+                  },
+                  body: requestBody
+              });
+      
+              const data = await response.json();
+              console.log('FCM Token Save Response:', data);
+      
+              if (data.success) {
+                  console.log('zaibaaa FCM Token successfully saved to server');
+              } else {
+                  console.error('Error saving FCM token:', data.message);
+              }
+      
+          } catch (error) {
+              console.error('Error sending FCM token to server:', error);
+          }
+      };
+      sendFCMTokenToServer();
         navigation.replace('Home');
       } else if (!responseData.success) {
         console.log("dfghjkhghjkhgjkhg546789897654",phNo)

@@ -1,198 +1,17 @@
-// sir code logic is here::
-
-
-// import React, { useState } from "react";
-// import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
-// import RazorpayCheckout from "react-native-razorpay";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// const PaymentGatewayScreen = () => {
-//   const [loading, setLoading] = useState(false);
-
-//   // Static payment details
-//   const paymentDetails = {
-//     customerName: "John Doe",
-//     email: "hraj6398@gmail.com",
-//     phoneNumber: "9829699382",
-//     amount: "1", // Amount in INR
-//   };
-
-//   const handlePayment = async () => {
-//     setLoading(true);
-
-//     try {
-//       // Call backend to create an order
-//       const orderResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/create-order", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ amount: paymentDetails.amount }),
-//       });
-
-//       const orderData = await orderResponse.json();
-//       if (!orderData.id) throw new Error("Order creation failed");
-
-//       // Configure Razorpay options
-//       const options = {
-//         key: "rzp_live_ZumwCLoX1AZdm9", // Replace with your Razorpay Key ID
-//         amount: orderData.amount, // Amount in paise
-//         currency: "INR",
-//         name: paymentDetails.customerName,
-//         description: "Order Payment",
-//         order_id: orderData.id, // Razorpay order ID
-//         prefill: {
-//           name: paymentDetails.customerName,
-//           email: paymentDetails.email,
-//           contact: paymentDetails.phoneNumber,
-//         },
-//         theme: { color: "#F37254" },
-//       };
-
-//       // Open Razorpay checkout modal
-//       const paymentResponse = await RazorpayCheckout.open(options);
-
-//       // Send payment details to backend for verification
-//       const verifyResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/verify-payment", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(paymentResponse),
-//       });
-
-//       const verifyData = await verifyResponse.json();
-//       if (verifyData.success) {
-//         Alert.alert("Success", "Payment successful!");
-//       } else {
-//         Alert.alert("Error", "Payment verification failed.");
-//       }
-
-//     } catch (error) {
-//       console.error(error);
-//       Alert.alert("Payment Failed", "Something went wrong.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Button title={loading ? "Processing..." : `Pay ₹${paymentDetails.amount}`} onPress={handlePayment} disabled={loading} />
-//       {loading && <ActivityIndicator size="large" color="#F37254" />}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 20,
-//     justifyContent: "center",
-//   },
-// });
-
-// export default PaymentGatewayScreen;
-
-// sir code logic is here::
-
-
-// import React, { useState } from "react";
-// import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
-// import RazorpayCheckout from "react-native-razorpay";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// const PaymentGatewayScreen = () => {
-//   const [loading, setLoading] = useState(false);
-
-//   // Static payment details
-//   const paymentDetails = {
-//     customerName: "John Doe",
-//     email: "hraj6398@gmail.com",
-//     phoneNumber: "9829699382",
-//     amount: "1", // Amount in INR
-//   };
-
-//   const handlePayment = async () => {
-//     setLoading(true);
-
-//     try {
-//       // Call backend to create an order
-//       const orderResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/create-order", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ amount: paymentDetails.amount }),
-//       });
-
-//       const orderData = await orderResponse.json();
-//       if (!orderData.id) throw new Error("Order creation failed");
-
-//       // Configure Razorpay options
-//       const options = {
-//         key: "rzp_live_ZumwCLoX1AZdm9", // Replace with your Razorpay Key ID
-//         amount: orderData.amount, // Amount in paise
-//         currency: "INR",
-//         name: paymentDetails.customerName,
-//         description: "Order Payment",
-//         order_id: orderData.id, // Razorpay order ID
-//         prefill: {
-//           name: paymentDetails.customerName,
-//           email: paymentDetails.email,
-//           contact: paymentDetails.phoneNumber,
-//         },
-//         theme: { color: "#F37254" },
-//       };
-
-//       // Open Razorpay checkout modal
-//       const paymentResponse = await RazorpayCheckout.open(options);
-
-//       // Send payment details to backend for verification
-//       const verifyResponse = await fetch("http://10.0.2.2:8080:8080/api/razorpay/verify-payment", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(paymentResponse),
-//       });
-
-//       const verifyData = await verifyResponse.json();
-//       if (verifyData.success) {
-//         Alert.alert("Success", "Payment successful!");
-//       } else {
-//         Alert.alert("Error", "Payment verification failed.");
-//       }
-
-//     } catch (error) {
-//       console.error(error);
-//       Alert.alert("Payment Failed", "Something went wrong.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Button title={loading ? "Processing..." : `Pay ₹${paymentDetails.amount}`} onPress={handlePayment} disabled={loading} />
-//       {loading && <ActivityIndicator size="large" color="#F37254" />}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 20,
-//     justifyContent: "center",
-//   },
-// });
-
-// export default PaymentGatewayScreen;
-
 
 import React, { useState, useEffect } from "react";
 import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
 import RazorpayCheckout from "react-native-razorpay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRoute } from '@react-navigation/native'; // ✅ Import useRoute
+import { useNavigation, useRoute } from '@react-navigation/native'; //  Import useRoute
 import { BASE_URL } from "../constants/config";
 
+
 const PaymentGatewayScreen = () => {
-  const route = useRoute(); // ✅ Get route parameters
-  const { itemIds,address,cart } = route.params || {}; // ✅ Extract itemIds safely
+  const navigation=useNavigation();
+  const route = useRoute(); //  Get route parameters
+  const { itemIds,address,cart,onPaymentSuccess } = route.params || {}; 
+
   console.log("req.params",route.params)
   console.log("address",address)
   console.log("cart",cart)
@@ -270,7 +89,7 @@ const PaymentGatewayScreen = () => {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // ✅ Pass token here
+          "Authorization": `Bearer ${token}` //  Pass token here
         },
                 body: JSON.stringify({ amount: paymentDetails.amount, itemIds,staticAddress,cart }),
       });
@@ -308,6 +127,12 @@ const PaymentGatewayScreen = () => {
       //console.log("verifyData",verifyData)
       if (verifyData.success) {
         Alert.alert("Success", "Payment successful!");
+     
+        if (onPaymentSuccess) {
+          onPaymentSuccess(); 
+      }
+        navigation.navigate('Order')
+        
       } else {
         Alert.alert("Error", "Payment verification failed.");
       }

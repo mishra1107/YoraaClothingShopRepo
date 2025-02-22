@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import { getCart, addToCart, removeFromCart, updateCartItem } from "./CartService";
 
 export const CartContext = createContext();
-
 export const useCart = () => {
     const context = useContext(CartContext);
     if (!context) {
@@ -47,8 +46,21 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+     // ✅ Function to clear the cart after payment
+     const clearCart = async () => {
+        try {
+            for (const item of cart) {
+                await removeFromCart(item.cartId); // Remove each item from the cart
+            }
+            setCart([]); // Reset cart state
+            setCartCount(0);
+            console.log("Cart cleared after successful payment");
+        } catch (error) {
+            console.error("Clear Cart Error:", error);
+        }
+    };
     return (
-        <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart,removeFromCart,updateCartItem }}>
+        <CartContext.Provider value={{ cart, cartCount, toggleCart, fetchCart,removeFromCart,updateCartItem,clearCart }}>
             {children}
         </CartContext.Provider>
     );

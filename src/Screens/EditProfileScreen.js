@@ -65,7 +65,7 @@ const EditProfileScreen = () => {
         }
 
         const apiUrl = `${BASE_URL}/userProfile/getProfile`;
-        // const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
+        // const apiUrl = 'http://192.168.1.40:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -261,7 +261,7 @@ const EditProfileScreen = () => {
       console.log("qqqqqqqqqqqqqqqq22222222", formData)
       const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${BASE_URL}/userProfile/updateProfile`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
+      // const response = await fetch('http://192.168.1.40:8080/api/userProfile/updateProfile', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -280,7 +280,7 @@ const EditProfileScreen = () => {
        const email = await AsyncStorage.getItem("user_email");
        const phoneNumber = await AsyncStorage.getItem("user_phNo");
        console.log(" Retrieved from AsyncStorage:");
-       console.log("10.0.2.2s:", name);
+       console.log("192.168.1.40s:", name);
        console.log("Emailss:", email);
        console.log("Phone Numbersss:", phoneNumber)
       navigation.navigate('Profile', { refresh: true });
@@ -292,7 +292,7 @@ const EditProfileScreen = () => {
   const sendVerificationEmail = async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/sendVerificationEmail`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/sendVerificationEmail', {
+      // const response = await fetch('http://192.168.1.40:8080/api/auth/sendVerificationEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -314,7 +314,7 @@ const EditProfileScreen = () => {
   const verifyEmail = async ( otp) => {
     try {
       const response = await fetch(`${BASE_URL}/auth/verifyEmail`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/verifyEmail', {
+      // const response = await fetch('http://192.168.1.40:8080/api/auth/verifyEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

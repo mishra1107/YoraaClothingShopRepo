@@ -33,7 +33,7 @@
 //           return;
 //         }
 
-//         const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
+//         const apiUrl = 'http://192.168.1.40:8080/api/userProfile/getProfile';
 //         console.log(' Fetching user profile from:', apiUrl);
 
 //         const response = await fetch(apiUrl, {

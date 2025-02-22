@@ -197,6 +197,14 @@ const toggleCheckbox = (subcategory) => {
         keyExtractor={(item) => item._id}
         numColumns={2} // 2-column layout
         columnWrapperStyle={styles.row}
+
+        ListEmptyComponent={ 
+          <View style={styles.noItemsContainer}>
+            <Text style={styles.noItemsText}>No items found</Text>
+          </View>
+        }
+
+
         renderItem={({ item }) => (
             <View style={[styles.itemCard, { width: itemWidth }]}>
             <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
@@ -311,6 +319,17 @@ const toggleCheckbox = (subcategory) => {
 };
 
 const styles = StyleSheet.create({
+  noItemsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  noItemsText: {
+    fontSize: 16,
+    color: '#666',
+    fontWeight: 'bold',
+  },
   container: { padding: 10, borderBottomWidth: 1, borderColor: '#ddd' },
   headerContainer: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, marginBottom: 10 },
   searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', borderRadius: 10, paddingHorizontal: 10, height: 40, backgroundColor: '#fff' },

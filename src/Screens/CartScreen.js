@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -17,13 +16,15 @@ import { BASE_URL } from '../constants/config';
 
 const CartScreen = () => {
   const navigation = useNavigation();
-  const { cart, fetchCart, removeFromCart, updateCartItem } = useCart();
+  const { cart, fetchCart, removeFromCart, updateCartItem ,clearCart} = useCart();
   const [address, setAddress] = useState(null);
   const [data, setData] = useState(null);
 
   useEffect(() => {
     fetchCart();
-    fetchAddress();  // Fetch address when screen loads
+    fetchAddress();
+    fetchProfile();
+      // Fetch address when screen loads
   }, [navigation]);
 
   const fetchAddress = async () => {
@@ -33,7 +34,7 @@ const CartScreen = () => {
 
       const response = await fetch(`${BASE_URL}/address/user`, {
   
-      // const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+      // const response = await fetch('http://192.168.1.40:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -63,37 +64,87 @@ const CartScreen = () => {
       setAddress(null);
     }
   };
+
+
+  const fetchProfile = async () => {
+    try {
+      console.log("Fetching profile...");
   
-  // const handleCheckout = () => {
-  //   const itemIds = cart.map(item => item.item); // Extract item IDs from cart
-  //   //console.log("itemIds",itemIds)
-  //   console.log("qwqwqwqwqwqwqwz  adress",address)
-  //   navigation.navigate('Payment', { itemIds, address,cart });
-  // };
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        console.error("No token found!");
+        return;
+      }
+  
+      const apiUrl = `${BASE_URL}/userProfile/getProfile`;
+      console.log("Fetching user profile from:", apiUrl);
+  
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const responseData = await response.json();
+      console.log("Full API Response:", responseData);
+  
+      // ✅ Extract `isProfile` correctly
+      if (!responseData.user) {
+        console.error("User object is missing in API response!");
+        return;
+      }
+  
+      const profileData = {
+        ...responseData, 
+        isProfile: responseData.user.isProfile ?? false, // Extract `isProfile`
+      };
+  
+      console.log("Extracted isProfile:", profileData.isProfile);
+      setData(profileData); // ✅ Store profile data in state
+  
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      setData({}); // Prevent UI break
+    }
+  };
+  const handleCheckout = () => {  
+    if (!data) {
+        console.log("Profile data is still loading...");
+        Alert.alert("Error", "Profile data is still loading. Please try again in a moment.");
+        return;
+    }
 
+    const itemIds = cart.map(item => item.item);
 
-  const handleCheckout = () => { 
-    const itemIds = cart.map(item => item.item); // Extract item IDs from cart
+    console.log("Profile Data in Checkout:", data);
+    console.log("Profile Flag (isProfile) in Checkout:", data.isProfile);
 
-    // Ensure address exists and has required fields
-    const isAddressComplete = address && address.street && address.city && address.state && address.zipCode;
-
-    // Ensure profile (data) exists and has required fields
-    const isProfileComplete = data && data.name && data.email && data.phone; 
-
-    if (!isAddressComplete || !isProfileComplete) {
+    if (!data.isProfile) {
         Alert.alert(
             "Incomplete Information",
             "Please complete your profile and address before proceeding to payment."
         );
-        return;
+        return; // Stop navigation if isProfile is false
     }
 
-    console.log("Address:", address);
-    console.log("Profile:", data);
-    
-    navigation.navigate('Payment', { itemIds, address, cart });
+    // ✅ Navigate to Payment if isProfile is true
+    navigation.navigate('Payment', { 
+        itemIds, 
+        address, 
+        cart, 
+        onPaymentSuccess: () => { 
+            clearCart(); // Clear the cart once payment is successful
+        } 
+    });
 };
+
+
 
   const handleAddress = () => {
     navigation.navigate('Address');

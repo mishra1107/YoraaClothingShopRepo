@@ -10,17 +10,17 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
-const ProfileScreen = () => {
+ const ProfileScreen = () => {
  const navigation = useNavigation();
 
-  const [data, setData] = useState(null);
+ const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         console.log("hello");
 
-        const token = await AsyncStorage.getItem("token"); //  Ensure token is fetched
+        const token = await AsyncStorage.getItem("token"); 
         if (!token) {
           console.error("No token found!");
           return;
@@ -44,6 +44,13 @@ const ProfileScreen = () => {
 
         const responseData = await response.json(); //  Properly parse JSON
         console.log("Response Data:", responseData);
+
+        if (!responseData || typeof responseData !== 'object') {
+          console.error("Invalid profile response:", responseData);
+          return;
+        }
+    
+        console.log("isProfile Value from API:", responseData.isProfile);
         setData(responseData); //  Store actual response data
 
       } catch (error) {
@@ -53,26 +60,89 @@ const ProfileScreen = () => {
     };
 
     fetchProfile();
-  }, []); // Empty dependency array means it runs once on mount
+  }, []); 
+
+  // const handleLogout = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem('token');
+  //     await AsyncStorage.removeItem('user');
+  //     console.log(" User logged out. Token removed.");
+
+    
+  //     Alert.alert(" Logged Out", "You have been logged out successfully.", [
+  //       { text: "OK", onPress: () => navigation.replace('Welcome') } 
+  //     ]);
+
+  //   } catch (error) {
+  //     console.error(" Error logging out:", error);
+  //     Alert.alert(" Error", "Something went wrong while logging out.");
+  //   }
+  // };
+
 
   const handleLogout = async () => {
     try {
-      // Clear token and user data from AsyncStorage
-      await AsyncStorage.removeItem('token');
-      await AsyncStorage.removeItem('user');
+        const authToken = await AsyncStorage.getItem('token');
+        if (!authToken) {
+            console.log('No Auth token found');
+            return;
+        }
 
-      console.log(" User logged out. Token removed.");
+        // Get User ID
+        const userResponse = await fetch('http://192.168.1.40:8080/api/user/getUser', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+            },
+        });
 
-      // Show logout confirmation
-      Alert.alert(" Logged Out", "You have been logged out successfully.", [
-        { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
-      ]);
+        const userData = await userResponse.json();
+        if (!userData._id) {
+            console.error('Error fetching user ID');
+            return;
+        }
+
+        const fcmToken = await AsyncStorage.getItem('fcmToken');
+        if (!fcmToken) {
+            console.log('No FCM token found');
+            return;
+        }
+        console.log('User Data:', userData);
+        console.log('User ID:', userData._id);
+        
+        
+        const deleteResponse = await fetch('http://192.168.1.40:8080/api/delete-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+                userId: userData._id,
+                token: fcmToken,
+            }),
+        });
+
+        const deleteData = await deleteResponse.json();
+        if (deleteData.success) {
+            console.log(' monaaaaaaaaaaaaaa FCM Token successfully deleted');
+        } else {
+            console.error('Error deleting FCM token:', deleteData.message);
+        }
+
+        
+        await AsyncStorage.removeItem('token');
+        // await AsyncStorage.removeItem('fcmToken');
+
+        console.log('User logged out successfully');
+
+      navigation.replace('Welcome')
 
     } catch (error) {
-      console.error(" Error logging out:", error);
-      Alert.alert(" Error", "Something went wrong while logging out.");
+        console.error('Logout Error:', error);
     }
-  };
+};
 
   return (
     <View style={styles.container}>
