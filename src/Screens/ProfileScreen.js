@@ -6,21 +6,22 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView, Alert
+  ScrollView, Alert,Linking,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
- const ProfileScreen = () => {
+const ProfileScreen = () => {
  const navigation = useNavigation();
 
- const [data, setData] = useState(null);
+  const [data, setData] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         console.log("hello");
 
-        const token = await AsyncStorage.getItem("token"); 
+        const token = await AsyncStorage.getItem("token"); //  Ensure token is fetched
         if (!token) {
           console.error("No token found!");
           return;
@@ -44,13 +45,6 @@ import { BASE_URL } from '../constants/config';
 
         const responseData = await response.json(); //  Properly parse JSON
         console.log("Response Data:", responseData);
-
-        if (!responseData || typeof responseData !== 'object') {
-          console.error("Invalid profile response:", responseData);
-          return;
-        }
-    
-        console.log("isProfile Value from API:", responseData.isProfile);
         setData(responseData); //  Store actual response data
 
       } catch (error) {
@@ -60,89 +54,67 @@ import { BASE_URL } from '../constants/config';
     };
 
     fetchProfile();
-  }, []); 
-
-  // const handleLogout = async () => {
-  //   try {
-  //     await AsyncStorage.removeItem('token');
-  //     await AsyncStorage.removeItem('user');
-  //     console.log(" User logged out. Token removed.");
-
-    
-  //     Alert.alert(" Logged Out", "You have been logged out successfully.", [
-  //       { text: "OK", onPress: () => navigation.replace('Welcome') } 
-  //     ]);
-
-  //   } catch (error) {
-  //     console.error(" Error logging out:", error);
-  //     Alert.alert(" Error", "Something went wrong while logging out.");
-  //   }
-  // };
-
+  }, []); // Empty dependency array means it runs once on mount
 
   const handleLogout = async () => {
     try {
-        const authToken = await AsyncStorage.getItem('token');
-        if (!authToken) {
-            console.log('No Auth token found');
-            return;
-        }
+      // Clear token and user data from AsyncStorage
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('user');
 
-        // Get User ID
-        const userResponse = await fetch('http://192.168.1.40:8080/api/user/getUser', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`,
-            },
-        });
+      console.log(" User logged out. Token removed.");
 
-        const userData = await userResponse.json();
-        if (!userData._id) {
-            console.error('Error fetching user ID');
-            return;
-        }
-
-        const fcmToken = await AsyncStorage.getItem('fcmToken');
-        if (!fcmToken) {
-            console.log('No FCM token found');
-            return;
-        }
-        console.log('User Data:', userData);
-        console.log('User ID:', userData._id);
-        
-        
-        const deleteResponse = await fetch('http://192.168.1.40:8080/api/delete-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({
-                userId: userData._id,
-                token: fcmToken,
-            }),
-        });
-
-        const deleteData = await deleteResponse.json();
-        if (deleteData.success) {
-            console.log(' monaaaaaaaaaaaaaa FCM Token successfully deleted');
-        } else {
-            console.error('Error deleting FCM token:', deleteData.message);
-        }
-
-        
-        await AsyncStorage.removeItem('token');
-        // await AsyncStorage.removeItem('fcmToken');
-
-        console.log('User logged out successfully');
-
-      navigation.replace('Welcome')
+      // Show logout confirmation
+      Alert.alert(" Logged Out", "You have been logged out successfully.", [
+        { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
+      ]);
 
     } catch (error) {
-        console.error('Logout Error:', error);
+      console.error(" Error logging out:", error);
+      Alert.alert(" Error", "Something went wrong while logging out.");
     }
-};
+  };
+  const handleNavigation = async (screen) => {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      navigation.navigate(screen);
+    } else {
+                      Alert.alert("You need to login/signin first")
+      
+      navigation.navigate('Welcome'); // Redirect to Signup if no token found
+    }
+  };
+  useEffect(() => {
+    const checkToken = async () => {
+      const storedToken = await AsyncStorage.getItem('token');
+      setToken(storedToken);
+    };
+    checkToken();
+  }, []);
+  
+  const handleAuthNavigation = () => {
+    navigation.navigate('Welcome'); // Navigate to Signup/Login page
+  };
+  const handlePrivacyPolicy = async () => {
+    const url = 'https://www.yoraa.co/';
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert("Error", "Unable to open the URL.");
+    }
+  };
+
+  const handleTerms = async () => {
+    const url = 'https://yoraa.app/';
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert("Error", "Unable to open the URL.");
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -176,17 +148,24 @@ import { BASE_URL } from '../constants/config';
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('UpdateProfile')}
+onPress={() => handleNavigation('UpdateProfile')}
         style={styles.updateProfileButton}>
         <Text style={styles.updateProfileButtonText}>UPDATE PROFILE</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+      {token ? (
+  <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
         <Text style={styles.logoutButtonText}>LOG OUT</Text>
       </TouchableOpacity>
+) : (
+  <TouchableOpacity onPress={handleAuthNavigation} style={styles.logoutButton}>
+        <Text style={styles.logoutButtonText}>LOG IN/SIGN IN</Text>
+      </TouchableOpacity>
+)}
+
 
       <ScrollView contentContainerStyle={styles.optionsContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Order')}
+         onPress={() => handleNavigation('Order')}
           style={styles.option}>
           <View style={styles.optionContent}>
             <Image
@@ -198,7 +177,7 @@ import { BASE_URL } from '../constants/config';
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('ReturnOrder')}
           style={styles.option}>
           <View style={styles.optionContent}>
             <Image
@@ -231,7 +210,7 @@ import { BASE_URL } from '../constants/config';
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
+        <TouchableOpacity  onPress={() => navigation.navigate('Refund')} style={styles.option}>
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/refund.png')}
@@ -242,7 +221,7 @@ import { BASE_URL } from '../constants/config';
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Terms')}
+          onPress={handleTerms}
           style={styles.option}>
           <View style={styles.optionContent}>
             <Image
@@ -254,7 +233,7 @@ import { BASE_URL } from '../constants/config';
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Privacy')}
+         onPress={handlePrivacyPolicy}
           style={styles.option}>
           <View style={styles.optionContent}>
             <Image
@@ -265,6 +244,22 @@ import { BASE_URL } from '../constants/config';
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
+
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Delete')}
+          style={styles.option}>
+          <View style={styles.optionContent}>
+            <Image
+              source={require('../assests/images/privacypolicy.png')}
+              style={styles.optionIcon}
+            />
+            <Text style={styles.optionText}>Delete Account</Text>
+          </View>
+          <Text style={styles.optionArrow}>›</Text>
+        </TouchableOpacity>
+
+
       </ScrollView>
     </View>
   );

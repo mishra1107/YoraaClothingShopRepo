@@ -32,7 +32,7 @@ const AllCollection = ({navigation}) => {
       }
 
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      // const apiUrl = `http://192.168.1.40:8080/api/subcategories/category/${categoryId}`;
+      // const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",

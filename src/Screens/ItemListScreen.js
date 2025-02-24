@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WishlistContext } from '../services/context/WishlistContext';
 import { useCart } from '../services/cart/CartContext';
@@ -65,15 +65,44 @@ const ItemListScreen = ({ route }) => {
                                             style={styles.iconButton} >
                                             <Icon  name="eye"  size={18} color="black"/>
                                           </TouchableOpacity>
-                                <TouchableOpacity onPress={() => toggleWishlist(item._id)} style={styles.iconButton}>
+                                <TouchableOpacity      onPress={ 
+                                    async() =>
+                                    {
+                                        const token = await AsyncStorage.getItem('token')
+                                        console.log("111111111111111111111111111", token)
+
+                                        if (token == null) {
+                                            console.log("111111111chcghuu11111")
+                                                            Alert.alert("You need to login/signin first")
+                                            
+                                            navigation.navigate('Welcome'); // Navigate to signup if token is missing
+                                        } else {
+                                            toggleWishlist(item._id);
+                                        }
+                                    }
+                                    
+                                
+                                }  style={styles.iconButton}>
                                     <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
                                 </TouchableOpacity>  
                              <TouchableOpacity 
     style={styles.iconButton} 
     onPress={async () => {
-        await toggleCart(item._id);
-        navigation.navigate('Cart');  // Directly navigate to the cart screen
-    }}>
+        const token= await AsyncStorage.getItem('token')
+        console.log("111111111111111111111111111",token)
+        if (token==null) {
+          console.log("111111111chcghuu11111")
+                          Alert.alert("You need to login/signin first")
+          
+          navigation.navigate('Welcome'); // Navigate to signup if token is missing
+        } 
+        else{
+          console.log("Item ID being added to cart:", item._id);
+          await toggleCart(item._id);
+          navigation.navigate('Cart');
+        }
+       
+      }}>
     <Icon name="cart-outline" size={18} color="black" />
 </TouchableOpacity>
 

@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }) {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
 
-      // const response = await fetch('http://192.168.1.40:8080/api/auth/signup/firebase', {
+      // const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -81,7 +81,7 @@ export default function LoginScreen({ navigation }) {
               }
       
               // API URL
-              const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({
@@ -132,7 +132,7 @@ export default function LoginScreen({ navigation }) {
     try {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.LOGIN), {
-      // const response = await fetch('http://192.168.1.40:8080/api/auth/login', {
+      // const response = await fetch('http://10.0.2.2:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
@@ -163,7 +163,7 @@ export default function LoginScreen({ navigation }) {
               }
       
               // API URL
-              const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({

@@ -81,6 +81,10 @@ const FilterScreen = () => {
         if (searchText.trim() !== '') {
             requestBody.searchText = searchText;
         }
+        if (selectedSubcategory && selectedSubcategory.length > 0) {
+          requestBody.filters.subCategoryId = selectedSubcategory.map(sub => sub._id);
+        }
+        
 
         // Add categoryId if selected
         if (selectedCategory && selectedCategory._id) {
@@ -153,18 +157,37 @@ useEffect(() => {
 
 // Toggle checkbox selection for subcategories
 const toggleCheckbox = (subcategory) => {
-    setSelectedCheckboxes((prevState) => ({
-        ...prevState,
-        [subcategory.name]: !prevState[subcategory.name], // Toggle selection
-    }));
+  console.log("Clicked Subcategory:", subcategory);
 
-    // ✅ Set the selected subcategory when a user selects it
-    if (selectedSubcategory?._id === subcategory._id) {
-        setSelectedSubcategory(null); // Deselect if already selected
+  // Toggle the checkbox UI state
+  setSelectedCheckboxes((prevState) => {
+    const updatedState = {
+      ...prevState,
+      [subcategory.name]: !prevState[subcategory.name],
+    };
+    console.log("Updated Checkboxes State:", updatedState);
+    return updatedState;
+  });
+
+  // Toggle selection in the array
+  setSelectedSubcategory((prevSelected) => {
+    console.log("Previous Selected Subcategories:", prevSelected);
+
+    // Check if the subcategory is already selected
+    const exists = prevSelected?.find(item => item._id === subcategory._id);
+
+    if (exists) {
+      const updatedSelection = prevSelected.filter(item => item._id !== subcategory._id);
+      console.log("Subcategory Removed. Updated Selection:", updatedSelection);
+      return updatedSelection;
     } else {
-        setSelectedSubcategory(subcategory); // Set new selection
+      const updatedSelection = [...(prevSelected ?? []), subcategory];
+      console.log("Subcategory Added. Updated Selection:", updatedSelection);
+      return updatedSelection;
     }
+  });
 };
+
 
   return (
     <View style={styles.container}>
@@ -268,8 +291,7 @@ const toggleCheckbox = (subcategory) => {
                 <TouchableOpacity 
                     key={index} 
                     style={styles.checkboxContainer} 
-                    onPress={() => toggleCheckbox(subcategory)}
-                >
+                    onPress={() => toggleCheckbox(subcategory)}  >
                     <Icon 
                         name={selectedCheckboxes[subcategory.name] ? "checkbox" : "square-outline"} 
                         size={20} 

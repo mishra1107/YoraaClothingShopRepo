@@ -34,7 +34,7 @@ const CartScreen = () => {
 
       const response = await fetch(`${BASE_URL}/address/user`, {
   
-      // const response = await fetch('http://192.168.1.40:8080/api/address/user', {
+      // const response = await fetch('http://10.0.2.2:8080/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -139,12 +139,10 @@ const CartScreen = () => {
         address, 
         cart, 
         onPaymentSuccess: () => { 
-            clearCart(); // Clear the cart once payment is successful
+            clearCart(); 
         } 
     });
 };
-
-
 
   const handleAddress = () => {
     navigation.navigate('Address');

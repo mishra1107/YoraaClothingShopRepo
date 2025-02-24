@@ -1,101 +1,12 @@
-// import React, { useContext, useEffect } from 'react';
-// import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
-// import Share from 'react-native-share';
-// import { useNavigation } from '@react-navigation/native';
-// import { WishlistContext } from '../services/context/WishlistContext';
-// import { CartContext } from '../services/cart/CartContext';
-// import { useCart } from '../services/cart/CartContext';
-
-// const FilterSection = () => {
-//   const navigation = useNavigation();
-//   const { wishlistCount } = useContext(WishlistContext);
-  
-//   const { cartCount, fetchCart } = useCart(); 
-
-//   useEffect(() => {
-//     fetchCart(); 
-//   }, []);
-
-//   const handleWishlistPress = () => {
-//     navigation.navigate('Wishlist');
-//   };
-
-//   const handleCartPress = () => {
-//     navigation.navigate('Cart');
-//   };
-
-//   const handleShare = async () => {
-//     const shareOptions = {
-//       title: 'Check out this product!',
-//       message: 'Hey, check out this amazing product on our store: https://mystore.com/product/12345',
-//       url: 'https://mystore.com/product/12345',
-//       social: Share.Social.WHATSAPP,
-//     };
-
-//     try {
-//       await Share.open(shareOptions);
-//     } catch (error) {
-//       console.log('Error ->', error);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.searchContainer}>
-//         <Icon name="search-outline" size={20} style={styles.searchIcon} />
-//         <TextInput style={styles.searchInput} placeholder="Search Items" placeholderTextColor="#999" />
-//       </View>
-
-//       <TouchableOpacity onPress={handleShare}>
-//         <Image source={require('../assests/images/share.png')} style={styles.icon1} />
-//       </TouchableOpacity>
-
-//       <TouchableOpacity onPress={handleWishlistPress} style={styles.wishlistContainer}>
-//         <Icon name="heart-outline" size={24} style={styles.icon} />
-//         {wishlistCount > 0 && (
-//           <View style={styles.badge}>
-//             <Text style={styles.badgeText}>{wishlistCount}</Text>
-//           </View>
-//         )}
-//       </TouchableOpacity>
-
-//       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
-//         <Icon name="cart-outline" size={24} style={styles.icon} />
-      
-//         {cartCount > 0 && (
-//           <View style={styles.badge}>
-//             <Text style={styles.badgeText}>{cartCount}</Text>
-//           </View>
-//         )}
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, borderBottomWidth: 1, borderColor: '#ddd' },
-//   searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', borderRadius: 5, paddingHorizontal: 8, marginRight: 10 },
-//   searchIcon: { marginRight: 5, color: '#999' },
-//   searchInput: { flex: 1, height: 40, color: '#000' },
-//   icon1: { width: 25, height: 25 },
-//   cartContainer: { position: 'relative' },
-//   wishlistContainer: { position: 'relative' },
-//   badge: { position: 'absolute', top: -5, right: -10, backgroundColor: 'red', borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center' },
-//   badgeText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
-// });
-
-// export default FilterSection;
-
-
 
 import React, { useContext, useEffect } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text,Alert, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
 import { useNavigation } from '@react-navigation/native';
 import { WishlistContext } from '../services/context/WishlistContext';
 import { useCart } from '../services/cart/CartContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FilterSection = () => {
   const navigation = useNavigation();
@@ -106,16 +17,36 @@ const FilterSection = () => {
     fetchCart();
   }, []);
 
-  const handleWishlistPress = () => {
-    navigation.navigate('Wishlist');
+  const handleWishlistPress =async () => {
+    const token = await AsyncStorage.getItem('token')
+    console.log("111111111111111111111111111", token)
+
+    if (token == null) {
+        console.log("111111111chcghuu11111")
+                        Alert.alert("You need to login/signin first")
+        
+        navigation.navigate('Welcome'); // Navigate to signup if token is missing
+    } else {
+      navigation.navigate('Wishlist');
+    }
   };
 
-  const handleCartPress = () => {
-    navigation.navigate('Cart');
+  const handleCartPress = async () => {
+    const token = await AsyncStorage.getItem('token')
+    console.log("111111111111111111111111111", token)
+
+    if (token == null) {
+        console.log("111111111chcghuu11111")
+                        Alert.alert("You need to login/signin first")
+        
+        navigation.navigate('Welcome'); // Navigate to signup if token is missing
+    } else {
+      navigation.navigate('Cart');
+    }
   };
 
   const handleSearchFocus = () => {
-    navigation.navigate('Filter');  // Navigate to FilterScreen when search bar is focused
+    navigation.navigate('Filter');  
   };
 
   const handleShare = async () => {
@@ -141,7 +72,7 @@ const FilterSection = () => {
           style={styles.searchInput}
           placeholder="Search Items"
           placeholderTextColor="#999"
-          onFocus={handleSearchFocus} // Trigger navigation on focus
+          onFocus={handleSearchFocus} 
         />
       </View>
 

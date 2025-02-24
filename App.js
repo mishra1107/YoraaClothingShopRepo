@@ -39,6 +39,9 @@ import AllCollection from './src/Screens/AllCollection';
 import ResetPasswordScreen from './src/Screens/ResetPasswordScreen';
 import OrderScreen from './src/Screens/OrderScreen';
 import FilterScreen from './src/Screens/FilterScreen';
+import DeleteAccount from './src/Screens/DeleteAccount';
+import ReturnOrderScreen from './src/Screens/ReturnOrderScreen';
+import RefundScreen from './src/Screens/RefundScreen';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -111,7 +114,7 @@ const App = () => {
         }
 
         // API URL
-        const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+        const apiUrl = 'http://10.0.2.2:8080/api/save-token';
 
         // Request Body
         const requestBody = JSON.stringify({
@@ -221,6 +224,9 @@ const App = () => {
             <Stack.Screen name="GetLatest" component={GetLatestScreen} />
             <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
             <Stack.Screen name="Filter" component={FilterScreen} />
+            <Stack.Screen name="Delete" component={DeleteAccount} />
+            <Stack.Screen name="ReturnOrder" component={ReturnOrderScreen} />
+            <Stack.Screen name="Refund" component={RefundScreen} />
           </Stack.Navigator>
           <Toast />
         </NavigationContainer>

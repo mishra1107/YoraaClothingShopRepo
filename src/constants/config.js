@@ -5,7 +5,7 @@
 
 // (localhost  system ip) 
 
-export const BASE_URL='http://192.168.1.40:8080/api';
+export const BASE_URL='http://10.0.2.2:8080/api';
 
 
 export const API_ENDPOINTS = {
@@ -22,7 +22,7 @@ export const API_ENDPOINTS = {
   REMOVE_CART: '/cart',
   GET_CART: '/cart/user',
   CREATE_ADDRESS: '/address/createAddress',
-   FIREBASE_SIGNUP: '/auth/signup/firebase',
+  FIREBASE_SIGNUP: '/auth/signup/firebase',
    
 };
 export const getApiUrl = (endpoint) => `${BASE_URL}${endpoint}`;

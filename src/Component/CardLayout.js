@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'; 
-import React, { useEffect, useState,useContext } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, StyleSheet, Image,Alert, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCart } from '../services/cart/CartContext';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,7 +18,7 @@ const CardLayout = () => {
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 
-        // const response = await fetch('http://192.168.1.40:8080/api/items?page=1&limit=20', {
+        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
           const response = await fetch(`${BASE_URL}/items?page=1&limit=20`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -68,14 +68,36 @@ const CardLayout = () => {
           <TouchableOpacity 
             style={styles.iconButton1} 
             onPress={async () => {
-              console.log("Item ID being added to cart:", item.id);
-              await toggleCart(item.id);
-              navigation.navigate('Cart');
+              const token= await AsyncStorage.getItem('token')
+              console.log("111111111111111111111111111",token)
+              if (token==null) {
+                console.log("111111111chcghuu11111")
+                Alert.alert("You need to login/signin first")
+                navigation.navigate('Welcome'); // Navigate to signup if token is missing
+              } 
+              else{
+                console.log("Item ID being added to cart:", item.id);
+                await toggleCart(item.id);
+                navigation.navigate('Cart');
+              }
+             
             }}
           >
             <Icon name="cart-outline" size={18} color="black" />
            </TouchableOpacity>
-          <TouchableOpacity onPress={() => toggleWishlist(item.id)} style={styles.iconButton1}>
+          <TouchableOpacity onPress={async() => {
+           const token= await AsyncStorage.getItem('token')
+           console.log("111111111111111111111111111",token)
+
+    if (token==null) {
+      console.log("111111111chcghuu11111")
+      Alert.alert("You need to login/signin first")
+
+      navigation.navigate('Welcome'); // Navigate to signup if token is missing
+    } else {
+      toggleWishlist(item.id);
+    }
+  }} style={styles.iconButton1}>
   <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
 </TouchableOpacity>
 

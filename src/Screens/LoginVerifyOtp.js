@@ -24,7 +24,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [verificationId,setVerificationId] = useState(null);
   const inputs = useRef([]);
-  const BACKEND_URL = 'http://192.168.1.40:8080/api/auth/verifyFirebaseOtp';
+  const BACKEND_URL = 'http://10.0.2.2:8080/api/auth/verifyFirebaseOtp';
 
   useEffect(() => {
     startTimer();
@@ -169,7 +169,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
               }
       
               // API URL
-              const apiUrl = 'http://192.168.1.40:8080/api/save-token';
+              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({

@@ -10,7 +10,7 @@ export const signupUser = async (name, phNo, password) => {
     console.log('Signing up user with:', password);
 
 
-    const response = await postRequest("http://192.168.1.40:8080/api/auth/signup", {
+    const response = await postRequest("http://10.0.2.2:8080/api/auth/signup", {
       name,
       phNo: phoneNumber,
       password,
