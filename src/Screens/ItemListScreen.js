@@ -44,8 +44,8 @@ const ItemListScreen = ({ route }) => {
                  style={styles.backIcon}
                  onPress={() => navigation.goBack()}>
                  <Image 
-                   source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset
-                   style={styles.backIconImage}  // ✅ Apply styles for proper size
+                   source={require('../assests/images/BackArrow.png')}  // Use local asset
+                   style={styles.backIconImage}  //  Apply styles for proper size
                  />
                </TouchableOpacity>
     <Text style={styles.headerTitle}>ITEM LIST</Text>
@@ -69,10 +69,10 @@ const ItemListScreen = ({ route }) => {
                                     async() =>
                                     {
                                         const token = await AsyncStorage.getItem('token')
-                                        console.log("111111111111111111111111111", token)
+                                     
 
                                         if (token == null) {
-                                            console.log("111111111chcghuu11111")
+                                         
                                                             Alert.alert("You need to login/signin first")
                                             
                                             navigation.navigate('Welcome'); // Navigate to signup if token is missing
@@ -89,15 +89,15 @@ const ItemListScreen = ({ route }) => {
     style={styles.iconButton} 
     onPress={async () => {
         const token= await AsyncStorage.getItem('token')
-        console.log("111111111111111111111111111",token)
+    
         if (token==null) {
-          console.log("111111111chcghuu11111")
+          
                           Alert.alert("You need to login/signin first")
           
           navigation.navigate('Welcome'); // Navigate to signup if token is missing
         } 
         else{
-          console.log("Item ID being added to cart:", item._id);
+         
           await toggleCart(item._id);
           navigation.navigate('Cart');
         }

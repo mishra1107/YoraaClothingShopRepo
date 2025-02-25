@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from 'react'; 
 import { View, Text,  StyleSheet,ScrollView, } from 'react-native';
-
 import Pagination from '../Component/Pagination';
 import JustForYou from '../Component/JustForYou';
 import CardLayout from '../Component/CardLayout';
@@ -9,7 +8,6 @@ import SubCategoryList from '../Component/SubcategoryList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ArrivalCategoryList from '../Component/ArrivalCategoryList';
 import { BASE_URL } from '../constants/config';
-
 const NewScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
   const [selectedPage, setSelectedPage] = useState(1);
@@ -32,7 +30,6 @@ const NewScreen = ({navigation}) => {
         return;
       }
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
@@ -55,7 +52,6 @@ const NewScreen = ({navigation}) => {
       <View style={styles.header}>
         <Text style={styles.heading}>NEW ARRIVAL</Text>
       </View>
-
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
       <Pagination totalPages={5} onPageChange={setSelectedPage} />

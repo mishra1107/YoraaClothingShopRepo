@@ -9,15 +9,7 @@ import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
 const LoginVerifyOtp = ({ navigation, route }) => {
-  // const phNo = route?.params?.phNo || '';
-
-  // const { phNo } = route.params;
-
-
   const { phNo, isForgotPassword } = route.params;
-
-  console.log("Phone Number from route params:", phNo);
-
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(45);
   const [resendDisabled, setResendDisabled] = useState(true);
@@ -74,7 +66,7 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     startTimer(); // Restart the timer
   
     try {
-      console.log("Initiating Firebase OTP resend process...");
+     
       const confirmation = await auth().signInWithPhoneNumber(`+91${phNo}`);
       console.log("Firebase OTP resent successfully, verificationId:", confirmation.verificationId);
   
@@ -95,14 +87,10 @@ const LoginVerifyOtp = ({ navigation, route }) => {
       Alert.alert('Error', 'Please enter a valid 10-digit phone number.');
       return;
     }
-
     setLoading(true);
-
     try {
-      console.log("Starting Firebase OTP process...");
       const confirmation = await auth().signInWithPhoneNumber(`+91${phNo}`);
       console.log("Firebase OTP sent successfully, verificationId:", confirmation.verificationId);
-
       setVerificationId(confirmation.verificationId);
       Alert.alert('OTP Sent', 'Please check your phone for the OTP.');
     } catch (error) {
@@ -115,8 +103,6 @@ const LoginVerifyOtp = ({ navigation, route }) => {
 
   const handleVerifyOtp = async () => {
     const fullOtp = otp.join('');
-    console.log("Entered OTP:", fullOtp);
-
     if (fullOtp.length !== 6) {
       Alert.alert('Error', 'Please enter a valid 6-digit OTP.');
       return;
@@ -125,23 +111,13 @@ const LoginVerifyOtp = ({ navigation, route }) => {
     setLoading(true);
 
     try {
-      console.log("Verification ID:", verificationId);
-
       const credential = auth.PhoneAuthProvider.credential(verificationId, fullOtp);
-      console.log("Firebase Credential created:", credential);
-
       const userCredential = await auth().signInWithCredential(credential);
       const idToken = await userCredential.user.getIdToken();
-
-      console.log("Sending to backend:", { idToken, phNo: `+91${phNo}` });
-
       const response = await axios.post(`${BASE_URL}/auth/verifyFirebaseOtp`, {
         idToken,
         phNo: `+91${phNo}`,
       });
-
-      console.log("Backend response:", response);
-
       const { token, user } = response.data.data;
       Alert.alert('Success', 'Phone number verified successfully!');
 

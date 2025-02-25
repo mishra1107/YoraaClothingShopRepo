@@ -3,7 +3,7 @@ import { BASE_URL, API_ENDPOINTS } from "../constants/config";
 
 export const getAuthHeaders = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log(" Auth Token:", token);
+   
     if (!token) throw new Error(" No token found. Please login again.");
     return {
         Authorization: `Bearer ${token}`,
@@ -22,30 +22,29 @@ export const addToWishlist = async (itemId) => {
         });
 
         const data = await response.json();
-        console.log(" Add to Wishlist Response:", data);
+       
         return data;
     } catch (error) {
-        console.error(" Add to Wishlist Error:", error);
+       
         return { success: false, message: "Failed to add item to wishlist" };
     }
 };
 
 //  Remove from Wishlist
 export const removeFromWishlist = async (itemId) => {
-    console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
+   
     try {
         const headers = await getAuthHeaders();
         const url = `${BASE_URL}${API_ENDPOINTS.REMOVE_WISHLIST}/${itemId}`;
 
-        console.log(" DELETE Request URL:", url);
-
+       
         const response = await fetch(url, {
             method: "DELETE",
             headers,
         });
 
         const data = await response.json();
-        console.log(" Remove Wishlist Response:", data);
+        
 
         if (!response.ok) {
             console.warn(" API Error Message:", data.message);
@@ -69,8 +68,7 @@ export const getWishlist = async () => {
         });
 
         const data = await response.json();
-        console.log(" fetch the  wishlist response yha aayyyaaa:", data);
-
+        
         if (!data.success) {
             throw new Error("Failed to fetch wishlist");
         }

@@ -29,11 +29,11 @@ const GetLatestScreen = ({route}) => {
     try {
       // Log the API URL before making the request
       const apiUrl = `${BASE_URL}/items/latest-items/${subcategoryId}?page=1&limit=5`;
-      console.log('Fetching from URL:', apiUrl);
+      
 
       // Get the token and log it for debugging
       const token = await AsyncStorage.getItem('token');
-      console.log('Authorization Token:', token);
+   
 
       // Make the API call
       const response = await fetch(apiUrl, {
@@ -45,14 +45,13 @@ const GetLatestScreen = ({route}) => {
       });
 
       // Log the status code and raw response before parsing
-      console.log('Response Status:', response.status);
+   
       const rawResponse = await response.text(); // Read the raw response as text
-      console.log('Raw API Response:', rawResponse);
-
+    
       // Try to parse the response as JSON
       const data = JSON.parse(rawResponse);
       if (response.ok) {
-        console.log('Parsed Data:', data);
+       
         setItems(data?.data || []);
       } else {
         console.error('API responded with an error status.');

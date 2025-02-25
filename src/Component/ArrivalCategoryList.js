@@ -1,10 +1,7 @@
-// SubCategoryList.js
 import React from 'react'; 
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
-// const BASE_URL = "http://10.0.2.2:8080/api";  
 
 const ArrivalCategoryList = ({ subcategories, navigation }) => {
     const fetchItemsBySubcategory = async (subcategoryId) => {
@@ -26,8 +23,6 @@ const ArrivalCategoryList = ({ subcategories, navigation }) => {
                     <TouchableOpacity key={sub._id} style={styles.subcategoryCard} onPress={() => fetchItemsBySubcategory(sub._id)}>
                         <Image source={{ uri: sub.imageUrl }} style={styles.subcategoryImage} />
                         <Text style={styles.subcategoryName}>{sub.name}</Text>
-                        {/* <AntDesign name="arrowright" size={20} color="black" style={styles.arrowIcon} /> */}
-
                           <Text style={styles.optionArrow}>›</Text>
                     </TouchableOpacity>
                 ))

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
-const ProfileScreen = () => {
+  const ProfileScreen = () => {
  const navigation = useNavigation();
 
   const [data, setData] = useState(null);
@@ -19,18 +19,14 @@ const ProfileScreen = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log("hello");
-
         const token = await AsyncStorage.getItem("token"); //  Ensure token is fetched
         if (!token) {
           console.error("No token found!");
           return;
         }
-        console.log("Token found:", token);
-
+       
         const apiUrl = `${BASE_URL}/userProfile/getProfile`;
-        console.log("Fetching user profile from:", apiUrl);
-
+  
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -44,11 +40,11 @@ const ProfileScreen = () => {
         }
 
         const responseData = await response.json(); //  Properly parse JSON
-        console.log("Response Data:", responseData);
+       
         setData(responseData); //  Store actual response data
 
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        
         setData([]); //  Ensure UI doesn't break
       }
     };
@@ -61,16 +57,13 @@ const ProfileScreen = () => {
       // Clear token and user data from AsyncStorage
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('user');
-
-      console.log(" User logged out. Token removed.");
-
       // Show logout confirmation
       Alert.alert(" Logged Out", "You have been logged out successfully.", [
         { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
       ]);
 
     } catch (error) {
-      console.error(" Error logging out:", error);
+      
       Alert.alert(" Error", "Something went wrong while logging out.");
     }
   };
@@ -79,8 +72,7 @@ const ProfileScreen = () => {
     if (token) {
       navigation.navigate(screen);
     } else {
-                      Alert.alert("You need to login/signin first")
-      
+     Alert.alert("You need to login/signin first")
       navigation.navigate('Welcome'); // Redirect to Signup if no token found
     }
   };

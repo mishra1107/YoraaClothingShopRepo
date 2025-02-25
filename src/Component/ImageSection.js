@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-
 const ImageSection = ({ selectedCategory }) => {
   const images = {
     MENS: require('../assests/images/men.png'),

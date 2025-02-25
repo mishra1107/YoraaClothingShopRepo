@@ -15,23 +15,20 @@ const CardLayout = () => {
   const { wishlist, toggleWishlist } = useContext(WishlistContext);
 
   useEffect(() => {
+
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 
-        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=20', {
           const response = await fetch(`${BASE_URL}/items?page=1&limit=20`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
-
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
         console.log('Fetched Data:', data);
-
         const items = (data.items || []).map(item => ({
           id: item.id || item._id,
           name: item.name || 'Unnamed',
@@ -46,10 +43,8 @@ const CardLayout = () => {
         setLoading(false);
       }
     };
-
     fetchItems();
   }, []);
-
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
@@ -64,7 +59,6 @@ const CardLayout = () => {
           >
             <Icon  name="eye"  size={18} color="black"/>
           </TouchableOpacity>
-
           <TouchableOpacity 
             style={styles.iconButton1} 
             onPress={async () => {
@@ -79,20 +73,15 @@ const CardLayout = () => {
                 console.log("Item ID being added to cart:", item.id);
                 await toggleCart(item.id);
                 navigation.navigate('Cart');
-              }
-             
-            }}
-          >
+              }  }} >
             <Icon name="cart-outline" size={18} color="black" />
            </TouchableOpacity>
           <TouchableOpacity onPress={async() => {
            const token= await AsyncStorage.getItem('token')
            console.log("111111111111111111111111111",token)
-
     if (token==null) {
       console.log("111111111chcghuu11111")
       Alert.alert("You need to login/signin first")
-
       navigation.navigate('Welcome'); // Navigate to signup if token is missing
     } else {
       toggleWishlist(item.id);
@@ -100,8 +89,6 @@ const CardLayout = () => {
   }} style={styles.iconButton1}>
   <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
 </TouchableOpacity>
-
-
         </View>
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.name}</Text>

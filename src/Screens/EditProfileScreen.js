@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -14,7 +13,6 @@ import {
   Modal,
   FlatList,
   ActivityIndicator
-
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -37,7 +35,7 @@ const EditProfileScreen = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState('');
-    const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
   const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const [profileData, setProfileData] = useState({
@@ -53,19 +51,14 @@ const EditProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(
     profileData.imageUrl ? { uri: profileData.imageUrl } : null
   );
-
-  console.log("editProfileScreen", profileData);
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
         if (!token) {
-          console.warn('No token found in AsyncStorage.');
           return;
         }
-
         const apiUrl = `${BASE_URL}/userProfile/getProfile`;
-        // const apiUrl = 'http://10.0.2.2:8080/api/userProfile/getProfile';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -77,17 +70,12 @@ const EditProfileScreen = () => {
         if (!response.ok) {
           throw new Error(`Failed to fetch user profile - Status: ${response.status} ${response.statusText}`);
         }
-
         const data = await response.json();
-
         if (data && data.user) {
           setUserData(data.user);
-          console.log("data.user", data.user)
         } else {
-          console.warn('No user data found in response.');
         }
       } catch (error) {
-        console.error('Error fetching user profile:', error.message);
       }
     };
 
@@ -102,7 +90,6 @@ const EditProfileScreen = () => {
       return;
     }
     setLoading(true);
-
     try {
       const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
       setVerificationId(confirmation.verificationId);
@@ -118,14 +105,11 @@ const EditProfileScreen = () => {
 
   const handleResendOTP = async () => {
     const phone = profileData.phNo.trim();
-
     if (!/^\d{10}$/.test(phone)) {
       Alert.alert('Error', 'Please enter a valid 10-digit phone number.');
       return;
     }
-
     setLoading(true);
-
     try {
       const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
       setVerificationId(confirmation.verificationId);
@@ -145,9 +129,7 @@ const EditProfileScreen = () => {
       Alert.alert('Error', 'Please enter a valid 6-digit OTP.');
       return;
     }
-
     setLoading(true);
-
     try {
       if (!verificationId) {
         Alert.alert('Error', 'Verification ID is missing. Request OTP again.');
@@ -161,7 +143,7 @@ const EditProfileScreen = () => {
       setOtpVerified(true);
       userData.isPhoneVerified=true;
     } catch (error) {
-      console.error('Error verifying OTP:', error);
+    
       Alert.alert('Error', 'Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -205,9 +187,9 @@ const EditProfileScreen = () => {
           }
           launchCamera({ mediaType: 'photo', quality: 1 }, (response) => {
             if (response.didCancel) {
-              console.log('User cancelled camera picker');
+             
             } else if (response.errorCode) {
-              console.log('Camera Error: ', response.errorMessage);
+             
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: newImageUri });
@@ -221,9 +203,9 @@ const EditProfileScreen = () => {
         onPress: () =>
           launchImageLibrary({ mediaType: 'photo', quality: 1 }, (response) => {
             if (response.didCancel) {
-              console.log('User cancelled gallery picker');
+            
             } else if (response.errorCode) {
-              console.log('Gallery Error: ', response.errorMessage);
+              
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: newImageUri });
@@ -240,10 +222,7 @@ const EditProfileScreen = () => {
   };
 
   const handleSaveProfile = async () => {
-    console.log("qqqqqqqqqqqqqqqqq")
     try {
-      console.log("qqqqqqqqqqqqqqqqq1111111111")
-
       const formData = new FormData();
       Object.entries(profileData).forEach(([key, value]) => {
         if (value) {
@@ -257,21 +236,18 @@ const EditProfileScreen = () => {
           type: 'image/jpeg',
           name: 'profile.jpg',
         });
-      }
-      console.log("qqqqqqqqqqqqqqqq22222222", formData)
+      } 
       const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${BASE_URL}/userProfile/updateProfile`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/userProfile/updateProfile', {
+    
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
-
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Failed to update profile');
-
       Alert.alert('Success', 'Profile updated successfully');
        await AsyncStorage.setItem("user_name",profileData.name);
        await AsyncStorage.setItem("user_email",profileData.email);
@@ -279,20 +255,15 @@ const EditProfileScreen = () => {
        const name = await AsyncStorage.getItem("user_name");
        const email = await AsyncStorage.getItem("user_email");
        const phoneNumber = await AsyncStorage.getItem("user_phNo");
-       console.log(" Retrieved from AsyncStorage:");
-       console.log("10.0.2.2s:", name);
-       console.log("Emailss:", email);
-       console.log("Phone Numbersss:", phoneNumber)
       navigation.navigate('Profile', { refresh: true });
     } catch (error) {
-      console.error('Error updating profile:', error);
       Alert.alert('Error', error.message);
     }
   };
   const sendVerificationEmail = async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/sendVerificationEmail`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/sendVerificationEmail', {
+    
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -314,7 +285,7 @@ const EditProfileScreen = () => {
   const verifyEmail = async ( otp) => {
     try {
       const response = await fetch(`${BASE_URL}/auth/verifyEmail`, {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/verifyEmail', {
+     
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -340,19 +311,10 @@ const EditProfileScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}>
-      {/* <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-left" size={20} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.header}>PROFILE</Text>
-      </View> */}
-
-
 <View style={styles.header}>
       <TouchableOpacity
         style={styles.backIcon}
-        onPress={() => navigation.goBack()}
-      >
+        onPress={() => navigation.goBack()} >
         <Image 
           source={require('../assests/images/BackArrow.png')} 
           style={styles.backIconImage}

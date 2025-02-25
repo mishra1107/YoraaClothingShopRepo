@@ -12,10 +12,9 @@ const categories = [
   { name: 'ACTIVEWEAR', image: require('../assests/images/Ethicwear.png'), screen: 'Active' },
   { name: 'SEASONALWEAR', image: require('../assests/images/Ethicwear.png'), screen: 'Active' },
 ];
-
 const CategoryList = () => {
   const navigation = useNavigation();
-
+  
   return (
     <View style={styles.container}>
       {categories.map((category, index) => (

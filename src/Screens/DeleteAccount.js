@@ -25,7 +25,7 @@ export default function DeleteAccount() {
         },
       });
       const result = await response.json();
-      console.log('zaiba acciou t deleted ',result)
+  
       if (result.success) {
         setModalVisible(false);
        
@@ -35,7 +35,7 @@ export default function DeleteAccount() {
         Alert.alert("Error", result.message || "Failed to delete user");
       }
     } catch (error) {
-      console.error("Error deleting user:", error);
+    
       Alert.alert("Error", "An error occurred while deleting the account.");
     }
   };

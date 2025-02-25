@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-
 const HeaderContent = () => {
   return (
     <View style={styles.container}>
@@ -8,7 +7,6 @@ const HeaderContent = () => {
       <Text style={styles.subtitle}>
         Making a luxurious lifestyle accessible for a generous group of women is our daily drive.
       </Text>
-
       <View style={styles.feature}>
         <Image
           source={require('../assests/images/virtualappoinment.png')}
@@ -20,7 +18,6 @@ const HeaderContent = () => {
           one-on-one appointment for fashion advice.
         </Text>
       </View>
-
       <View style={styles.feature}>
         <Image
           source={require('../assests/images/globalshipping.png')}
@@ -32,7 +29,6 @@ const HeaderContent = () => {
           ensuring your order reaches you in a timely manner.
         </Text>
       </View>
-
       <View style={styles.feature}>
         <Image
           source={require('../assests/images/riskfree.png')}
@@ -43,7 +39,6 @@ const HeaderContent = () => {
           We offer 4 days to exchange or return your product, ensuring a seamless shopping experience for our valued customers.
         </Text>
       </View>
-
       <View style={styles.feature}>
         <Image
           source={require('../assests/images/onlineassistence.png')}

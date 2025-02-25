@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image, Text,Alert, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -7,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { WishlistContext } from '../services/context/WishlistContext';
 import { useCart } from '../services/cart/CartContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const FilterSection = () => {
   const navigation = useNavigation();
   const { wishlistCount } = useContext(WishlistContext);
@@ -56,7 +54,6 @@ const FilterSection = () => {
       url: 'https://mystore.com/product/12345',
       social: Share.Social.WHATSAPP,
     };
-
     try {
       await Share.open(shareOptions);
     } catch (error) {
@@ -75,11 +72,9 @@ const FilterSection = () => {
           onFocus={handleSearchFocus} 
         />
       </View>
-
       <TouchableOpacity onPress={handleShare}>
         <Image source={require('../assests/images/share.png')} style={styles.icon1} />
       </TouchableOpacity>
-
       <TouchableOpacity onPress={handleWishlistPress} style={styles.wishlistContainer}>
         <Icon name="heart-outline" size={24} style={styles.icon} />
         {wishlistCount > 0 && (
@@ -88,7 +83,6 @@ const FilterSection = () => {
           </View>
         )}
       </TouchableOpacity>
-
       <TouchableOpacity onPress={handleCartPress} style={styles.cartContainer}>
         <Icon name="cart-outline" size={24} style={styles.icon} />
         {cartCount > 0 && (

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-
 const YouMayAlsoLike = () => {
   return (
     <TouchableOpacity style={styles.container}>

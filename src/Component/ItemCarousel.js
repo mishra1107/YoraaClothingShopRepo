@@ -1,4 +1,3 @@
-
 import { useNavigation } from "@react-navigation/native"; 
 import React, { useRef, useEffect, useState } from "react";
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from "react-native";
@@ -6,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from "../constants/config";
 
 const { width, height } = Dimensions.get("window");
-
 const ItemCarousel = () => {
   const navigation = useNavigation();
   const flatListRef = useRef(null);
@@ -54,8 +52,6 @@ const ItemCarousel = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
-   
-
       <Image source={item.image} style={styles.image} />
     </View>
   );
@@ -64,8 +60,6 @@ const ItemCarousel = () => {
     
     <View style={styles.container}>
       {/* NEW ARRIVALS Header */}
-    
-
       <FlatList
         ref={flatListRef}
         data={data}

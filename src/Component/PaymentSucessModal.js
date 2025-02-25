@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
-
 const PaymentSuccessModal = ({ visible, onClose }) => {
   return (
     <Modal

@@ -1,4 +1,3 @@
-
 import React, {useState,useRef} from 'react';
 import {
   Keyboard,
@@ -25,10 +24,10 @@ const SignupScreen = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  // Inside your component:
-const colorScheme = useColorScheme();
+ 
+ const colorScheme = useColorScheme();
 const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
-  
+
   const scrollViewRef = useRef();
 
   const scrollToEnd = () => {
@@ -121,8 +120,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
       ref={scrollViewRef}
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => navigation.goBack()}>
@@ -132,7 +130,6 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
         />
       </TouchableOpacity>
       <Text style={styles.signupText}>Sign-up</Text>
-
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Full Name</Text>
         <TextInput

@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Pagination = ({ totalPages, onPageChange }) => {
   const [selectedPage, setSelectedPage] = useState(1);
-
   const handlePagePress = (page) => {
     setSelectedPage(page);
     onPageChange(page); 

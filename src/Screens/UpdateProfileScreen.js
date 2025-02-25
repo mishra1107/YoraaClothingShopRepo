@@ -402,14 +402,6 @@ const UpdateProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-left" size={20} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.header}>PROFILE</Text>
-      </View> */}
-
-
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backIcon}

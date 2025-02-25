@@ -1,21 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import { View, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
 import RazorpayCheckout from "react-native-razorpay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from '@react-navigation/native'; //  Import useRoute
 import { BASE_URL } from "../constants/config";
-
-
 const PaymentGatewayScreen = () => {
   const navigation=useNavigation();
   const route = useRoute(); //  Get route parameters
   const { itemIds,address,cart,onPaymentSuccess } = route.params || {}; 
-
-  console.log("req.params",route.params)
-  console.log("address",address)
-  console.log("cart",cart)
-
   //console.log("sssssssssssssss",itemIds)
   const [loading, setLoading] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
@@ -33,11 +25,7 @@ const PaymentGatewayScreen = () => {
         const name = await AsyncStorage.getItem("user_name");
         const email = await AsyncStorage.getItem("user_email");
         const phoneNumber = await AsyncStorage.getItem("user_phNo");
-        console.log(" Retrieved from AsyncStorage:");
-        console.log("Namesss:", name);
-        console.log("Emailss:", email);
-        console.log("Phone Numbersss:", phoneNumber)
-
+       
         if (name && email && phoneNumber) {
           setPaymentDetails((prevDetails) => ({
             ...prevDetails,
@@ -81,10 +69,7 @@ const PaymentGatewayScreen = () => {
 
 
       };
-      console.log("itemIds",itemIds)
-      console.log("staticAddress",staticAddress)
-
-      
+     
       const orderResponse = await fetch(`${BASE_URL}/razorpay/create-order`, {
         method: "POST",
         headers: { 

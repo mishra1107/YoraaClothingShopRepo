@@ -21,17 +21,11 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      // const token = await AsyncStorage.getItem('token');
-      // if (!token) {
-      //   console.warn(" No token found in AsyncStorage.");
-      //   return;
-      // }
-
+      
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      console.log('zainulll',apiUrl)
-
-      // const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
-      console.log(" Fetching Subcategories from:", apiUrl);
+     
+     
+    
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {

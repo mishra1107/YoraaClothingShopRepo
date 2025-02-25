@@ -53,7 +53,7 @@ const FilterScreen = () => {
       }
 
       const data = await response.json();
-      console.log(" zaibaaaa Fetched Subcategories:", data);
+     
 
       if (data?.data) {
         setSubcategories(data.data);
@@ -61,7 +61,7 @@ const FilterScreen = () => {
         setSubcategories([]);
       }
     } catch (error) {
-      console.error("Error fetching subcategories:", error.message);
+     
       setSubcategories([]); // Prevent UI crashes
     }
   };
@@ -96,17 +96,8 @@ const FilterScreen = () => {
             requestBody.filters.subCategoryId = selectedSubcategory._id;
         }
 
-        console.log("🛠️ Applying Filters:");
-        console.log("Selected Category ID:", selectedCategory?._id || "None");
-        console.log("Selected Subcategory ID:", selectedSubcategory?._id || "None");
-        console.log("Search Text:", searchText || "None");
-        console.log("Sending API Request to:", apiUrl);
-        console.log("Request Body:", JSON.stringify(requestBody, null, 2));
-
-
-        console.log("Sending API Request to:", apiUrl);
-        console.log("Request Body:", requestBody);
-
+       
+      
         //  Use fetch with POST method
         const response = await fetch(apiUrl, {
             method: "POST",
@@ -117,7 +108,7 @@ const FilterScreen = () => {
         });
 
         const data = await response.json();
-        console.log("Fetched Data:", data);
+       
 
         if (data?.data) {
             setItems(data.data);
@@ -125,7 +116,7 @@ const FilterScreen = () => {
             setItems([]);
         }
     } catch (error) {
-        console.error("Error fetching items:", error.message);
+        
         setItems([]);
     } finally {
         setLoading(false); // Hide loader
@@ -139,7 +130,7 @@ useEffect(() => {
 
 //  Fetch filtered items when searchText changes (with debounce)
 useEffect(() => {
-    console.log("Current searchText:", searchText);
+   
 
     const delayDebounce = setTimeout(() => {
         fetchItems(searchText); // Fetch filtered items
@@ -149,9 +140,7 @@ useEffect(() => {
 }, [searchText]);
 
   const applyFilters = () => {
-    console.log(" Selected Category ID:", selectedCategory?._id || "None");
-    console.log(" Selected Subcategory ID:", selectedSubcategory?._id || "None");
-    console.log(" Search Text:", searchText || "None");
+   
     fetchItems(); // Fetch items with selected filters (category, subcategory)
 };
 
@@ -165,24 +154,24 @@ const toggleCheckbox = (subcategory) => {
       ...prevState,
       [subcategory.name]: !prevState[subcategory.name],
     };
-    console.log("Updated Checkboxes State:", updatedState);
+    
     return updatedState;
   });
 
   // Toggle selection in the array
   setSelectedSubcategory((prevSelected) => {
-    console.log("Previous Selected Subcategories:", prevSelected);
+    
 
     // Check if the subcategory is already selected
     const exists = prevSelected?.find(item => item._id === subcategory._id);
 
     if (exists) {
       const updatedSelection = prevSelected.filter(item => item._id !== subcategory._id);
-      console.log("Subcategory Removed. Updated Selection:", updatedSelection);
+     
       return updatedSelection;
     } else {
       const updatedSelection = [...(prevSelected ?? []), subcategory];
-      console.log("Subcategory Added. Updated Selection:", updatedSelection);
+     
       return updatedSelection;
     }
   });

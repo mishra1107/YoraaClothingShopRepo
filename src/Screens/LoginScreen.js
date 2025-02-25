@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Image,
@@ -35,7 +34,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleSignUpFirebase = async () => {
-    console.log('Inside Firebase Sign-In');
+ 
 
     try {
       await GoogleSignin.hasPlayServices();
@@ -51,7 +50,7 @@ export default function LoginScreen({ navigation }) {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
 
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
+   
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -69,14 +68,14 @@ export default function LoginScreen({ navigation }) {
               // Retrieve FCM Token
               const fcmToken = await AsyncStorage.getItem('fcmToken');
               if (!fcmToken) {
-                  console.log('No FCM token found');
+                  
                   return;
               }
       
               // Retrieve Auth Token
               const authToken = await AsyncStorage.getItem('token');
               if (!authToken) {
-                  console.log('No Auth token found');
+                  
                   return;
               }
       
@@ -99,10 +98,10 @@ export default function LoginScreen({ navigation }) {
               });
       
               const data = await response.json();
-              console.log('FCM Token Save Response:', data);
+             
       
               if (data.success) {
-                  console.log('zaibaaa FCM Token successfully saved to server');
+                  
               } else {
                   console.error('Error saving FCM token:', data.message);
               }
@@ -132,15 +131,14 @@ export default function LoginScreen({ navigation }) {
     try {
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.LOGIN), {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/login', {
+     
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phNo, password }),
       });
-      console.log("qwertyuiop")
+     
       const responseData = await response.json();
-      console.log("qwertyuiop11111111111111",responseData.success)
-
+     
       if (response.ok && responseData.success) {
         const { token, user } = responseData.data;
         await AsyncStorage.setItem('token', token);
@@ -151,14 +149,14 @@ export default function LoginScreen({ navigation }) {
               // Retrieve FCM Token
               const fcmToken = await AsyncStorage.getItem('fcmToken');
               if (!fcmToken) {
-                  console.log('No FCM token found');
+                 
                   return;
               }
       
               // Retrieve Auth Token
               const authToken = await AsyncStorage.getItem('token');
               if (!authToken) {
-                  console.log('No Auth token found');
+                 
                   return;
               }
       
@@ -181,22 +179,21 @@ export default function LoginScreen({ navigation }) {
               });
       
               const data = await response.json();
-              console.log('FCM Token Save Response:', data);
-      
+            
               if (data.success) {
-                  console.log('zaibaaa FCM Token successfully saved to server');
+                
               } else {
-                  console.error('Error saving FCM token:', data.message);
+                 
               }
       
           } catch (error) {
-              console.error('Error sending FCM token to server:', error);
+             
           }
       };
       sendFCMTokenToServer();
         navigation.replace('Home');
       } else if (!responseData.success) {
-        console.log("dfghjkhghjkhgjkhg546789897654",phNo)
+        
         Alert.alert('Not Verified', 'User is not verified. Go to the signup page.');
         navigation.navigate('LoginVerifyOtp',{phNo: phNo});
       } else {
@@ -211,10 +208,6 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Welcome')} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="black" />
-      </TouchableOpacity> */}
-
 <TouchableOpacity
   style={styles.backIcon}
   onPress={() => navigation.goBack()}>
@@ -282,12 +275,6 @@ export default function LoginScreen({ navigation }) {
         <Image source={require('../assests/images/Gmail.png')} style={styles.icon} />
         <Text style={styles.googleButtonText}>Continue with Google</Text>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity style={styles.appleButton}>
-        <FontAwesome name="apple" size={20} color="white" />
-        <Text style={styles.appleButtonText}>Continue with Apple</Text>
-      </TouchableOpacity> */}
-
       <TouchableOpacity style={styles.signupContainer} onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupText}>Don't have an account? <Text style={styles.signupLink}>Sign-up</Text></Text>
       </TouchableOpacity>
@@ -301,9 +288,9 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   backIconImage: {
-    width: 28,   // ✅ Match original icon size
-    height: 28,  // ✅ Keep square dimensions
-    tintColor: 'black', // ✅ Optional: Change color if needed
+    width: 28,   //  Match original icon size
+    height: 28,  //  Keep square dimensions
+    tintColor: 'black', //  Optional: Change color if needed
   },
   container: {
     flex: 1,
