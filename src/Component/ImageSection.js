@@ -10,14 +10,11 @@ const ImageSection = ({ selectedCategory }) => {
 
   // Normalize the selected category name for comparison
   const selectedCategoryName = selectedCategory?.name?.trim().toUpperCase();
-  console.log("Selected Category (Normalized):", selectedCategoryName); // Debugging log
-
   return (
     <View style={styles.container}>
       {Object.keys(images).map((category, index) => {
         // Compare normalized selectedCategoryName with image keys
         const isSelected = selectedCategoryName === category;
-
         return (
           <Image
             key={index}

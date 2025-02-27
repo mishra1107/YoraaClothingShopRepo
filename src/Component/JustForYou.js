@@ -7,7 +7,6 @@ const JustForYou = ({ onPress }) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {/* Divider Line */}
       <View style={styles.divider} />
-
       {/* Text and Arrow */}
       <View style={styles.content}>
         <Text style={styles.text}>JUST FOR YOU</Text>

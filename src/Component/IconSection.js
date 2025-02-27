@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { BASE_URL } from '../constants/config';
+
 const IconSection = ({ selectedCategory, setSelectedCategory }) => {
   const [categories, setCategories] = useState([]);
 

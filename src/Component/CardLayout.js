@@ -6,7 +6,6 @@ import { useCart } from '../services/cart/CartContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WishlistContext } from '../services/context/WishlistContext';
 import { BASE_URL } from '../constants/config';
-
 const CardLayout = () => {
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);
@@ -15,7 +14,6 @@ const CardLayout = () => {
   const { wishlist, toggleWishlist } = useContext(WishlistContext);
 
   useEffect(() => {
-
     const fetchItems = async () => {
       try {
         const token = await AsyncStorage.getItem('token'); 

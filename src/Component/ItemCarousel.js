@@ -16,7 +16,6 @@ const ItemCarousel = () => {
     const fetchItems = async () => {
       const token = await AsyncStorage.getItem('token');
       try {
-
             const response = await fetch(`${BASE_URL}/items?page=1&limit=4`, {
         // const response = await fetch('https://api.yoraa.in/api/items?page=1&limit=4', {
           method: 'GET',
@@ -32,7 +31,6 @@ const ItemCarousel = () => {
         console.error('Error fetching items:', error);
       }
     };
-
     fetchItems();
   }, []);
 

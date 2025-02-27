@@ -17,12 +17,8 @@ const FilterSection = () => {
 
   const handleWishlistPress =async () => {
     const token = await AsyncStorage.getItem('token')
-    console.log("111111111111111111111111111", token)
-
     if (token == null) {
-        console.log("111111111chcghuu11111")
-                        Alert.alert("You need to login/signin first")
-        
+      Alert.alert("You need to login/signin first")
         navigation.navigate('Welcome'); // Navigate to signup if token is missing
     } else {
       navigation.navigate('Wishlist');
@@ -31,12 +27,8 @@ const FilterSection = () => {
 
   const handleCartPress = async () => {
     const token = await AsyncStorage.getItem('token')
-    console.log("111111111111111111111111111", token)
-
     if (token == null) {
-        console.log("111111111chcghuu11111")
-                        Alert.alert("You need to login/signin first")
-        
+       Alert.alert("You need to login/signin first")
         navigation.navigate('Welcome'); // Navigate to signup if token is missing
     } else {
       navigation.navigate('Cart');
@@ -57,7 +49,6 @@ const FilterSection = () => {
     try {
       await Share.open(shareOptions);
     } catch (error) {
-      console.log('Error ->', error);
     }
   };
 

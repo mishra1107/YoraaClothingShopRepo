@@ -14,7 +14,6 @@ const SeeAll = () => {
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   button: {
     marginStart:20,

@@ -1,22 +1,15 @@
 import {postRequest} from './api';
 import {BASE_URL, API_ENDPOINTS} from '../constants/config';
-
-// function for signup
 export const signupUser = async (name, phNo, password) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
-   
-
-
     const response = await postRequest("https://api.yoraa.in/api/auth/signup", {
       name,
       phNo: phoneNumber,
       password,
     });
-   
     return response;
   } catch (error) {
-    
     return {success: false, message: 'Signup request failed'};
   }
 };
@@ -25,8 +18,6 @@ export const signupUser = async (name, phNo, password) => {
 export const generateOTP = async phNo => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
- 
-
     const response = await postRequest(API_ENDPOINTS.GENERATE_OTP, {
       phNo: phoneNumber,
     });
@@ -43,7 +34,6 @@ export const verifyOTP = async (phNo, otpCode) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
     const otpString = String(otpCode); // Ensure OTP is a string
-  
     const response = await postRequest(API_ENDPOINTS.VERIFY_OTP, {
       phNo: phoneNumber,
       otp: otpString,
@@ -60,7 +50,6 @@ export const verifyOTP = async (phNo, otpCode) => {
 export const resendOTP = async phNo => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
-   
     const response = await postRequest(API_ENDPOINTS.GENERATE_OTP, {
       phNo: phoneNumber,
     });
@@ -76,13 +65,10 @@ export const resendOTP = async phNo => {
 export const loginUser = async (phNo, password) => {
   try {
     const phoneNumber = String(phNo); // Ensure phNo is a string
-    
-
     const response = await postRequest(API_ENDPOINTS.LOGIN, {
       phNo: phoneNumber,
       password,
     });
-   
     return response;
   } catch (error) {
     console.error('Login Error:', error);

@@ -1,7 +1,4 @@
-// export const BASE_URL = 'http://192.168.1.10:8080/api';
-
 export const BASE_URL='https://api.yoraa.in/api';
-
 export const API_ENDPOINTS = {
   SIGNUP: '/auth/signup',
   LOGIN: '/auth/login',
@@ -16,7 +13,6 @@ export const API_ENDPOINTS = {
   REMOVE_CART: '/cart',
   GET_CART: '/cart/user',
   CREATE_ADDRESS: '/address/createAddress',
-  FIREBASE_SIGNUP: '/auth/signup/firebase',
-   
+  FIREBASE_SIGNUP: '/auth/signup/firebase',  
 };
 export const getApiUrl = (endpoint) => `${BASE_URL}${endpoint}`;
