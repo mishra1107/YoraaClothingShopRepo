@@ -38,7 +38,7 @@ const FilterScreen = () => {
     }
     try {
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      // const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+      // const apiUrl = `https://api.yoraa.in/api/subcategories/category/${categoryId}`;
       console.log("Fetching Subcategories from:", apiUrl);
 
       const response = await fetch(apiUrl, {
@@ -53,8 +53,6 @@ const FilterScreen = () => {
       }
 
       const data = await response.json();
-     
-
       if (data?.data) {
         setSubcategories(data.data);
       } else {
@@ -70,7 +68,7 @@ const FilterScreen = () => {
         setLoading(true); // Show loader while fetching
 
         const apiUrl = `${BASE_URL}/items/filter`;
-        // const apiUrl = `http://10.0.2.2:8080/api/items/filter`;
+        // const apiUrl = `https://api.yoraa.in/api/items/filter`;
         const requestBody = {
             page: 1,
             limit: 10,
@@ -95,9 +93,6 @@ const FilterScreen = () => {
         if (selectedSubcategory && selectedSubcategory._id) {
             requestBody.filters.subCategoryId = selectedSubcategory._id;
         }
-
-       
-      
         //  Use fetch with POST method
         const response = await fetch(apiUrl, {
             method: "POST",
@@ -108,8 +103,6 @@ const FilterScreen = () => {
         });
 
         const data = await response.json();
-       
-
         if (data?.data) {
             setItems(data.data);
         } else {
@@ -130,8 +123,7 @@ useEffect(() => {
 
 //  Fetch filtered items when searchText changes (with debounce)
 useEffect(() => {
-   
-
+  
     const delayDebounce = setTimeout(() => {
         fetchItems(searchText); // Fetch filtered items
     }, 500); // Delay API call to avoid excessive requests
@@ -161,7 +153,6 @@ const toggleCheckbox = (subcategory) => {
   // Toggle selection in the array
   setSelectedSubcategory((prevSelected) => {
     
-
     // Check if the subcategory is already selected
     const exists = prevSelected?.find(item => item._id === subcategory._id);
 

@@ -31,7 +31,7 @@ const WelcomeScreen = ({ navigation }) => {
       const firebaseIdToken = await userCredential.user.getIdToken();
 
        const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
-      // const response = await fetch('http://10.0.2.2:8080/api/auth/signup/firebase', {
+      // const response = await fetch('https://api.yoraa.in/api/auth/signup/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -57,7 +57,7 @@ const WelcomeScreen = ({ navigation }) => {
               }
       
               // API URL
-              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
+              const apiUrl = 'https://api.yoraa.in/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({

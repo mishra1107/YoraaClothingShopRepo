@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from 'react'; 
 import { View, Text,  StyleSheet,ScrollView, } from 'react-native';
-
 import Pagination from '../Component/Pagination';
 import JustForYou from '../Component/JustForYou';
 import CardLayout from '../Component/CardLayout';
@@ -32,7 +31,7 @@ const AllCollection = ({navigation}) => {
       }
 
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      // const apiUrl = `http://10.0.2.2:8080/api/subcategories/category/${categoryId}`;
+      // const apiUrl = `https://api.yoraa.in/api/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",
@@ -56,7 +55,6 @@ const AllCollection = ({navigation}) => {
       <View style={styles.header}>
         <Text style={styles.heading}>All Collection</Text>
       </View>
-
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
       <Pagination totalPages={5} onPageChange={setSelectedPage} />

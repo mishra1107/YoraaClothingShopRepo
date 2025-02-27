@@ -11,7 +11,6 @@ const ItemListScreen = ({ route }) => {
     const navigation = useNavigation();
     const { wishlist, toggleWishlist } = useContext(WishlistContext);
     const { toggleCart, fetchCart } = useCart();
-    
     const { subcategoryId } = route.params;
     const [items, setItems] = useState([]);
 

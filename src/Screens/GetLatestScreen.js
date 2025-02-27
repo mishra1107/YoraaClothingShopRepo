@@ -13,7 +13,6 @@ import {useCart} from '../services/cart/CartContext';
 import {BASE_URL} from '../constants/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-
 const GetLatestScreen = ({route}) => {
   const navigation = useNavigation();
   const {wishlist, toggleWishlist} = useContext(WishlistContext);
@@ -29,12 +28,10 @@ const GetLatestScreen = ({route}) => {
     try {
       // Log the API URL before making the request
       const apiUrl = `${BASE_URL}/items/latest-items/${subcategoryId}?page=1&limit=5`;
-      
-
+    
       // Get the token and log it for debugging
       const token = await AsyncStorage.getItem('token');
    
-
       // Make the API call
       const response = await fetch(apiUrl, {
         method: 'GET',

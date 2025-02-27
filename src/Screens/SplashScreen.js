@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'; 
 import { View, Image, StyleSheet, Dimensions, useColorScheme } from 'react-native';
-import { COLORS } from '../utils/constants';
 
 const { width, height } = Dimensions.get('window');
-
 const SplashScreen = ({ navigation }) => {
     const colorScheme = useColorScheme();
 

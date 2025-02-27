@@ -21,11 +21,7 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-     
-     
-    
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {

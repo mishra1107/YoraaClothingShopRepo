@@ -3,11 +3,9 @@ import { View, Text, Modal, TouchableOpacity, StyleSheet, Alert } from 'react-na
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
-
 export default function DeleteAccount() {
   const [modalVisible, setModalVisible] = useState(true);
   const navigation = useNavigation();
-
   const handleYes = async () => {
     try {
       // Retrieve the token from AsyncStorage

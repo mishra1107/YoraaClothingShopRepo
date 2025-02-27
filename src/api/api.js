@@ -4,7 +4,7 @@ import {BASE_URL} from '../constants/config';
 export const postRequest = async (url, data) => {
   try {
     const token = await AsyncStorage.getItem('token');
-console.log("data",data)
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -27,7 +27,7 @@ console.log("data",data)
       throw new Error('Expected JSON but received non-JSON response.');
     }
   } catch (error) {
-    console.error('Post Request Error:', error);
+    
     return {
       success: false,
       message: 'Request failed',

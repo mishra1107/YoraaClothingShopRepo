@@ -18,7 +18,7 @@ const ItemCarousel = () => {
       try {
 
             const response = await fetch(`${BASE_URL}/items?page=1&limit=4`, {
-        // const response = await fetch('http://10.0.2.2:8080/api/items?page=1&limit=4', {
+        // const response = await fetch('https://api.yoraa.in/api/items?page=1&limit=4', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

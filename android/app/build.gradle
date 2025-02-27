@@ -77,7 +77,6 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-
     namespace "com.yoraa"
     defaultConfig {
         applicationId "com.yoraa"
@@ -106,7 +105,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            //   signingConfig signingConfigs.release
+       
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

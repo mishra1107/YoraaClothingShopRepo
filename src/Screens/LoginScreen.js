@@ -19,7 +19,6 @@ import { getApiUrl, API_ENDPOINTS } from '../constants/config';
 GoogleSignin.configure({
   webClientId: '841829729642-5vo1cbgnrsl83sm8c8h63s7c0hf0i3mi.apps.googleusercontent.com',
 });
-
 export default function LoginScreen({ navigation }) {
   const [phNo, setPhNo] = useState('');
   const [password, setPassword] = useState('');
@@ -49,8 +48,6 @@ export default function LoginScreen({ navigation }) {
       const firebaseIdToken = await userCredential.user.getIdToken();
 
       const response = await fetch(getApiUrl(API_ENDPOINTS.FIREBASE_SIGNUP), {
-
-   
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken: firebaseIdToken }),
@@ -80,7 +77,7 @@ export default function LoginScreen({ navigation }) {
               }
       
               // API URL
-              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
+              const apiUrl = 'https://api.yoraa.in/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({
@@ -161,7 +158,7 @@ export default function LoginScreen({ navigation }) {
               }
       
               // API URL
-              const apiUrl = 'http://10.0.2.2:8080/api/save-token';
+              const apiUrl = 'https://api.yoraa.in/api/save-token';
       
               // Request Body
               const requestBody = JSON.stringify({

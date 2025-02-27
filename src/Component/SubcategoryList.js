@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const BASE_URL = "http://10.0.2.2:8080/api";  
+const BASE_URL = "https://api.yoraa.in/api";  
 const SubCategoryList = ({ subcategories, navigation }) => {
     const fetchItemsBySubcategory = async (subcategoryId) => {
         try {

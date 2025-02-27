@@ -52,8 +52,6 @@ const ResetPasswordScreen = ({ navigation, route }) => {
       });
 
       const responseData = await response.json();
-      console.log("Response:", responseData);
-
       if (response.ok) {
         Alert.alert('Success', 'Password reset successfully!', [
           { text: 'OK', onPress: () => navigation.replace('Login') },

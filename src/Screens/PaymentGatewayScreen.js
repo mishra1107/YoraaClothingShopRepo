@@ -67,7 +67,6 @@ const PaymentGatewayScreen = () => {
        user:address.user,
        pinCode:address.pinCode
 
-
       };
      
       const orderResponse = await fetch(`${BASE_URL}/razorpay/create-order`, {
@@ -80,7 +79,6 @@ const PaymentGatewayScreen = () => {
       });
   
       const orderData = await orderResponse.json();
-      console.log("orderData",orderData)
       if (!orderData.id) throw new Error("Order creation failed");
   
       const options = {
@@ -99,7 +97,6 @@ const PaymentGatewayScreen = () => {
       };
   
       const paymentResponse = await RazorpayCheckout.open(options);
-  
       // Verify Payment
       const verifyResponse = await fetch(`${BASE_URL}/razorpay/verify-payment`, {
         method: "POST",
@@ -128,7 +125,6 @@ const PaymentGatewayScreen = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <View style={styles.container}>

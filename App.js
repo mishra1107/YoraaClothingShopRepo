@@ -114,7 +114,7 @@ const App = () => {
         }
 
         // API URL
-        const apiUrl = 'http://10.0.2.2:8080/api/save-token';
+        const apiUrl = 'https://api.yoraa.in/api/save-token';
 
         // Request Body
         const requestBody = JSON.stringify({

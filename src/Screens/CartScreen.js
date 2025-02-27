@@ -34,7 +34,7 @@ const CartScreen = () => {
 
       const response = await fetch(`${BASE_URL}/address/user`, {
   
-      // const response = await fetch('http://10.0.2.2:8080/api/address/user', {
+      // const response = await fetch('https://api.yoraa.in/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -119,12 +119,7 @@ const CartScreen = () => {
         Alert.alert("Error", "Profile data is still loading. Please try again in a moment.");
         return;
     }
-
     const itemIds = cart.map(item => item.item);
-
-    console.log("Profile Data in Checkout:", data);
-    console.log("Profile Flag (isProfile) in Checkout:", data.isProfile);
-
     if (!data.isProfile) {
         Alert.alert(
             "Incomplete Information",
@@ -133,7 +128,6 @@ const CartScreen = () => {
         return; // Stop navigation if isProfile is false
     }
 
-    // ✅ Navigate to Payment if isProfile is true
     navigation.navigate('Payment', { 
         itemIds, 
         address, 

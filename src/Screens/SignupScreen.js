@@ -70,7 +70,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     try {
 
         const response = await fetch(getApiUrl(API_ENDPOINTS.SIGNUP), {
-      // const response = await fetch("http://10.0.2.2:8080/api/auth/signup", {
+      // const response = await fetch("https://api.yoraa.in/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

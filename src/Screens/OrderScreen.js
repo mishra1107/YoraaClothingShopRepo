@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -40,7 +39,6 @@ const OrderScreen = () => {
       });
 
       const responseData = await response.json();
-      console.log('API Response:', responseData.orders);
 
       if (response.ok && responseData.success) {
         if (responseData.orders.length > 0) {

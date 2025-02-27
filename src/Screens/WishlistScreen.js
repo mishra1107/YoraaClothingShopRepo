@@ -27,13 +27,7 @@ const WishlistScreen = () => {
 
   const handleToggleWishlist = async (productId) => {
     try {
-      console.log("11111111111111111111")
-      // await removeFromWishlist(productId); // Use actual product ID
-      console.log("222222222222222222222222")
-
       toggleWishlist(productId)
-      console.log("30000000000000000000")
-
       setWishlistItems(prevItems => prevItems.filter(item => item.item._id !== productId)); // Update UI
     } catch (error) {
       console.error(" Remove from Wishlist Error:", error);

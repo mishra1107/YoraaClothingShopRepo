@@ -11,7 +11,7 @@ export const getAuthHeaders = async () => {
     };
 };
 
-// ✅ Add to Wishlist
+//  Add to Wishlist
 export const addToWishlist = async (itemId) => {
     try {
         const headers = await getAuthHeaders();

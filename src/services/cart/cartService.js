@@ -4,7 +4,6 @@ import { BASE_URL, API_ENDPOINTS } from "../../constants/config";
 //  Get Authorization Headers
 export const getAuthHeaders = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log(" Auth Token:", token);
     if (!token) throw new Error(" No token found. Please login again.");
     return {
         Authorization: `Bearer ${token}`,
@@ -23,7 +22,6 @@ export const addToCart = async (itemId, quantity) => {
         });
 
         const data = await response.json();
-        console.log(" Add to Cart Response:", data);
         return data;
     } catch (error) {
         console.error(" Add to Cart Error:", error);
@@ -37,17 +35,12 @@ export const removeFromCart = async (cartItemId) => {
     try {
         const headers = await getAuthHeaders();
         const url = `${BASE_URL}${API_ENDPOINTS.REMOVE_CART}/${cartItemId}`;
-
-        console.log(" DELETE Cart Item Request URL:", url);
-
         const response = await fetch(url, {
             method: "DELETE",
             headers,
         });
 
         const data = await response.json();
-        console.log(" Remove Cart Item Response:", data);
-
         if (!response.ok) {
             console.warn(" API Error Message:", data.message);
             throw new Error(data.message || "Failed to remove item from cart");
@@ -70,8 +63,6 @@ export const getCart = async () => {
         });
 
         const data = await response.json();
-        console.log(" Get Cart Response:", data);
-
         if (!data.success) {
             throw new Error("Failed to fetch cart items");
         }
@@ -86,9 +77,6 @@ export const getCart = async () => {
             quantity: item.quantity,
             item: item.item._id
         }));
-
-        console.log(" Extracted Cart Items:", cartItems); //  Log extracted data
-
         return cartItems;
     } catch (error) {
         console.error(" Error fetching cart:", error);
@@ -103,8 +91,6 @@ export const updateCartItem = async (cartId, quantity) => {
       const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartId}`;
       
       // Log the URL and payload for debugging
-      console.log("Updating Cart Item URL:", url);
-      console.log("Payload:", JSON.stringify({ quantity }));
   
       const response = await fetch(url, {
         method: "PATCH",
@@ -113,15 +99,12 @@ export const updateCartItem = async (cartId, quantity) => {
       });
   
       const responseText = await response.text();
-      console.log("Update Cart Item Raw Response:", responseText);
-  
       if (!response.ok) {
         throw new Error(`Server Error: ${response.status}`);
       }
   
       const data = JSON.parse(responseText);
-      console.log("Parsed Update Cart Item Response:", data);
-  
+    
       if (!data.success) {
         throw new Error(data.message || "Failed to update cart item");
       }
