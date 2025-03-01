@@ -21,14 +21,12 @@ export const generateOTP = async phNo => {
     const response = await postRequest(API_ENDPOINTS.GENERATE_OTP, {
       phNo: phoneNumber,
     });
-  
     return response;
   } catch (error) {
     console.error('Generate OTP Error:', error);
     return {success: false, message: 'OTP generation failed'};
   }
 };
-
 //  Function to Verify OTP
 export const verifyOTP = async (phNo, otpCode) => {
   try {
@@ -75,8 +73,6 @@ export const loginUser = async (phNo, password) => {
     return {success: false, message: 'Login request failed'};
   }
 };
-
-
 export const createAddress = async (addressData) => {
   try {
     const response = await postRequest(`${BASE_URL}/address/createAddress`, {

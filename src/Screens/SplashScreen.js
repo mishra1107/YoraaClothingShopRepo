@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'; 
 import { View, Image, StyleSheet, Dimensions, useColorScheme } from 'react-native';
-
 const { width, height } = Dimensions.get('window');
 const SplashScreen = ({ navigation }) => {
     const colorScheme = useColorScheme();
@@ -20,7 +19,6 @@ const SplashScreen = ({ navigation }) => {
     style={[styles.image, { tintColor: colorScheme === 'dark' ? '#fff' : '#000' }]}
     resizeMode="contain"
 />
-
         </View>
     );
 };

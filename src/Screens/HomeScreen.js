@@ -54,7 +54,6 @@ const HomeScreen = ({ navigation }) => {
         <CardLayout />
         <Text style={styles.heading1}>NEW ARRIVAL</Text>
         <View style={styles.row}>
-       
           <ItemCarousel />
         </View>
         <HeaderContent />
@@ -62,7 +61,6 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   heading1: {
     fontSize: 20,

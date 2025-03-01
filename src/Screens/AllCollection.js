@@ -7,6 +7,7 @@ import IconSection from '../Component/IconSection';
 import SubCategoryList from '../Component/SubcategoryList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ArrivalCategoryList from '../Component/ArrivalCategoryList';
+import { BASE_URL } from '../constants/config';
 
 const AllCollection = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
@@ -44,7 +45,7 @@ const AllCollection = ({navigation}) => {
       const data = await response.json();
       setSubcategories(data?.data || []);
     } catch (error) {
-      console.error(" Error fetching subcategories:", error.message);
+      // console.error(" Error fetching subcategories:", error.message);
     }
   };
 
