@@ -72,7 +72,7 @@ const ItemListScreen = ({ route }) => {
 
                                         if (token == null) {
                                          
-                                                            Alert.alert("You need to login/signin first")
+                                        Alert.alert("You need to login/signin first")
                                             
                                             navigation.navigate('Welcome'); // Navigate to signup if token is missing
                                         } else {
@@ -109,7 +109,7 @@ const ItemListScreen = ({ route }) => {
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={styles.itemName}>{item.name}</Text>
-                            <Text style={styles.itemPrice}>₹{item.price}</Text>
+                            <Text style={styles.itemPrice}>₹ {item.price}</Text>
                         </View>
                     </View>
                 )}
@@ -178,13 +178,13 @@ const styles = StyleSheet.create({
     },
     itemName: { 
         fontSize: 14,
-         fontWeight: "bold", 
+         fontWeight: "light", 
          color: "#333"
          },
     itemPrice: { 
-        color: "#ff5733",
+         color: "#909090",
         fontSize: 16, 
-        fontWeight: "bold",
+        fontWeight: "light",
         marginTop: 2 },
 });
 

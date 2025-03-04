@@ -26,9 +26,7 @@ const styles = StyleSheet.create({
     height: 40, 
   },
   leftBorder: {
-    
     width: 5,
-    
     height: '100%', 
   },
   content: {
@@ -40,10 +38,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "light",
     color: '#000',
     marginRight: 5,
   },
 });
-
 export default SeeAll;

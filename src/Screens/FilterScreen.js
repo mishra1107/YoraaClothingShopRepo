@@ -293,7 +293,7 @@ const toggleCheckbox = (subcategory) => {
       {selectedFilter === 'Brand' && <Text style={styles.categoryTitle}>Choose Brand</Text>}
      
       {/* Dummy Data for Display (Replace with API Data if Needed) */}
-      {['Option 1', 'Option 2', 'Option 3'].map((label, index) => (
+      {['Yoraa', 'Option 2', 'Option 3'].map((label, index) => (
         <TouchableOpacity key={index} style={styles.checkboxContainer} onPress={() => toggleCheckbox(label)}>
           <Icon name={selectedCheckboxes[label] ? "checkbox" : "square-outline"} size={20} color="#000" />
           <Text style={styles.checkboxLabel}>{label}</Text>

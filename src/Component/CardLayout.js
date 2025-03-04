@@ -168,7 +168,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
+    color: "#333",
+
     textAlign: 'left',
     lineHeight: 16,
   },
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     marginStart:10,
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#FF5722',
+    color: "#909090",
     marginTop: 4,
     textAlign: 'left',
   },

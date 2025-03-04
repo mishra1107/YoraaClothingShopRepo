@@ -1,7 +1,6 @@
 import React from 'react'; 
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 const BASE_URL = "https://api.yoraa.in/api";  
 const SubCategoryList = ({ subcategories, navigation }) => {
     const fetchItemsBySubcategory = async (subcategoryId) => {
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     },
     subcategoryName: {
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: "light",
         flex: 1,
     },
     arrowIcon: {

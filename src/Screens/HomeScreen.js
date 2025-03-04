@@ -8,7 +8,6 @@ import SeeAll from '../Component/SeeAll';
 import SubCategoryList from '../Component/SubcategoryList';
 import ItemCarousel from '../Component/ItemCarousel';
 import { BASE_URL } from '../constants/config';
-
 const HomeScreen = ({ navigation }) => {    
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
@@ -64,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   heading1: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "light",
     marginStart:20,  
   },
   row: {
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "light",
   },
 });
 

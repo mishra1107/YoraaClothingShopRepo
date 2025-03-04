@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "light",
     color: "black",
     textAlign: 'center',
   },

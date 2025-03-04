@@ -63,9 +63,9 @@ const FilterSection = () => {
           onFocus={handleSearchFocus} 
         />
       </View>
-      <TouchableOpacity onPress={handleShare}>
+      {/* <TouchableOpacity onPress={handleShare}>
         <Image source={require('../assests/images/share.png')} style={styles.icon1} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity onPress={handleWishlistPress} style={styles.wishlistContainer}>
         <Icon name="heart-outline" size={24} style={styles.icon} />
         {wishlistCount > 0 && (

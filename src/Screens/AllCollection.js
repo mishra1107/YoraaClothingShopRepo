@@ -8,13 +8,9 @@ import SubCategoryList from '../Component/SubcategoryList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ArrivalCategoryList from '../Component/ArrivalCategoryList';
 import { BASE_URL } from '../constants/config';
-
 const AllCollection = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('MEN');
   const [selectedPage, setSelectedPage] = useState(1);
-
-  // Content to be displayed based on selected category
- 
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => { 
@@ -30,9 +26,8 @@ const AllCollection = ({navigation}) => {
         console.warn(" No token found in AsyncStorage.");
         return;
       }
-
-      const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      // const apiUrl = `https://api.yoraa.in/api/subcategories/category/${categoryId}`;
+      // const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
+      const apiUrl = `https://api.yoraa.in/api/subcategories/category/${categoryId}`;
       console.log(" Fetching Subcategories from:", apiUrl);
       const response = await fetch(apiUrl, {
         method: "GET",
@@ -51,7 +46,6 @@ const AllCollection = ({navigation}) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header Section */}
          <ScrollView>
       <View style={styles.header}>
         <Text style={styles.heading}>All Collection</Text>
