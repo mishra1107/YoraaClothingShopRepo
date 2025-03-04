@@ -48,7 +48,7 @@ const AllCollection = ({navigation}) => {
     <View style={{ flex: 1 }}>
          <ScrollView>
       <View style={styles.header}>
-        <Text style={styles.heading}>All Collection</Text>
+        <Text style={styles.heading}>All Collections</Text>
       </View>
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'light',
     textAlign: 'center',
   },
   categoryContainer: {

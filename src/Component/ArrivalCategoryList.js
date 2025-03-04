@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
     subcategoryName: {
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: "light",
         flex: 1,
     },
     arrowIcon: {

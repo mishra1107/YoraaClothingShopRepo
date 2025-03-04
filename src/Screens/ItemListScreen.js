@@ -64,7 +64,7 @@ const ItemListScreen = ({ route }) => {
                                             style={styles.iconButton} >
                                             <Icon  name="eye"  size={18} color="black"/>
                                           </TouchableOpacity>
-                                <TouchableOpacity      onPress={ 
+                                <TouchableOpacity  onPress={ 
                                     async() =>
                                     {
                                         const token = await AsyncStorage.getItem('token')
