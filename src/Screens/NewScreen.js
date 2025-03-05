@@ -24,16 +24,16 @@ const NewScreen = ({navigation}) => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.warn(" No token found in AsyncStorage.");
-        return;
-      }
+      // const token = await AsyncStorage.getItem('token');
+      // if (!token) {
+      //   console.warn(" No token found in AsyncStorage.");
+      //   return;
+      // }
       const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
