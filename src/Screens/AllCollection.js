@@ -52,7 +52,6 @@ const AllCollection = ({navigation}) => {
       </View>
       <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <ArrivalCategoryList subcategories={subcategories} navigation={navigation} /> 
-      <Pagination totalPages={5} onPageChange={setSelectedPage} />
       <JustForYou/>
       <CardLayout/>
       </ScrollView>

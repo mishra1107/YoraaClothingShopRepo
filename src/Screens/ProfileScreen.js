@@ -192,7 +192,7 @@ onPress={() => handleNavigation('UpdateProfile')}
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
+        {/* <TouchableOpacity style={styles.option}>
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/invitefriend.png')}
@@ -201,7 +201,7 @@ onPress={() => handleNavigation('UpdateProfile')}
             <Text style={styles.optionText}>INVITE A FRIEND</Text>
           </View>
           <Text style={styles.optionArrow}>›</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity  onPress={() => navigation.navigate('Refund')} style={styles.option}>
           <View style={styles.optionContent}>
             <Image

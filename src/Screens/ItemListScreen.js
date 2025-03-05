@@ -54,6 +54,11 @@ const ItemListScreen = ({ route }) => {
                 data={items}
                 keyExtractor={(item) => item._id}
                 numColumns={2}
+                 ListEmptyComponent={() => (
+                      <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>No items found</Text>
+                      </View>
+                    )}
                 renderItem={({ item }) => (
                     <View style={styles.itemContainer}>
                         <View style={styles.imageContainer}>
@@ -121,20 +126,30 @@ const ItemListScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: "#f9f9f9" },
 
-    // ✅ Header with Adjusted Back Icon
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 50,
+      },
+      emptyText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'gray',
+      },
     header: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between", // Ensures proper spacing
+        justifyContent: "space-between",
         paddingVertical: 15,
         backgroundColor: "#fff",
         borderBottomWidth: 1,
         borderBottomColor: "#ddd",
-        paddingHorizontal: 10, // Ensures padding on both sides
+        paddingHorizontal: 10, 
       },
       backIcon: {
-        width: 40, // Ensures it takes proper space
-        alignItems: "flex-start", // Keeps it aligned left
+        width: 40, 
+        alignItems: "flex-start",
       },
       backIconImage: {
         width: 24,
@@ -146,7 +161,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#333",
         textAlign: "center",
-        flex: 1, // Ensures text remains centered
+        flex: 1, 
       },
     itemContainer: { 
         flex: 1,

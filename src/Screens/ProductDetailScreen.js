@@ -177,8 +177,8 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#E91E63',
+    fontWeight: 'light',
+    color: "#909090",
   },
   selectSize: {
     fontSize: 12,

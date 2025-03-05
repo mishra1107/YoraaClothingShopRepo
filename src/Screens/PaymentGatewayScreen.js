@@ -7,14 +7,14 @@ import { BASE_URL } from "../constants/config";
 const PaymentGatewayScreen = () => {
   const navigation=useNavigation();
   const route = useRoute(); //  Get route parameters
-  const { itemIds,address,cart,onPaymentSuccess } = route.params || {}; 
+  const { itemIds,address,cart,onPaymentSuccess,totalAmount } = route.params || {}; 
   //console.log("sssssssssssssss",itemIds)
   const [loading, setLoading] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
     customerName: "",
     email: "",
     phoneNumber: "",
-    amount: "1", // Amount in INR
+    amount: "", // Amount in INR
   });
 
   // Fetch user details from AsyncStorage
@@ -32,6 +32,7 @@ const PaymentGatewayScreen = () => {
             customerName: name,
             email: email,
             phoneNumber: phoneNumber,
+            amount: totalAmount, // Set the total amount
           }));
         } else {
           console.warn("User details not found in AsyncStorage.");

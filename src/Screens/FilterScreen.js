@@ -1,184 +1,192 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Modal, Pressable, ScrollView,FlatList ,Image,Dimensions} from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Modal, Pressable, ScrollView, FlatList, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import IconSection from './../Component/IconSection';
 import { BASE_URL } from '../constants/config';
+
+// Demo filter data
+const filterOptions = {
+  Size: ['S', 'M', 'L', 'XL', 'XXL'],
+  Price: [
+    { label: 'Under 500', min: 0, max: 500 },
+    { label: '500 - 1000', min: 500, max: 1000 },
+    { label: '1000 - 2000', min: 1000, max: 2000 },
+    { label: 'Over 2000', min: 2000, max: Infinity }
+  ],
+  Color: ['Black', 'White', 'Blue', 'Red', 'Green'],
+  Brand: ['Yoraa'],
+  Type: [] 
+};
 
 const FilterScreen = () => {
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState({ name: "Men" });
-  const [selectedFilter, setSelectedFilter] = useState('Type'); // Default selected category
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState({});
-  const [subcategories, setSubcategories] = useState([]); // Stores fetched subcategories
-  const [items, setItems] = useState([]); // Stores fetched items
+  const [selectedFilter, setSelectedFilter] = useState('Type');
+  const [selectedFilters, setSelectedFilters] = useState({
+    Type: [],
+    Size: [],
+    Price: null,
+    Color: [],
+    Brand: []
+  });
+  const [subcategories, setSubcategories] = useState([]);
+  const [items, setItems] = useState([]);
   const windowWidth = Dimensions.get('window').width;
-  const itemWidth = windowWidth / 2 - 20; // Adjust for spacing
-  const [loading, setLoading] = useState(false); // Loader for API calls
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const itemWidth = windowWidth / 2 - 20;
+  const [loading, setLoading] = useState(false);
 
   const categories = ['Type', 'Size', 'Price', 'Color', 'Brand'];
 
-  // Fetch subcategories when 'Type' is selected
+  // Fetch subcategories for Type filter
   useEffect(() => {
-    if (selectedFilter === 'Type' && selectedCategory && selectedCategory._id) {
+    if (selectedFilter === 'Type' && selectedCategory?._id) {
       fetchSubcategories(selectedCategory._id);
-    } else {
-      setSubcategories([]); // Clear subcategories when not needed
     }
   }, [selectedFilter, selectedCategory]);
-  
-  // Fetch subcategories from API
+
   const fetchSubcategories = async (categoryId) => {
-    if (!categoryId) {
-      console.error("Error: No categoryId provided for fetching subcategories");
-      return;
-    }
     try {
-      const apiUrl = `${BASE_URL}/subcategories/category/${categoryId}`;
-      // const apiUrl = `https://api.yoraa.in/api/subcategories/category/${categoryId}`;
-      console.log("Fetching Subcategories from:", apiUrl);
-
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${BASE_URL}/subcategories/category/${categoryId}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch subcategories: ${response.status}`);
-      }
-
       const data = await response.json();
       if (data?.data) {
         setSubcategories(data.data);
-      } else {
-        setSubcategories([]);
+        filterOptions.Type = data.data; // Update Type options
       }
     } catch (error) {
-     
-      setSubcategories([]); // Prevent UI crashes
+      console.error("Error fetching subcategories:", error);
+      setSubcategories([]);
     }
   };
-  const fetchItems = async (searchText = '') => {
+
+  const fetchItems = async () => {
     try {
-        setLoading(true); // Show loader while fetching
+      setLoading(true);
+      const requestBody = {
+        page: 1,
+        limit: 10,
+        filters: {}
+      };
 
-        const apiUrl = `${BASE_URL}/items/filter`;
-        // const apiUrl = `https://api.yoraa.in/api/items/filter`;
-        const requestBody = {
-            page: 1,
-            limit: 10,
-            filters: {},
-        };
+      // Add search text if present
+      if (searchText.trim()) requestBody.searchText = searchText;
 
-        // Only add searchText if it's provided (not empty)
-        if (searchText.trim() !== '') {
-            requestBody.searchText = searchText;
-        }
-        if (selectedSubcategory && selectedSubcategory.length > 0) {
-          requestBody.filters.subCategoryId = selectedSubcategory.map(sub => sub._id);
-        }
-        
+      // Add category filter
+      if (selectedCategory?._id) requestBody.filters.categoryId = selectedCategory._id;
 
-        // Add categoryId if selected
-        if (selectedCategory && selectedCategory._id) {
-            requestBody.filters.categoryId = selectedCategory._id;
-        }
+      // Add selected filters
+      if (selectedFilters.Type.length > 0) {
+        requestBody.filters.subCategoryId = selectedFilters.Type.map(item => item._id);
+      }
+      if (selectedFilters.Size.length > 0) {
+        requestBody.filters.size = selectedFilters.Size;
+      }
+      if (selectedFilters.Price) {
+        requestBody.filters.minPrice = selectedFilters.Price.min;
+        requestBody.filters.maxPrice = selectedFilters.Price.max;
+      }
+      if (selectedFilters.Color.length > 0) {
+        requestBody.filters.color = selectedFilters.Color;
+      }
+      if (selectedFilters.Brand.length > 0) {
+        requestBody.filters.brand = selectedFilters.Brand;
+      }
 
-        // Add subCategoryId if selected
-        if (selectedSubcategory && selectedSubcategory._id) {
-            requestBody.filters.subCategoryId = selectedSubcategory._id;
-        }
-        //  Use fetch with POST method
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-        });
-
-        const data = await response.json();
-        if (data?.data) {
-            setItems(data.data);
-        } else {
-            setItems([]);
-        }
+      const response = await fetch(`${BASE_URL}/items/filter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+      const data = await response.json();
+      setItems(data?.data || []);
     } catch (error) {
-        
-        setItems([]);
+      console.error("Error fetching items:", error);
+      setItems([]);
     } finally {
-        setLoading(false); // Hide loader
+      setLoading(false);
     }
-};
+  };
 
-//  Fetch all items initially (no searchText)
-useEffect(() => {
-    fetchItems(); // Fetches all items
-}, []);
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
-//  Fetch filtered items when searchText changes (with debounce)
-useEffect(() => {
-  
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
-        fetchItems(searchText); // Fetch filtered items
-    }, 500); // Delay API call to avoid excessive requests
-
+      fetchItems();
+    }, 500);
     return () => clearTimeout(delayDebounce);
-}, [searchText]);
+  }, [searchText, selectedFilters]);
 
-  const applyFilters = () => {
-   
-    fetchItems(); // Fetch items with selected filters (category, subcategory)
-};
+  const toggleFilterSelection = (filterType, value) => {
+    setSelectedFilters(prev => {
+      if (filterType === 'Price') {
+        return { ...prev, Price: prev.Price?.label === value.label ? null : value };
+      }
+      
+      const currentSelections = prev[filterType];
+      if (filterType === 'Type') {
+        const exists = currentSelections.find(item => item._id === value._id);
+        return {
+          ...prev,
+          Type: exists 
+            ? currentSelections.filter(item => item._id !== value._id)
+            : [...currentSelections, value]
+        };
+      }
+      
+      return {
+        ...prev,
+        [filterType]: currentSelections.includes(value)
+          ? currentSelections.filter(item => item !== value)
+          : [...currentSelections, value]
+      };
+    });
+  };
 
-// Toggle checkbox selection for subcategories
-const toggleCheckbox = (subcategory) => {
-  console.log("Clicked Subcategory:", subcategory);
-
-  // Toggle the checkbox UI state
-  setSelectedCheckboxes((prevState) => {
-    const updatedState = {
-      ...prevState,
-      [subcategory.name]: !prevState[subcategory.name],
-    };
+  const renderFilterOptions = () => {
+    const options = selectedFilter === 'Type' ? subcategories : filterOptions[selectedFilter];
     
-    return updatedState;
-  });
-
-  // Toggle selection in the array
-  setSelectedSubcategory((prevSelected) => {
-    
-    // Check if the subcategory is already selected
-    const exists = prevSelected?.find(item => item._id === subcategory._id);
-
-    if (exists) {
-      const updatedSelection = prevSelected.filter(item => item._id !== subcategory._id);
-     
-      return updatedSelection;
-    } else {
-      const updatedSelection = [...(prevSelected ?? []), subcategory];
-     
-      return updatedSelection;
-    }
-  });
-};
-
+    return options.map((option, index) => {
+      const isSelected = selectedFilter === 'Price'
+        ? selectedFilters.Price?.label === option.label
+        : selectedFilter === 'Type'
+        ? selectedFilters.Type.some(item => item._id === option._id)
+        : selectedFilters[selectedFilter].includes(option);
+        
+      return (
+        <TouchableOpacity
+          key={index}
+          style={styles.checkboxContainer}
+          onPress={() => toggleFilterSelection(selectedFilter, selectedFilter === 'Type' ? option : option.label ? option : option)}
+        >
+          <Icon
+            name={isSelected ? "checkbox" : "square-outline"}
+            size={20}
+            color="#000"
+          />
+          <Text style={styles.checkboxLabel}>
+            {selectedFilter === 'Type' ? option.name : option.label || option}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+  };
 
   return (
     <View style={styles.container}>
-      {/* Search and Filter Button */}
+      {/* Search and Filter Header */}
       <View style={styles.headerContainer}>
         <View style={styles.searchContainer}>
           <Icon name="search-outline" size={20} style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search Items"
-            placeholderTextColor="#999"
             value={searchText}
             onChangeText={setSearchText}
           />
@@ -188,28 +196,20 @@ const toggleCheckbox = (subcategory) => {
             </TouchableOpacity>
           )}
         </View>
-
         <TouchableOpacity onPress={() => setFilterModalVisible(true)} style={styles.filterButton}>
           <Icon name="filter-outline" size={24} style={styles.filterIcon} />
         </TouchableOpacity>
       </View>
 
-
+      {/* Items List */}
       <FlatList
         data={items}
         keyExtractor={(item) => item._id}
-        numColumns={2} // 2-column layout
+        numColumns={2}
         columnWrapperStyle={styles.row}
-
-        ListEmptyComponent={ 
-          <View style={styles.noItemsContainer}>
-            <Text style={styles.noItemsText}>No items found</Text>
-          </View>
-        }
-
-
+        ListEmptyComponent={<Text style={styles.noItemsText}>No items found</Text>}
         renderItem={({ item }) => (
-            <View style={[styles.itemCard, { width: itemWidth }]}>
+          <View style={[styles.itemCard, { width: itemWidth }]}>
             <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>Rs{item.price}</Text>
@@ -217,9 +217,13 @@ const toggleCheckbox = (subcategory) => {
         )}
       />
 
-
       {/* Filter Modal */}
-      <Modal animationType="slide" transparent={true} visible={filterModalVisible} onRequestClose={() => setFilterModalVisible(false)}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={filterModalVisible}
+        onRequestClose={() => setFilterModalVisible(false)}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
@@ -229,19 +233,17 @@ const toggleCheckbox = (subcategory) => {
               </TouchableOpacity>
             </View>
 
-            {/* Category Selection Icons */}
             <IconSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
-            {/* Sidebar and Filters */}
             <View style={styles.categoryContainer}>
-              {/* Sidebar */}
               <View style={styles.sidebar}>
                 <ScrollView>
                   {categories.map((category, index) => (
                     <TouchableOpacity
                       key={index}
                       style={[styles.categoryButton, selectedFilter === category && styles.categoryButtonSelected]}
-                      onPress={() => setSelectedFilter(category)}>
+                      onPress={() => setSelectedFilter(category)}
+                    >
                       <Text style={[styles.categoryText, selectedFilter === category && styles.categoryTextSelected]}>
                         {category}
                       </Text>
@@ -250,69 +252,23 @@ const toggleCheckbox = (subcategory) => {
                 </ScrollView>
               </View>
 
-<View style={styles.filterOptions}>
-  {selectedFilter === 'Type' ? (
-    // <ScrollView>
-    //   {subcategories.length > 0 ? (
-    //     subcategories.map((subcategory, index) => (
-    //       <TouchableOpacity key={index} style={styles.checkboxContainer} onPress={() => toggleCheckbox(subcategory.name)}>
-    //         <Icon name={selectedCheckboxes[subcategory.name] ? "checkbox" : "square-outline"} size={20} color="#000" />
-    //         <Text style={styles.checkboxLabel}>{subcategory.name}</Text>
-    //       </TouchableOpacity>
-    //     ))
-    //   ) : (
-    //     <Text style={styles.noDataText}>No subcategories found</Text>
-    //   )}
-    // </ScrollView>
-
-    <ScrollView>
-        {subcategories.length > 0 ? (
-            subcategories.map((subcategory, index) => (
-                <TouchableOpacity 
-                    key={index} 
-                    style={styles.checkboxContainer} 
-                    onPress={() => toggleCheckbox(subcategory)}  >
-                    <Icon 
-                        name={selectedCheckboxes[subcategory.name] ? "checkbox" : "square-outline"} 
-                        size={20} 
-                        color="#000" 
-                    />
-                    <Text style={styles.checkboxLabel}>{subcategory.name}</Text>
-                </TouchableOpacity>
-            ))
-        ) : (
-            <Text style={styles.noDataText}>No subcategories found</Text>
-        )}
-    </ScrollView>
-  ) : (
-    <ScrollView>
-      {/* Display Category Titles */}
-      {selectedFilter === 'Size' && <Text style={styles.categoryTitle}>Choose Size</Text>}
-      {selectedFilter === 'Price' && <Text style={styles.categoryTitle}>Select Price Range</Text>}
-      {selectedFilter === 'Color' && <Text style={styles.categoryTitle}>Select a Color</Text>}
-      {selectedFilter === 'Brand' && <Text style={styles.categoryTitle}>Choose Brand</Text>}
-     
-      {/* Dummy Data for Display (Replace with API Data if Needed) */}
-      {['Yoraa', 'Option 2', 'Option 3'].map((label, index) => (
-        <TouchableOpacity key={index} style={styles.checkboxContainer} onPress={() => toggleCheckbox(label)}>
-          <Icon name={selectedCheckboxes[label] ? "checkbox" : "square-outline"} size={20} color="#000" />
-          <Text style={styles.checkboxLabel}>{label}</Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  )}
-</View>
+              <View style={styles.filterOptions}>
+                <ScrollView>
+                  <Text style={styles.categoryTitle}>Select {selectedFilter}</Text>
+                  {renderFilterOptions()}
+                </ScrollView>
+              </View>
             </View>
-            {/* Apply Filter Button */}
-            <Pressable 
-    style={styles.applyButton} 
-    onPress={() => {
-        applyFilters(); // Apply filter logic
-        setFilterModalVisible(false); // Close the filter modal
-    }}>
-    <Text style={styles.applyButtonText}>Apply Filter</Text>
-</Pressable>
 
+            <Pressable
+              style={styles.applyButton}
+              onPress={() => {
+                fetchItems();
+                setFilterModalVisible(false);
+              }}
+            >
+              <Text style={styles.applyButtonText}>Apply Filter</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>
@@ -350,12 +306,13 @@ const styles = StyleSheet.create({
   checkboxLabel: { fontSize: 14, marginLeft: 8, color: '#000' },
   applyButton: { backgroundColor: 'black', padding: 15, borderRadius: 8, alignItems: 'center', marginTop: 20 },
   applyButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-  categoryTitle: { fontSize: 16, fontWeight: 'bold', color: '#000', marginBottom: 10,},
-  categoryText: { color: '#fff',fontSize: 14, textTransform: 'capitalize',},
-  sidebar: {  width: '40%', // Adjust width for better spacing
-backgroundColor: '#000',
+  categoryTitle: { fontSize: 16, fontWeight: 'bold', color: '#000', marginBottom: 10, },
+  categoryText: { color: '#fff', fontSize: 14, textTransform: 'capitalize', },
+  sidebar: {
+    width: '40%', // Adjust width for better spacing
+    backgroundColor: '#000',
     paddingVertical: 5, // Less padding to fit more categories
-  }, 
+  },
   categoryButton: {
     paddingVertical: 12, // Reduce padding for compact view
     paddingLeft: 15,

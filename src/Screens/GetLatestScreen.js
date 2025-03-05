@@ -23,7 +23,6 @@ const GetLatestScreen = ({route}) => {
   useEffect(() => {
     fetchItems();
   }, []);
-
   const fetchItems = async () => {
     try {
       // Log the API URL before making the request
@@ -71,7 +70,7 @@ const GetLatestScreen = ({route}) => {
       </View>
 
       {/* Item Listing */}
-      <FlatList
+      {/* <FlatList
         data={items}
         keyExtractor={item => item._id}
         numColumns={2}
@@ -111,15 +110,71 @@ const GetLatestScreen = ({route}) => {
             </View>
           </View>
         )}
-      />
+      /> */}
+      <FlatList 
+    data={items}
+    keyExtractor={item => item._id}
+    numColumns={2}
+    ListEmptyComponent={() => (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No items found</Text>
+      </View>
+    )}
+    renderItem={({item}) => (
+      <View style={styles.itemContainer}>
+        <View style={styles.imageContainer}>
+          <Image source={{uri: item.imageUrl}} style={styles.itemImage} />
+          <View style={styles.iconOverlay}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Product', {id: item._id})}
+              style={styles.iconButton}>
+              <Icon name="eye" size={18} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => toggleWishlist(item._id)}
+              style={styles.iconButton}>
+              <Icon
+                name={wishlist[item._id] ? 'heart' : 'heart-outline'}
+                size={18}
+                color={wishlist[item._id] ? 'red' : 'black'}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={async () => {
+                await toggleCart(item._id);
+                navigation.navigate('Cart'); // Directly navigate to the cart screen
+              }}>
+              <Icon name="cart-outline" size={18} color="black" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <Text style={styles.itemPrice}>₹{item.price}</Text>
+        </View>
+      </View>
+    )}
+/>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#f9f9f9'},
 
-  // ✅ Header with Adjusted Back Icon
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50, // Adjust as needed
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'gray',
+  },
+  container: {flex: 1, backgroundColor: '#f9f9f9'},
   header: {
     flexDirection: 'row',
     alignItems: 'center', // Keep text vertically centered
@@ -136,7 +191,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: 'light',
     color: '#333',
   },
 
@@ -174,13 +229,13 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "light", 
+         color: "#333"
   },
   itemPrice: {
-    color: '#ff5733',
+    color: "#909090",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'light',
     marginTop: 2,
   },
 });

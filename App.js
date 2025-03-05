@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +7,6 @@ import Toast from "react-native-toast-message";
 import messaging from '@react-native-firebase/messaging';
 import { initializeApp } from '@react-native-firebase/app';
 import FirebaseApp from '@react-native-firebase/app';
-
 // Screens & Contexts
 import SplashScreen from './src/Screens/SplashScreen';
 import WelcomeScreen from './src/Screens/WelcomeScreen';
@@ -42,7 +40,6 @@ import FilterScreen from './src/Screens/FilterScreen';
 import DeleteAccount from './src/Screens/DeleteAccount';
 import ReturnOrderScreen from './src/Screens/ReturnOrderScreen';
 import RefundScreen from './src/Screens/RefundScreen';
-
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBAEJSB5QJl_0MEr13gjLzBNYxdXuUliSk",

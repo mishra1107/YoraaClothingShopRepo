@@ -131,7 +131,8 @@ const CartScreen = () => {
     navigation.navigate('Payment', { 
         itemIds, 
         address, 
-        cart, 
+        cart,
+        totalAmount: calculateTotal(),
         onPaymentSuccess: () => { 
             clearCart(); 
         } 

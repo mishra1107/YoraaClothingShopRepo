@@ -112,7 +112,7 @@ import { BASE_URL } from "../constants/config";
 const milestoneSteps = [
   { label: "Order Placed", status: "OP" },
   { label: "Picked Up", status: "PKD" },
-  { label: "In Transit", status: "IT" },
+  { label: "In Transit", status: "X-PPOM" },
   { label: "Reached at Destination", status: "RAD" },
   { label: "Out for Delivery", status: "OFD" },
   { label: "Delivered", status: "DLVD" },
@@ -138,8 +138,8 @@ console.log("orderId",orderId)
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "hraj6398@gmail.com",
-          password: "cxzytrewq@1Q"
+          email: "rithikmahajan40@gmail.com",
+          password: "R@2727thik"
         }),
       });
 
@@ -274,35 +274,54 @@ console.log("orderId",orderId)
         </View>
 
         <View style={styles.trackingContainer}>
-          {milestoneSteps.map((step, index) => {
-            const isCompleted = completedStatuses.includes(step.status);
-            return (
-              <View key={index} style={styles.trackingStep}>
-                <View style={styles.iconContainer}>
-                  <View style={[styles.dot, isCompleted && styles.completedDot]} />
-                  {index < milestoneSteps.length - 1 && <View style={styles.dashedLine} />}
-                </View>
-                <View>
-                  <Text style={[styles.stepText, isCompleted && styles.completedText]}>{step.label}</Text>
-                  <Text style={styles.stepDate}>
-                    <Text style={styles.stepDate}>
-                      {step.status === "OP"
-                        ? new Date(orderPlaced).toLocaleString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: true,
-                        })
-                        : trackingData1.tracking_data.shipment_track_activities ? trackingData1.tracking_data.shipment_track_activities.find(activity => activity.status === step.status)?.date || "Pending" : "Pending"}
-                    </Text>
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
+  {milestoneSteps.map((step, index) => {
+    // Extract tracking statuses from tracking data
+    const trackingStatuses =
+      trackingData1.tracking_data.shipment_track_activities?.map(
+        (activity) => activity.status
+      ) || [];
+
+    // Find the highest index in milestoneSteps that appears in trackingStatuses
+    const latestIndex = milestoneSteps.findIndex((s) =>
+      trackingStatuses.includes(s.status)
+    );
+
+    // Ensure "Order Placed" (OP) is always highlighted
+    const isCompleted = step.status === "OP" || index <= latestIndex;
+
+    return (
+      <View key={index} style={styles.trackingStep}>
+        <View style={styles.iconContainer}>
+          <View style={[styles.dot, isCompleted && styles.completedDot]} />
+          {index < milestoneSteps.length - 1 && <View style={styles.dashedLine} />}
         </View>
+        <View>
+          <Text style={[styles.stepText, isCompleted && styles.completedText]}>
+            {step.label}
+          </Text>
+          <Text style={styles.stepDate}>
+            {step.status === "OP"
+              ? new Date(orderPlaced).toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+              : trackingData1.tracking_data.shipment_track_activities
+                ? trackingData1.tracking_data.shipment_track_activities.find(
+                    (activity) => activity.status === step.status
+                  )?.date || "Pending"
+                : "Pending"}
+          </Text>
+        </View>
+      </View>
+    );
+  })}
+</View>
+
+
 
         {/* Cancel Order Button */}
         <TouchableOpacity

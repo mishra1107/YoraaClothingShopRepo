@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { BASE_URL } from '../constants/config';
@@ -43,8 +42,7 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
                 styles.touchable,
                 selectedCategory?._id === category._id && styles.selected,
               ]}
-              onPress={() => setSelectedCategory(category)}
-            >
+              onPress={() => setSelectedCategory(category)}>
               <Text 
                 style={[
                   styles.text, 
