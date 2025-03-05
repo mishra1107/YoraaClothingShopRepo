@@ -16,7 +16,7 @@ export const postRequest = async (url, data) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Server returned ${response.status}: ${errorText}`);
+      throw new Error(`Serveeer returned ${response.status}: ${errorText}`);
     }
 
     const contentType = response.headers.get('Content-Type');
