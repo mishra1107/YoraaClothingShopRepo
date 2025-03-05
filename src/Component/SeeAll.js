@@ -16,13 +16,10 @@ const SeeAll = () => {
 };
 const styles = StyleSheet.create({
   button: {
-    marginStart:20,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
-    width: 150, 
+    width: 120, 
     height: 40, 
   },
   leftBorder: {

@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     padding: 5, 
     borderRadius: 15,
     marginVertical: 5,
-    elevation: 5, 
     alignItems: "center",
     justifyContent: "center"
   },
@@ -133,14 +132,9 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: 200,
-    backgroundColor: '#fff',
     borderRadius: 1,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
+   
     position: 'relative',
   },
   image: {
@@ -176,7 +170,6 @@ const styles = StyleSheet.create({
   price: {
     marginStart:10,
     fontSize: 14,
-    fontWeight: 'bold',
     color: "#909090",
     marginTop: 4,
     textAlign: 'left',

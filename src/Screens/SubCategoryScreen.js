@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   subcategoryImage: {
-    width: 20,
-    height: 20,
+    width: 76,
+    height: 76,
     marginRight: 15,
   },
   subcategoryName: {

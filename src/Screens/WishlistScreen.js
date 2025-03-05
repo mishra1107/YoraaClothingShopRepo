@@ -57,8 +57,9 @@ const WishlistScreen = () => {
         </View>
       </View>
       <Text style={styles.name} numberOfLines={2}>{item.item.name}</Text>
+      <Text style={styles.description}>{item.item.description}</Text>
       <Text style={styles.price}>₹{item.item.price}</Text>
-      <Text style={styles.name}>{item.item.description}</Text>
+
     </View>
   );
 
@@ -142,13 +143,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     backgroundColor: '#fff',
-    borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
     position: 'relative',
   },
   image: {
@@ -173,16 +168,21 @@ const styles = StyleSheet.create({
   name: {
     marginTop: 5,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#333',
+    textAlign: 'left',
+    lineHeight: 16,
+  },
+  description: {
+    marginTop: 1,
+    fontSize: 12,
+    color: 'gray',
     textAlign: 'left',
     lineHeight: 16,
   },
   price: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#FF5722',
-    marginTop: 4,
+    color: 'gray',
+    marginTop: 6,
     textAlign: 'left',
   },
 });

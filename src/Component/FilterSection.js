@@ -87,13 +87,13 @@ const FilterSection = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, borderBottomWidth: 1, borderColor: '#ddd' },
-  searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', borderRadius: 5, paddingHorizontal: 8, marginRight: 10 },
+  container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10,  borderColor: '#ddd' },
+  searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', paddingHorizontal: 8, marginRight: 10 },
   searchIcon: { marginRight: 5, color: '#999' },
   searchInput: { flex: 1, height: 40, color: '#000' },
   icon1: { width: 25, height: 25 },
   cartContainer: { position: 'relative',justifyContent:'space-between' },
-  wishlistContainer: { position: 'relative',justifyContent:'space-between' },
+  wishlistContainer: { position: 'relative',justifyContent:'space-between',marginRight:8 },
   badge: { position: 'absolute', top: -5, left: 0, backgroundColor: 'red', borderRadius: 10, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' },
   badge1: { position: 'absolute', top: -5, right: -6, backgroundColor: 'red', borderRadius: 10, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' },
   badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },

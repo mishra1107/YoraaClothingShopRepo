@@ -141,9 +141,9 @@ const EditProfileScreen = () => {
 
       Alert.alert('Success', 'Phone number verified successfully!');
       setOtpVerified(true);
-      userData.isPhoneVerified=true;
+      userData.isPhoneVerified = true;
     } catch (error) {
-    
+
       Alert.alert('Error', 'Invalid OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -187,9 +187,9 @@ const EditProfileScreen = () => {
           }
           launchCamera({ mediaType: 'photo', quality: 1 }, (response) => {
             if (response.didCancel) {
-             
+
             } else if (response.errorCode) {
-             
+
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: newImageUri });
@@ -203,9 +203,9 @@ const EditProfileScreen = () => {
         onPress: () =>
           launchImageLibrary({ mediaType: 'photo', quality: 1 }, (response) => {
             if (response.didCancel) {
-            
+
             } else if (response.errorCode) {
-              
+
             } else if (response.assets) {
               const newImageUri = response.assets[0].uri;
               setProfileImage({ uri: newImageUri });
@@ -236,10 +236,10 @@ const EditProfileScreen = () => {
           type: 'image/jpeg',
           name: 'profile.jpg',
         });
-      } 
+      }
       const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${BASE_URL}/userProfile/updateProfile`, {
-    
+
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -249,12 +249,12 @@ const EditProfileScreen = () => {
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Failed to update profile');
       Alert.alert('Success', 'Profile updated successfully');
-       await AsyncStorage.setItem("user_name",profileData.name);
-       await AsyncStorage.setItem("user_email",profileData.email);
-       await AsyncStorage.setItem("user_phNo",profileData.phNo);
-       const name = await AsyncStorage.getItem("user_name");
-       const email = await AsyncStorage.getItem("user_email");
-       const phoneNumber = await AsyncStorage.getItem("user_phNo");
+      await AsyncStorage.setItem("user_name", profileData.name);
+      await AsyncStorage.setItem("user_email", profileData.email);
+      await AsyncStorage.setItem("user_phNo", profileData.phNo);
+      const name = await AsyncStorage.getItem("user_name");
+      const email = await AsyncStorage.getItem("user_email");
+      const phoneNumber = await AsyncStorage.getItem("user_phNo");
       navigation.navigate('Profile', { refresh: true });
     } catch (error) {
       Alert.alert('Error', error.message);
@@ -263,16 +263,16 @@ const EditProfileScreen = () => {
   const sendVerificationEmail = async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/sendVerificationEmail`, {
-    
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: profileData.email, phone: profileData.phNo }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         Alert.alert('Success', 'Verification email sent successfully.');
       } else {
@@ -282,24 +282,24 @@ const EditProfileScreen = () => {
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
   };
-  const verifyEmail = async ( otp) => {
+  const verifyEmail = async (otp) => {
     try {
       const response = await fetch(`${BASE_URL}/auth/verifyEmail`, {
-     
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: profileData.email, phone: profileData.phNo,otp:otp }),
+        body: JSON.stringify({ email: profileData.email, phone: profileData.phNo, otp: otp }),
 
 
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         Alert.alert('Success', 'Email verified successfully.');
-        userData.isEmailVerified=true;
+        userData.isEmailVerified = true;
       } else {
         Alert.alert('Error', data.message || 'Failed to verify email.');
       }
@@ -307,21 +307,21 @@ const EditProfileScreen = () => {
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
   };
-  
+
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}>
-<View style={styles.header}>
-      <TouchableOpacity
-        style={styles.backIcon}
-        onPress={() => navigation.goBack()} >
-        <Image 
-          source={require('../assests/images/BackArrow.png')} 
-          style={styles.backIconImage}
-        />
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>PROFILE</Text>
-    </View>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backIcon}
+          onPress={() => navigation.goBack()} >
+          <Image
+            source={require('../assests/images/BackArrow.png')}
+            style={styles.backIconImage}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>PROFILE</Text>
+      </View>
       <View style={styles.avatarContainer}>
         <View style={styles.imageBorder}>
           <Image source={profileImage} style={styles.profileImage} />
@@ -331,86 +331,86 @@ const EditProfileScreen = () => {
         </View>
       </View>
 
-      <TextInput style={styles.input} placeholder="Name" placeholderTextColor={placeholderTextColor}  value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
+      <TextInput style={styles.input} placeholder="Name" placeholderTextColor={placeholderTextColor} value={profileData.name} onChangeText={(text) => handleInputChange('name', text)} />
       <TextInput style={styles.input} placeholder="Address" placeholderTextColor={placeholderTextColor} value={profileData.address} onChangeText={(text) => handleInputChange('address', text)} />
 
       <View>
-  {/* Phone Input */}
-  <TextInput
-  placeholderTextColor={placeholderTextColor}
-    style={[styles.input, userData.isPhoneVerified && styles.disabledInput]}
-    placeholder="Phone"
-    keyboardType="phone-pad"
-    value={profileData.phNo}
-    onChangeText={(text) => handleInputChange('phNo', text)}
-    editable={!userData.isPhoneVerified} // Disable input if phone is verified
-  />
+        {/* Phone Input */}
+        <TextInput
+          placeholderTextColor={placeholderTextColor}
+          style={[styles.input, userData.isPhoneVerified && styles.disabledInput]}
+          placeholder="Phone"
+          keyboardType="phone-pad"
+          value={profileData.phNo}
+          onChangeText={(text) => handleInputChange('phNo', text)}
+          editable={!userData.isPhoneVerified} // Disable input if phone is verified
+        />
 
-  {!userData.isPhoneVerified && (
-    <>
-      {/* Send OTP / Resend OTP Button */}
-      <TouchableOpacity
-        // style={styles.otpButton}
-        style={[styles.otpButton, { opacity: loading ? 0.5 : 1 }]}
-        onPress={otpRequested ? handleResendOTP : handleSendOtp}
-        disabled={loading}
-      >
-         {loading ? (
-              <ActivityIndicator color="#ffffff" />
-            ) : (
-        <Text style={styles.otpButtonText}>
-          {otpRequested ? "Resend OTP" : "Send OTP"}
-        </Text>
-         )}
-      </TouchableOpacity>
+        {!userData.isPhoneVerified && (
+          <>
+            {/* Send OTP / Resend OTP Button */}
+            <TouchableOpacity
+              // style={styles.otpButton}
+              style={[styles.otpButton, { opacity: loading ? 0.5 : 1 }]}
+              onPress={otpRequested ? handleResendOTP : handleSendOtp}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#ffffff" />
+              ) : (
+                <Text style={styles.otpButtonText}>
+                  {otpRequested ? "Resend OTP" : "Send OTP"}
+                </Text>
+              )}
+            </TouchableOpacity>
 
-      {/* OTP Input */}
-      <TextInput
-      placeholderTextColor={placeholderTextColor}
-        style={styles.input}
-        placeholder="Enter OTP"
-        keyboardType="numeric"
-        maxLength={6}
-        value={otp}
-        onChangeText={setOtp}
-      />
+            {/* OTP Input */}
+            <TextInput
+              placeholderTextColor={placeholderTextColor}
+              style={styles.input}
+              placeholder="Enter OTP"
+              keyboardType="numeric"
+              maxLength={6}
+              value={otp}
+              onChangeText={setOtp}
+            />
 
-      {/* Verify OTP Button */}
-      <TouchableOpacity
-        style={styles.otpButton}
-        onPress={() => handleVerifyOtp(otp)}
-        disabled={loading || otp.length !== 6}
-      >
-        {loading ? (
-          <ActivityIndicator color="#ffffff" />
-        ) : (
-          <Text style={styles.otpButtonText}>Verify OTP</Text>
+            {/* Verify OTP Button */}
+            <TouchableOpacity
+              style={styles.otpButton}
+              onPress={() => handleVerifyOtp(otp)}
+              disabled={loading || otp.length !== 6}
+            >
+              {loading ? (
+                <ActivityIndicator color="#ffffff" />
+              ) : (
+                <Text style={styles.otpButtonText}>Verify OTP</Text>
+              )}
+            </TouchableOpacity>
+          </>
         )}
-      </TouchableOpacity>
-    </>
-  )}
-</View>
+      </View>
 
-<View>
-  {/* Phone Input */}
-  <TextInput
-  placeholderTextColor={placeholderTextColor}
-    style={[styles.input, userData.isEmailVerified && styles.disabledInput]}
-    placeholder="Email"
-    keyboardType="email-address"
-    value={profileData.email}
-    onChangeText={(text) => handleInputChange('email', text)}
-    editable={!userData.isEmailVerified} // Disable input if phone is verified
-  />
+      <View>
+        {/* Phone Input */}
+        <TextInput
+          placeholderTextColor={placeholderTextColor}
+          style={[styles.input, userData.isEmailVerified && styles.disabledInput]}
+          placeholder="Email"
+          keyboardType="email-address"
+          value={profileData.email}
+          onChangeText={(text) => handleInputChange('email', text)}
+          editable={!userData.isEmailVerified} // Disable input if phone is verified
+        />
 
- 
-</View>
+
+      </View>
 
       <Text style={styles.subHeader}>OTHER DETAILS</Text>
 
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <TextInput
-        placeholderTextColor={placeholderTextColor}
+          placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Date of Birth"
           value={profileData.dob ? convertToDateFormat(profileData.dob) : ""}
@@ -433,7 +433,7 @@ const EditProfileScreen = () => {
 
       <TouchableOpacity onPress={() => setAnniversaryDate(true)}>
         <TextInput
-        placeholderTextColor={placeholderTextColor}
+          placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Anniversary"
           value={profileData.anniversary ? convertToDateFormat(profileData.anniversary) : ""}
@@ -456,7 +456,7 @@ const EditProfileScreen = () => {
 
       <TouchableOpacity style={styles.inputWrapper} onPress={() => setGenderDropdownVisible(!isGenderDropdownVisible)}>
         <TextInput
-        placeholderTextColor={placeholderTextColor}
+          placeholderTextColor={placeholderTextColor}
           style={styles.input}
           placeholder="Gender"
           value={profileData.gender}
@@ -504,8 +504,8 @@ const EditProfileScreen = () => {
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
-    alignItems: "center", 
-    justifyContent: "center", 
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 15,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     position: "absolute",
-    left: 10, 
+    left: 10,
     top: 10,  // Ensure it's clickable
     padding: 10,  // Increases tap area
     alignItems: "center",
@@ -584,7 +584,6 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
     padding: 12,
     fontSize: 14,
     marginBottom: 10,
@@ -629,6 +628,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 0,
     alignItems: 'center',
+    marginTop: 30
   },
   saveButtonText: {
     color: 'white',
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
   disabledInput: {
     backgroundColor: "#f0f0f0",
     color: "#888", // Light grey text
-  } 
+  }
 });
 
 export default EditProfileScreen;

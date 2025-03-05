@@ -246,9 +246,8 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
     padding: 10,
-    marginBottom: 15,
+    marginBottom: 12,
     fontSize: 14,
   },
   subHeader: {
@@ -265,7 +264,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#000',
     paddingVertical: 15,
-    borderRadius: 3,
     alignItems: 'center',
   },
   buttonText: {

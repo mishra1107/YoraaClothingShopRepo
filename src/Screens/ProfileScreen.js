@@ -270,7 +270,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   profileContainer: {
@@ -314,27 +313,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     paddingVertical: 14,
     marginHorizontal: 16,
-    borderRadius: 4,
     alignItems: 'center',
     marginTop: 20,
   },
   updateProfileButtonText: {
     color: '#fff',
     fontSize: 14,
-    fontWeight: 'bold',
   },
   logoutButton: {
     paddingVertical: 14,
     marginHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 4,
     alignItems: 'center',
     marginTop: 8,
+    marginBottom:30
   },
   logoutButtonText: {
     fontSize: 14,
-    fontWeight: 'bold',
     color: '#000',
   },
   optionsContainer: {
@@ -344,9 +339,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    paddingVertical: 8,
+ 
   },
   optionContent: {
     flexDirection: 'row',
@@ -360,11 +354,10 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   optionArrow: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#000',
   },
 });

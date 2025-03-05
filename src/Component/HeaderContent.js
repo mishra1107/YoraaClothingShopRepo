@@ -61,18 +61,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 40,
     textAlign: "center",
     color: "#000",
-    marginTop: 20,
+    marginTop: 80,
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 14,
     textAlign: "center",
     color: "#666",
-    marginBottom: 30,
+    marginBottom: 50,
     lineHeight: 20,
   },
   feature: {

@@ -63,7 +63,10 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: "100%",  // Ensures ScrollView takes full width
+    width: "100%",
+    marginLeft:10
+    
+    // Ensures ScrollView takes full width
   },
   scrollContainer: {
     flexDirection: "row",
@@ -73,9 +76,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
     overflow: "hidden",
-    margin: 10,
+    marginRight:10,
+    marginButtom:10,
+    marginTop:10,
+
   },
   touchable: {
     minWidth: 100, // Ensures each tab has enough space to be scrollable
