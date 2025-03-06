@@ -9,7 +9,6 @@ import CardLayout from '../Component/CardLayout';
 import SizeChartModal from '../Component/SizeChartModal';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import { BASE_URL } from '../constants/config';
-
 const ProductDetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -78,7 +77,7 @@ const ProductDetailScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Image   source={require('../assests/images/BackArrow.png')}  // ✅ Use local asset  style={styles.backIconImage}  // ✅ Apply styles for proper size
+        <Image   source={require('../assests/images/BackArrow.png')}  
 />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>DETAILS</Text>
@@ -93,31 +92,56 @@ const ProductDetailScreen = () => {
           <Text style={styles.productDescription}>{productDetails.items.description}</Text>
 
           <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>₹{productDetails.items.price}</Text>
+            <Text style={styles.productPrice}>Rs{productDetails.items.price}</Text>
             <TouchableOpacity onPress={() => setSizeChartVisible(true)}>
               <Text style={styles.selectSize}>SELECT SIZE</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <AccordionItem 
+      
+  
+
+<AccordionItem  
+  title="DETAILS"
+  content={
+    <View style={{ width: '100%' }}>
+      <AccordionItem  
+        title="DESCRIPTION & RETURNS" 
+        content={<Text>{productDetails.descriptionAndReturns}</Text>} 
+        fitDetails={<Text>{productDetails.fitDetails}</Text>} 
+        careInstructions={<Text>{productDetails.careInstructions}</Text>} 
+        sizeDetails={<Text>{productDetails.size}</Text>} 
+      />
+      <AccordionItem 
+        title="MANUFACTURER DETAILS" 
+        content={<Text>{renderManufacturerDetails(productDetails.manufacturerDetails)}</Text>} 
+      />
+      <AccordionItem 
+        title="SHIPPING, RETURNS AND EXCHANGES" 
+        content={<Text>{renderShippingAndReturns(productDetails.shippingAndReturns)}</Text>} 
+      />
+    </View>
+  }
+/>
+
+ 
+       {/* <AccordionItem 
           title="DESCRIPTION & RETURNS" 
           content={productDetails.descriptionAndReturns} 
           fitDetails={productDetails.fitDetails} 
           careInstructions={productDetails.careInstructions} 
-          sizeDetails={productDetails.size} 
-        />
+          sizeDetails={productDetails.size} />
         <AccordionItem 
           title="MANUFACTURER DETAILS" 
-          content={renderManufacturerDetails(productDetails.manufacturerDetails)} 
-        />
+          content={renderManufacturerDetails(productDetails.manufacturerDetails)}  />
         <AccordionItem 
           title="SHIPPING, RETURNS AND EXCHANGES" 
-          content={renderShippingAndReturns(productDetails.shippingAndReturns)} 
-        />
+          content={renderShippingAndReturns(productDetails.shippingAndReturns)} />   */}
+        
         <YouMayAlsoLike />
         <CardLayout />
-      </ScrollView>
+        </ScrollView>
       <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
     </View>
   );

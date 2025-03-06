@@ -43,57 +43,170 @@ const CardLayout = () => {
     };
     fetchItems();
   }, []);
-  const renderItem = ({ item }) => (
-    <View style={styles.cardContainer}>
-      <View style={styles.card}>
+
+//   const renderItem = ({ item }) => (
+//     <View style={styles.cardContainer}>
+//       <View style={styles.card}>
+//         <Image 
+//           source={item.image ? { uri: item.image } : require('../assests/images/Shopping.png')} 
+//           style={styles.image} 
+//         />
+//         <View style={styles.iconsContainer}>
+//           <TouchableOpacity 
+//             onPress={() => navigation.navigate('Product', { id: item.id })} 
+//             style={styles.iconButton1} >
+//             <Icon  name="eye"  size={18} color="black"/>
+//           </TouchableOpacity>
+//           <TouchableOpacity 
+//             style={styles.iconButton1} 
+//             onPress={async () => {
+//               const token= await AsyncStorage.getItem('token')
+//               console.log("111111111111111111111111111",token)
+//               if (token==null) {
+//                 console.log("111111111chcghuu11111")
+//                 Alert.alert("You need to login/signin first")
+//                 navigation.navigate('Welcome'); // Navigate to signup if token is missing
+//               } 
+//               else{
+//                 console.log("Item ID being added to cart:", item.id);
+//                 await toggleCart(item.id);
+//                 navigation.navigate('Cart');
+//               }  }} >
+//             <Icon name="cart-outline" size={18} color="black" />
+//            </TouchableOpacity>
+//           <TouchableOpacity onPress={async() => {
+//            const token= await AsyncStorage.getItem('token')
+//            console.log("111111111111111111111111111",token)
+//     if (token==null) {
+//       console.log("111111111chcghuu11111")
+//       Alert.alert("You need to login/signin first")
+//       navigation.navigate('Welcome'); // Navigate to signup if token is missing
+//     } else {
+//       toggleWishlist(item.id);
+//     }
+//   }} style={styles.iconButton1}>
+//   <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
+// </TouchableOpacity>
+//         </View>
+//       </View>
+
+// {/* <TouchableOpacity onPress={() => navigation.navigate('Product', { id: item.id })} activeOpacity={0.8}>
+//   <View style={styles.card}>
+//     <Image 
+//       source={item.image ? { uri: item.image } : require('../assests/images/Shopping.png')} 
+//       style={styles.image} 
+//     />
+//     <View style={styles.iconsContainer}>
+//       <TouchableOpacity 
+//         onPress={() => navigation.navigate('Product', { id: item.id })} 
+//         style={styles.iconButton1}
+//       >
+//         <Icon name="eye" size={18} color="black"/>
+//       </TouchableOpacity>
+      
+//       <TouchableOpacity 
+//         style={styles.iconButton1} 
+//         onPress={async () => {
+//           const token = await AsyncStorage.getItem('token');
+//           if (!token) {
+//             Alert.alert("You need to login/signin first");
+//             navigation.navigate('Welcome'); // Navigate to signup if token is missing
+//           } else {
+//             console.log("Item ID being added to cart:", item.id);
+//             await toggleCart(item.id);
+//             navigation.navigate('Cart');
+//           }  
+//         }}>
+//         <Icon name="cart-outline" size={18} color="black" />
+//       </TouchableOpacity>
+
+//       <TouchableOpacity 
+//         onPress={async () => {
+//           const token = await AsyncStorage.getItem('token');
+//           if (!token) {
+//             Alert.alert("You need to login/signin first");
+//             navigation.navigate('Welcome'); // Navigate to signup if token is missing
+//           } else {
+//             toggleWishlist(item.id);
+//           }
+//         }} 
+//         style={styles.iconButton1}
+//       >
+//         <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
+//       </TouchableOpacity>
+//     </View>
+//   </View>
+// </TouchableOpacity> */}
+
+
+
+
+//       <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+//       <Text style={styles.price}>₹{item.price}</Text>
+//       <Text style={styles.name}>{item.description}</Text>
+//     </View>
+//   );
+
+
+
+
+const renderItem = ({ item }) => (
+  <View style={styles.cardContainer}>
+    <View style={styles.card}>
+      
+      {/* Make the image clickable */}
+      <TouchableOpacity onPress={() => navigation.navigate('Product', { id: item.id })}>
         <Image 
           source={item.image ? { uri: item.image } : require('../assests/images/Shopping.png')} 
           style={styles.image} 
         />
-        <View style={styles.iconsContainer}>
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('Product', { id: item.id })} 
-            style={styles.iconButton1}
-          >
-            <Icon  name="eye"  size={18} color="black"/>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.iconButton1} 
-            onPress={async () => {
-              const token= await AsyncStorage.getItem('token')
-              console.log("111111111111111111111111111",token)
-              if (token==null) {
-                console.log("111111111chcghuu11111")
-                Alert.alert("You need to login/signin first")
-                navigation.navigate('Welcome'); // Navigate to signup if token is missing
-              } 
-              else{
-                console.log("Item ID being added to cart:", item.id);
-                await toggleCart(item.id);
-                navigation.navigate('Cart');
-              }  }} >
-            <Icon name="cart-outline" size={18} color="black" />
-           </TouchableOpacity>
-          <TouchableOpacity onPress={async() => {
-           const token= await AsyncStorage.getItem('token')
-           console.log("111111111111111111111111111",token)
-    if (token==null) {
-      console.log("111111111chcghuu11111")
-      Alert.alert("You need to login/signin first")
-      navigation.navigate('Welcome'); // Navigate to signup if token is missing
-    } else {
-      toggleWishlist(item.id);
-    }
-  }} style={styles.iconButton1}>
-  <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
-</TouchableOpacity>
-        </View>
+      </TouchableOpacity>
+
+      <View style={styles.iconsContainer}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('Product', { id: item.id })} 
+          style={styles.iconButton1} >
+          <Icon name="eye" size={18} color="black"/>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.iconButton1} 
+          onPress={async () => {
+            const token = await AsyncStorage.getItem('token');
+            if (!token) {
+              Alert.alert("You need to login/signin first");
+              navigation.navigate('Welcome'); // Navigate to signup if token is missing
+            } else {
+              console.log("Item ID being added to cart:", item.id);
+              await toggleCart(item.id);
+              navigation.navigate('Cart');
+            }
+          }} >
+          <Icon name="cart-outline" size={18} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          onPress={async() => {
+            const token = await AsyncStorage.getItem('token');
+            if (!token) {
+              Alert.alert("You need to login/signin first");
+              navigation.navigate('Welcome'); // Navigate to signup if token is missing
+            } else {
+              toggleWishlist(item.id);
+            }
+          }} 
+          style={styles.iconButton1}>
+          <Icon name={wishlist[item.id] ? "heart" : "heart-outline"} size={18} color={wishlist[item.id] ? "red" : "black"} />
+        </TouchableOpacity>
       </View>
-      <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
-      <Text style={styles.price}>₹{item.price}</Text>
-      <Text style={styles.name}>{item.description}</Text>
     </View>
-  );
+
+    <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+    <Text style={styles.price}>Rs{item.price}</Text>
+    <Text style={styles.name}>{item.description}</Text>
+  </View>
+);
+
 
   if (loading) {
     return <ActivityIndicator size="large" color="#FF5722" style={{ marginTop: 50 }} />;

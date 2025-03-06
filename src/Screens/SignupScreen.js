@@ -26,7 +26,7 @@ const SignupScreen = ({navigation}) => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
  
  const colorScheme = useColorScheme();
-const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
+ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
 
   const scrollViewRef = useRef();
 
@@ -109,13 +109,11 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
     setLoading(false);
   };
   
-
   return (
-    // <View style={styles.container}>
+   
     <KeyboardAvoidingView 
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={styles.container}
-  >
+    style={styles.container}>
     <ScrollView
       ref={scrollViewRef}
       contentContainerStyle={{ flexGrow: 1 }}
@@ -125,8 +123,8 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
         style={styles.backIcon}
         onPress={() => navigation.goBack()}>
         <Image 
-          source={require('../assests/images/BackArrow.png')}  //  Use local asset
-          style={styles.backIconImage}  //  Apply styles for proper size
+          source={require('../assests/images/BackArrow.png')} 
+          style={styles.backIconImage} 
         />
       </TouchableOpacity>
       <Text style={styles.signupText}>Sign-up</Text>
@@ -185,7 +183,7 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
             onChangeText={setConfirmPassword}
             onFocus={() => {
               scrollViewRef.current?.scrollToEnd({ animated: true });
-            }} // 🔹 Scrolls to confirm password input
+            }} 
           />
           <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
             <Icon
@@ -206,7 +204,6 @@ const placeholderTextColor = colorScheme === 'dark' ? '#BBBBBB' : '#888888';
       </TouchableOpacity>
     </ScrollView>
 
-    {/* 🔹 Moves Sign-Up Button Above Keyboard When Keyboard is Visible */}
     {!keyboardVisible && (
       <TouchableOpacity
         onPress={  handleSignup}
@@ -271,8 +268,8 @@ const styles = StyleSheet.create({
   signupButton: {
     position: 'absolute',
     bottom: 20, 
-    left: 0,  // Ensures full width
-    right: 0, // Ensures full width
+    left: 0,  
+    right: 0, 
     backgroundColor: 'black',
     paddingVertical: 16,
     alignItems: 'center',

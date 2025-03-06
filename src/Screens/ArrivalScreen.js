@@ -43,8 +43,6 @@ const ArrivalScreen = () => {
   return (
     <View style={{ flex: 1 }}>
      
-
-      {/* Product List */}
       <FlatList
         key={'2-columns'}
         data={products}

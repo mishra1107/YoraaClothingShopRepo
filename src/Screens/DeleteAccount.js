@@ -33,7 +33,6 @@ export default function DeleteAccount() {
         Alert.alert("Error", result.message || "Failed to delete user");
       }
     } catch (error) {
-    
       Alert.alert("Error", "An error occurred while deleting the account.");
     }
   };
@@ -49,8 +48,7 @@ export default function DeleteAccount() {
         animationType="fade"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.overlay}>
           <View style={styles.modalView}>
             <Text style={styles.title}>Delete Account</Text>
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: '700',
+    fontWeight: 'light',
     marginBottom: 10,
     color: '#333',
   },
@@ -121,14 +119,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonYes: {
-    backgroundColor: '#d9534f',
+    backgroundColor: 'black', 
   },
-  buttonNo: {
-    backgroundColor: '#5bc0de',
+buttonNo: {
+    backgroundColor: 'black',  
   },
+
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: 'light',
   },
 });

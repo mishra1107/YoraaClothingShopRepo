@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 const ContactusScreen = () => {
-  const navigation = useNavigation();
+ const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 14,
     textAlign: 'center',
-    color: 'blue',
+    color: 'black',
     textDecorationLine: 'underline',
   },
 });

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { getCart, addToCart, removeFromCart, updateCartItem } from "./cartService";
+import { getCart, addToCart, removeFromCart, updateCartItem } from "./CartService";
 
 export const CartContext = createContext();
 export const useCart = () => {
