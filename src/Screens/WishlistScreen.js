@@ -2,7 +2,7 @@ import React, { useEffect, useState,useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import { getWishlist, removeFromWishlist } from '../services/wishlistService'; //  Import removeFromWishlist function
+import { getWishlist, removeFromWishlist } from '../services/wishlistService';
 import { WishlistContext } from '../services/context/WishlistContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useCart } from '../services/cart/CartContext';
