@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     // Ensures ScrollView takes full width
   },
   scrollContainer: {
-    flexDirection: "row",
+    flexDirection: "row", 
     flexGrow: 1, // Fixes scrolling issue by ensuring proper width
   },
   container: {

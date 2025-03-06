@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AccordionItem from '../Component/AccordianItem'; 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -44,7 +43,6 @@ const ProductDetailScreen = () => {
       </View>
     );
   }
-
   const renderManufacturerDetails = (details) => {
     return (
       <View>
@@ -52,7 +50,7 @@ const ProductDetailScreen = () => {
         <Text style={styles.detailText}>Address: {details.address}</Text>
         <Text style={styles.detailText}>Country of Origin: {details.countryOfOrigin}</Text>
         <Text style={styles.detailText}>Phone: {details.contactDetails.phone}</Text>
-        <Text style={styles.detailText}>Email: {details.contactDetails.email}</Text>
+        <Text style={styles.detailText}>Email: {details.contactDetails.email}</Text>  
       </View>
     );
   };
@@ -77,8 +75,7 @@ const ProductDetailScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Image   source={require('../assests/images/BackArrow.png')}  
-/>
+        <Image   source={require('../assests/images/BackArrow.png')} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>DETAILS</Text>
       </View>
@@ -98,10 +95,6 @@ const ProductDetailScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-
-      
-  
-
 <AccordionItem  
   title="DETAILS"
   content={
@@ -124,8 +117,6 @@ const ProductDetailScreen = () => {
     </View>
   }
 />
-
- 
        {/* <AccordionItem 
           title="DESCRIPTION & RETURNS" 
           content={productDetails.descriptionAndReturns} 

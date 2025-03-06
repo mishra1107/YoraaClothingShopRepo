@@ -33,8 +33,6 @@ const WishlistScreen = () => {
       console.error(" Remove from Wishlist Error:", error);
     }
   };
-  
-
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
@@ -49,8 +47,8 @@ const WishlistScreen = () => {
           <TouchableOpacity 
     style={styles.iconButton} 
     onPress={async () => {
-        await toggleCart(item.item._id);  // Corrected to item.item._id
-        await fetchCart();  // Ensure cart count updates immediately
+        await toggleCart(item.item._id); 
+        await fetchCart();  
         navigation.navigate('Cart'); }}>
     <Icon name="cart-outline" size={18} color="black" />
 </TouchableOpacity>
