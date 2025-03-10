@@ -29,22 +29,19 @@ export const CartProvider = ({ children }) => {
         }
     };
     
-    const toggleCart = async (itemId) => {
+    const toggleCart = async (itemId, desiredSize) => {
         try {
-            // console.log("inside toggler cart",itemId)
-            //     console.log("cart",cart[0].item)
-                const existingItem = cart.find(cartItem => cartItem.item === itemId);
-                // console.log("existing item",existingItem);
-            if (existingItem) {
-               console.log("already existed") 
-            } else {
-                await addToCart(itemId, 1);
-            }
-            await fetchCart(); //  Ensure cart count updates dynamically
+          const existingItem = cart.find(cartItem => cartItem.item === itemId && cartItem.desiredSize === desiredSize);
+          if (existingItem) {
+            console.log("Item with this size already exists in cart");
+          } else {
+            await addToCart(itemId, 1, desiredSize); // Pass desiredSize to addToCart
+          }
+          await fetchCart(); // Refresh cart after adding
         } catch (error) {
-            console.error(" Toggle Cart Error:", error);
+          console.error("Toggle Cart Error:", error);
         }
-    };
+      };
 
      // ✅ Function to clear the cart after payment
      const clearCart = async () => {

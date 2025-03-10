@@ -1,14 +1,20 @@
-
 import { useNavigation } from "@react-navigation/native";
-import React, { useRef, useEffect } from "react";
-import { View, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Text } from "react-native";
+import React, { useRef, useEffect, useContext } from "react";
+import { View, FlatList, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Alert } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WishlistContext } from '../services/context/WishlistContext';
+import { useCart } from '../services/cart/CartContext';
 
 const { width, height } = Dimensions.get("window");
-const ShoppingCarousel = ({ images = [] }) => {
+
+const ShoppingCarousel = ({ images = [], itemId, onCartPress }) => {
   const navigation = useNavigation();
   const flatListRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
+  const { toggleCart } = useCart();
+  const { wishlist, toggleWishlist } = useContext(WishlistContext);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -24,9 +30,33 @@ const ShoppingCarousel = ({ images = [] }) => {
       return () => clearInterval(interval);
     }
   }, [images]);
+
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Image source={{ uri: item }} style={styles.image} />
+      <View style={styles.iconsContainer}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => onCartPress(itemId)}>
+          <Icon name="cart-outline" size={18} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={async () => {
+            const token = await AsyncStorage.getItem('token');
+            if (!token) {
+              Alert.alert("You need to login/signin first");
+              navigation.navigate('Welcome');
+            } else {
+              toggleWishlist(itemId);
+            }
+          }}
+        >
+          <Icon
+            name={wishlist[itemId] ? "heart" : "heart-outline"}
+            size={18}
+            color={wishlist[itemId] ? "red" : "black"}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -78,11 +108,13 @@ const ShoppingCarousel = ({ images = [] }) => {
           return (
             <View key={index} style={styles.indicatorWrapper}>
               <Animated.View style={[styles.squareDot, { opacity }]} />
-              <Animated.View style={[styles.line, { height: opacity.interpolate({
-                inputRange: [0.3, 1],
-                outputRange: [0, 20],
-                extrapolate: "clamp",
-              }) }]} />
+              <Animated.View style={[styles.line, {
+                height: opacity.interpolate({
+                  inputRange: [0.3, 1],
+                  outputRange: [0, 30], // Increased from 20 to 30 for longer lines
+                  extrapolate: "clamp",
+                })
+              }]} />
             </View>
           );
         })}
@@ -129,6 +161,21 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
+  iconsContainer: {
+    position: 'absolute',
+    bottom: 13,
+    right: 7,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  iconButton: {
+    backgroundColor: "white",
+    padding: 5,
+    borderRadius: 15,
+    marginVertical: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   indicatorContainer: {
     position: "absolute",
     right: 10,
@@ -143,14 +190,14 @@ const styles = StyleSheet.create({
   squareDot: {
     width: 8,
     height: 8,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
+    borderRadius: 10,
   },
   line: {
     width: 2,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     marginTop: 2,
   },
 });
 
 export default ShoppingCarousel;
-

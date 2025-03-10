@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AccordionItem from '../Component/AccordianItem'; 
+import AccordionItem from '../Component/AccordianItem';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YouMayAlsoLike from '../Component/YouMayAlsoLike';
 import CardLayout from '../Component/CardLayout';
 import SizeChartModal from '../Component/SizeChartModal';
 import ShoppingCarousel from '../Component/ShoppingCarosuel';
 import { BASE_URL } from '../constants/config';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 const ProductDetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params;
   const [sizeChartVisible, setSizeChartVisible] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [actionAfterSizeSelection, setActionAfterSizeSelection] = useState(null);
+
+  // Animation setup
+  const slideAnim = useRef(new Animated.Value(-300)).current; // Start off-screen to the left
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -23,8 +30,8 @@ const ProductDetailScreen = () => {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         });
         const data = await response.json();
         setProductDetails(data);
@@ -32,9 +39,17 @@ const ProductDetailScreen = () => {
         console.error('Error fetching product details:', error);
       }
     };
-
     fetchProductDetails();
   }, [id]);
+
+  useEffect(() => {
+    // Animate when isDetailsOpen changes
+    Animated.timing(slideAnim, {
+      toValue: isDetailsOpen ? 0 : -300, // Slide in to 0, slide out to -300
+      duration: 300, // Animation duration in milliseconds
+      useNativeDriver: true, // Use native driver for better performance
+    }).start();
+  }, [isDetailsOpen]);
 
   if (!productDetails) {
     return (
@@ -43,6 +58,7 @@ const ProductDetailScreen = () => {
       </View>
     );
   }
+
   const renderManufacturerDetails = (details) => {
     return (
       <View>
@@ -50,7 +66,7 @@ const ProductDetailScreen = () => {
         <Text style={styles.detailText}>Address: {details.address}</Text>
         <Text style={styles.detailText}>Country of Origin: {details.countryOfOrigin}</Text>
         <Text style={styles.detailText}>Phone: {details.contactDetails.phone}</Text>
-        <Text style={styles.detailText}>Email: {details.contactDetails.email}</Text>  
+        <Text style={styles.detailText}>Email: {details.contactDetails.email}</Text>
       </View>
     );
   };
@@ -62,7 +78,6 @@ const ProductDetailScreen = () => {
         {data.shippingDetails.map((item, index) => (
           <Text key={index} style={styles.detailText}>- {item}</Text>
         ))}
-
         <Text style={styles.subHeader}>Return Policy:</Text>
         {data.returnPolicy.map((item, index) => (
           <Text key={index} style={styles.detailText}>- {item}</Text>
@@ -71,69 +86,102 @@ const ProductDetailScreen = () => {
     );
   };
 
+  const handleAddToCart = () => {
+    setActionAfterSizeSelection('addToCart');
+    setSizeChartVisible(true);
+  };
+
+  const handleBuyNow = () => {
+    setActionAfterSizeSelection('buyNow');
+    setSizeChartVisible(true);
+  };
+
+  const handleCartIconPress = () => {
+    setActionAfterSizeSelection('addToCart');
+    setSizeChartVisible(true);
+  };
+
+  const handleSizeChartClose = (selectedSize) => {
+    setSizeChartVisible(false);
+    if (actionAfterSizeSelection === 'addToCart') {
+      console.log('Added to cart:', productDetails.items.name, 'Size:', selectedSize);
+    } else if (actionAfterSizeSelection === 'buyNow') {
+      console.log('Buy now:', productDetails.items.name, 'Size:', selectedSize);
+    }
+    setActionAfterSizeSelection(null);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Image   source={require('../assests/images/BackArrow.png')} />
+          <Image source={require('../assests/images/BackArrow.png')} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>DETAILS</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        
-        <ShoppingCarousel images={productDetails.images} />
+        <ShoppingCarousel
+          images={productDetails.images}
+          itemId={id}
+          onCartPress={handleCartIconPress}
+        />
 
         <View style={styles.detailsContainer}>
           <Text style={styles.productTitle}>{productDetails.items.name}</Text>
           <Text style={styles.productDescription}>{productDetails.items.description}</Text>
+          <Text style={styles.productPrice}>Rs {productDetails.items.price} (ALL TAXES INCLUDED)</Text>
 
           <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>Rs{productDetails.items.price}</Text>
-            <TouchableOpacity onPress={() => setSizeChartVisible(true)}>
-              <Text style={styles.selectSize}>SELECT SIZE</Text>
+            <TouchableOpacity onPress={() => setIsDetailsOpen(!isDetailsOpen)}>
+              <Text style={styles.selectSize}>DETAILS</Text>
+            </TouchableOpacity>
+          </View>
+
+          {isDetailsOpen && (
+            <Animated.View style={[styles.accordionContent, { transform: [{ translateX: slideAnim }] }]}>
+              <AccordionItem
+                title="DESCRIPTION & RETURNS"
+                content={
+                  <View>
+                    <Text>{productDetails.descriptionAndReturns}</Text>
+                    {productDetails.fitDetails && <Text>{productDetails.fitDetails}</Text>}
+                    {productDetails.careInstructions && <Text>{productDetails.careInstructions}</Text>}
+                    {productDetails.size && <Text>{productDetails.size}</Text>}
+                  </View>
+                }
+              />
+              <AccordionItem
+                title="MANUFACTURER DETAILS"
+                content={renderManufacturerDetails(productDetails.manufacturerDetails)}
+              />
+              <AccordionItem
+                title="SHIPPING, RETURNS AND EXCHANGES"
+                content={renderShippingAndReturns(productDetails.shippingAndReturns)}
+              />
+            </Animated.View>
+          )}
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buyNowButton} onPress={handleBuyNow}>
+              <Text style={styles.buyNowButtonText}>BUY IT NOW</Text>
             </TouchableOpacity>
           </View>
         </View>
-<AccordionItem  
-  title="DETAILS"
-  content={
-    <View style={{ width: '100%' }}>
-      <AccordionItem  
-        title="DESCRIPTION & RETURNS" 
-        content={<Text>{productDetails.descriptionAndReturns}</Text>} 
-        fitDetails={<Text>{productDetails.fitDetails}</Text>} 
-        careInstructions={<Text>{productDetails.careInstructions}</Text>} 
-        sizeDetails={<Text>{productDetails.size}</Text>} 
-      />
-      <AccordionItem 
-        title="MANUFACTURER DETAILS" 
-        content={<Text>{renderManufacturerDetails(productDetails.manufacturerDetails)}</Text>} 
-      />
-      <AccordionItem 
-        title="SHIPPING, RETURNS AND EXCHANGES" 
-        content={<Text>{renderShippingAndReturns(productDetails.shippingAndReturns)}</Text>} 
-      />
-    </View>
-  }
-/>
-       {/* <AccordionItem 
-          title="DESCRIPTION & RETURNS" 
-          content={productDetails.descriptionAndReturns} 
-          fitDetails={productDetails.fitDetails} 
-          careInstructions={productDetails.careInstructions} 
-          sizeDetails={productDetails.size} />
-        <AccordionItem 
-          title="MANUFACTURER DETAILS" 
-          content={renderManufacturerDetails(productDetails.manufacturerDetails)}  />
-        <AccordionItem 
-          title="SHIPPING, RETURNS AND EXCHANGES" 
-          content={renderShippingAndReturns(productDetails.shippingAndReturns)} />   */}
-        
+
         <YouMayAlsoLike />
         <CardLayout />
-        </ScrollView>
-      <SizeChartModal visible={sizeChartVisible} onClose={() => setSizeChartVisible(false)} />
+      </ScrollView>
+
+      <SizeChartModal
+        visible={sizeChartVisible}
+        onClose={handleSizeChartClose}
+        sizes={productDetails.sizes}
+        sizeChartCm={productDetails.sizeChartCm}
+        sizeChartInch={productDetails.sizeChartInch}
+        sizeMeasurement={productDetails.sizeMeasurement}
+        itemId={id}
+      />
     </View>
   );
 };
@@ -162,15 +210,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  cartIcon: {
-    position: 'absolute',
-    bottom: 15,
-    right: 15,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 10,
-    elevation: 5, 
-  },
   detailsContainer: {
     padding: 15,
   },
@@ -186,14 +225,15 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
   },
   productPrice: {
     fontSize: 14,
     fontWeight: 'light',
-    color: "#909090",
+    color: '#909090',
+    marginVertical: 5,
   },
   selectSize: {
     fontSize: 12,
@@ -215,5 +255,54 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
+  },
+  accordionContent: {
+    width: '100%',
+  },
+  buttonContainer: {
+    marginTop: 15,
+    marginBottom: 20,
+  },
+  addToCartButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cartButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  cartButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign: 'center',
+    flex: 1,
+  },
+  heartIcon: {
+    width: 20,
+    height: 20,
+    tintColor: '#000',
+  },
+  buyNowButton: {
+    backgroundColor: '#000',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buyNowButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
   },
 });

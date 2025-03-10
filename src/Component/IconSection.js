@@ -64,46 +64,35 @@ const IconSection = ({ selectedCategory, setSelectedCategory }) => {
 const styles = StyleSheet.create({
   wrapper: {
     width: "100%",
-    marginLeft:10
-    
-    // Ensures ScrollView takes full width
+    marginLeft: 10,
   },
   scrollContainer: {
-    flexDirection: "row", 
-    flexGrow: 1, // Fixes scrolling issue by ensuring proper width
+    flexDirection: "row",
+    flexGrow: 1,
   },
   container: {
     flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    overflow: "hidden",
-    marginRight:10,
-    marginButtom:10,
-    marginTop:10,
-
+    marginHorizontal: 10, // Adds space on both sides
   },
   touchable: {
-    minWidth: 100, // Ensures each tab has enough space to be scrollable
-    alignItems: "center",
-    justifyContent: "center",
     paddingVertical: 10,
-    paddingHorizontal: 20, // Added extra padding for better spacing
-    borderRightWidth: 1,
-    borderColor: "#ccc",
-    backgroundColor: "white",
+    paddingHorizontal: 15,
   },
   selected: {
-    backgroundColor: "black", 
+    borderBottomWidth: 2, // Underline effect
+    borderBottomColor: "black",
   },
   text: {
-    fontSize: 14,
-    fontWeight: "light",
-    color: "black",
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: "400", // Normal text weight
+    color: "gray", // Lighter text color for unselected
+    textAlign: "center",
   },
   selectedText: {
-    color: "white",
+    fontWeight: "bold", // Bold for selected
+    color: "black", // Black text for selected
   },
 });
+
 
 export default IconSection;

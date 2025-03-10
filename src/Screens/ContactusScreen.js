@@ -21,9 +21,9 @@ const ContactusScreen = () => {
         <Text style={styles.title}>EMAIL:</Text>
         <Text
           style={styles.email}
-          onPress={() => Linking.openURL('mailto:support@yoraa.co.in')}
+          onPress={() => Linking.openURL('mailto:contact@yoraa.in')}
         >
-          support@yoraa.co.in
+          contact@yoraa.in
         </Text>
       </View>
     </View>

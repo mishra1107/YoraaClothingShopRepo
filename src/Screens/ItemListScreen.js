@@ -139,13 +139,13 @@ const ItemListScreen = ({ route }) => {
                 </TouchableOpacity>
                 
                 <View style={styles.iconOverlay}>
-                    <TouchableOpacity 
+                    {/* <TouchableOpacity 
                         onPress={() => navigation.navigate('Product', { id: item._id })} 
                         style={styles.iconButton}>
                         <Icon name="eye" size={18} color="black"/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     
-                    <TouchableOpacity  
+                    {/* <TouchableOpacity  
                         onPress={async () => {
                             const token = await AsyncStorage.getItem('token');
                             if (!token) {
@@ -157,9 +157,9 @@ const ItemListScreen = ({ route }) => {
                         }}  
                         style={styles.iconButton}>
                         <Icon name={wishlist[item._id] ? "heart" : "heart-outline"} size={18} color={wishlist[item._id] ? "red" : "black"} />
-                    </TouchableOpacity>  
+                    </TouchableOpacity>   */}
                     
-                    <TouchableOpacity 
+                    {/* <TouchableOpacity 
                         style={styles.iconButton} 
                         onPress={async () => {
                             const token = await AsyncStorage.getItem('token');
@@ -172,12 +172,16 @@ const ItemListScreen = ({ route }) => {
                             }
                         }}>
                         <Icon name="cart-outline" size={18} color="black" />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemPrice}>₹ {item.price}</Text>
+                {/* <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemPrice}>₹ {item.price}</Text> */}
+
+                 <Text style={styles.itemName} numberOfLines={2}>{item.name}</Text>
+                      <Text style={styles.itemPrice}>MRP : Rs {item.price}</Text>
+                      <Text style={styles.itemPrice}>(All Taxes Included)</Text>
             </View>
         </View>)}
 />

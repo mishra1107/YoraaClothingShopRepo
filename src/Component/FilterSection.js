@@ -88,9 +88,9 @@ const FilterSection = () => {
 
 const styles = StyleSheet.create({
   container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10,  borderColor: '#ddd' },
-  searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ccc', paddingHorizontal: 8, marginRight: 10 },
+  searchContainer: { flex: 1, flexDirection: 'row',borderRadius:10, alignItems: 'center', borderWidth: 1, borderColor: '#ccc', paddingHorizontal: 8, marginRight: 10 },
   searchIcon: { marginRight: 5, color: '#999' },
-  searchInput: { flex: 1, height: 40, color: '#000' },
+  searchInput: { flex: 1, height: 35, color: '#000' },
   icon1: { width: 25, height: 25 },
   cartContainer: { position: 'relative',justifyContent:'space-between' },
   wishlistContainer: { position: 'relative',justifyContent:'space-between',marginRight:8 },

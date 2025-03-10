@@ -12,22 +12,7 @@ export const getAuthHeaders = async () => {
 };
 
 //  Create Cart (Add Item to Cart)
-export const addToCart = async (itemId, quantity) => {
-    try {
-        const headers = await getAuthHeaders();
-        const response = await fetch(`${BASE_URL}${API_ENDPOINTS.ADD_CART}`, {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ itemId, quantity }),
-        });
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(" Add to Cart Error:", error);
-        return { success: false, message: "Failed to add item to cart" };
-    }
-};
 
 //  Delete Item from Cart by ID
 
@@ -54,48 +39,69 @@ export const removeFromCart = async (cartItemId) => {
     }
 };
 
-export const getCart = async () => {
+// In CartService
+export const addToCart = async (itemId, quantity, desiredSize) => {
     try {
-        const headers = await getAuthHeaders();
-        const response = await fetch(`${BASE_URL}${API_ENDPOINTS.GET_CART}`, {
-            method: "GET",
-            headers,
-        });
-
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error("Failed to fetch cart items");
-        }
-
-        //  Extract only required details
-        const cartItems = data.data.map(item => ({
-            cartId: item._id,
-            name: item.item.name,
-            description: item.item.description,
-            price: item.item.price,
-            imageUrl: item.item.imageUrl,
-            quantity: item.quantity,
-            item: item.item._id
-        }));
-        return cartItems;
+      const headers = await getAuthHeaders();
+      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.ADD_CART}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ itemId, quantity, desiredSize }), // Updated JSON body
+      });
+  
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add item to cart");
+      }
+      return data;
     } catch (error) {
-        console.error(" Error fetching cart:", error);
-        return [];
+      console.error("Add to Cart Error:", error);
+      return { success: false, message: "Failed to add item to cart" };
     }
-};
-
-//  Update Cart Item by ID
-export const updateCartItem = async (cartId, quantity) => {
+  };
+  
+  // Update getCart to include desiredSize
+  export const getCart = async () => {
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.GET_CART}`, {
+        method: "GET",
+        headers,
+      });
+  
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error("Failed to fetch cart items");
+      }
+  
+      // Extract desiredSize along with other details
+      const cartItems = data.data.map(item => ({
+        cartId: item._id,
+        name: item.item.name,
+        description: item.item.description,
+        price: item.item.price,
+        imageUrl: item.item.imageUrl,
+        quantity: item.quantity,
+        item: item.item._id,
+        desiredSize: item.desiredSize, // Add desiredSize to cart item
+      }));
+      return cartItems;
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      return [];
+    }
+  };
+  
+  // Update updateCartItem if size changes are allowed (optional)
+  export const updateCartItem = async (cartId, quantity, desiredSize) => {
     try {
       const headers = await getAuthHeaders();
       const url = `${BASE_URL}${API_ENDPOINTS.UPDATE_CART}/${cartId}`;
-      
-      // Log the URL and payload for debugging
-  
+      const body = desiredSize ? { quantity, desiredSize } : { quantity }; // Include desiredSize if provided
       const response = await fetch(url, {
         method: "PATCH",
         headers,
-        body: JSON.stringify({ quantity }),
+        body: JSON.stringify(body),
       });
   
       const responseText = await response.text();
@@ -104,7 +110,6 @@ export const updateCartItem = async (cartId, quantity) => {
       }
   
       const data = JSON.parse(responseText);
-    
       if (!data.success) {
         throw new Error(data.message || "Failed to update cart item");
       }
@@ -115,7 +120,6 @@ export const updateCartItem = async (cartId, quantity) => {
       return { success: false, message: "Failed to update cart item" };
     }
   };
-  
 
 
 

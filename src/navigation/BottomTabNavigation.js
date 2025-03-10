@@ -1,10 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Image } from 'react-native';
 import HomeScreen from '../Screens/HomeScreen';
 import CollectionScreen from '../Screens/CollectionScreen';
 import NewScreen from '../Screens/NewScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
+
+// Import custom icons
+import HomeIcon from '../assests/images/Home.png';
+import ProfileIcon from '../assests/images/Profile.png';
+import NewIcon from '../assests/images/New.png';
+import CollectionIcon from '../assests/images/Collection.png';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,58 +21,47 @@ const BottomTabNavigation = () => {
         tabBarStyle: {
           backgroundColor: '#000',
           borderTopWidth: 0,
-          height: 60,
-          paddingBottom: 5,
+          height: 80,
+          paddingTop:15
         },
         headerShown: false,
-        tabBarActiveTintColor: '#fff', // Active tab text/icon color
-        tabBarInactiveTintColor: '#999', // Inactive tab text/icon color
-        tabBarLabelStyle: {
-          fontSize: 12,
-          marginTop: -5, // Adjust text positioning
-        },
-        tabBarIcon: ({ color, size, focused }) => {
-          let iconName;
+        tabBarShowLabel: false, // Hides the text labels
+        tabBarIcon: ({ focused }) => {
+          let iconSource;
 
           switch (route.name) {
             case 'Home':
-              iconName = 'home';
+              iconSource = HomeIcon;
               break;
             case 'Collection':
-              iconName = 'appstore-o';
+              iconSource = CollectionIcon;
               break;
             case 'New':
-              iconName = 'pluscircleo';
+              iconSource = NewIcon;
               break;
             case 'Profile':
-              iconName = 'user';
+              iconSource = ProfileIcon;
               break;
           }
 
-          return <Icon name={iconName} size={24} color={color} />;
+          return (
+            <Image
+              source={iconSource}
+              style={{
+                width: 24 ,
+                height: 24,
+                tintColor: focused ? '#fff' : '#999', // Change color on focus
+              }}
+              resizeMode="contain"
+            />
+          );
         },
       })}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ tabBarLabel: 'Home' }} 
-      />
-      <Tab.Screen 
-        name="Collection" 
-        component={CollectionScreen} 
-        options={{ tabBarLabel: 'Collection' }} 
-      />
-      <Tab.Screen 
-        name="New" 
-        component={NewScreen} 
-        options={{ tabBarLabel: 'New' }} 
-      />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen} 
-        options={{ tabBarLabel: 'Profile' }} 
-      />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Collection" component={CollectionScreen} />
+      <Tab.Screen name="New" component={NewScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

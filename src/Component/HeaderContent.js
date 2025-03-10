@@ -39,7 +39,7 @@ const HeaderContent = () => {
           We offer 4 days to exchange or return your product, ensuring a seamless shopping experience for our valued customers.
         </Text>
       </View>
-      <View style={styles.feature}>
+      {/* <View style={styles.feature}>
         <Image
           source={require('../assests/images/onlineassistence.png')}
           style={styles.icon}
@@ -48,7 +48,7 @@ const HeaderContent = () => {
         <Text style={styles.description}>
           Our friendly and knowledgeable customer support team is available to assist you with any queries.
         </Text>
-      </View>
+      </View> */}
     </View>
   );
 };

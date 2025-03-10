@@ -8,7 +8,7 @@ const PaymentGatewayScreen = () => {
   const navigation=useNavigation();
   const route = useRoute(); //  Get route parameters
   const { itemIds,address,cart,onPaymentSuccess,totalAmount } = route.params || {}; 
-  //console.log("sssssssssssssss",itemIds)
+  console.log("sssssssssssssss",itemIds)
   const [loading, setLoading] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
     customerName: "",
@@ -32,7 +32,7 @@ const PaymentGatewayScreen = () => {
             customerName: name,
             email: email,
             phoneNumber: phoneNumber,
-            amount: totalAmount, // Set the total amount
+            amount: 1, // Set the total amount
           }));
         } else {
           console.warn("User details not found in AsyncStorage.");
@@ -104,10 +104,10 @@ const PaymentGatewayScreen = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(paymentResponse),
       });
-      //console.log("verifyResponse",verifyResponse)
+      console.log("verifyResponse",verifyResponse)
 
       const verifyData = await verifyResponse.json();
-      //console.log("verifyData",verifyData)
+      console.log("verifyData",verifyData)
       if (verifyData.success) {
         Alert.alert("Success", "Payment successful!");
      

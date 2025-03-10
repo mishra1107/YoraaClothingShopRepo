@@ -6,27 +6,28 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView, Alert,Linking,
+  ScrollView,
+  Alert,
+  Linking,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
-  const ProfileScreen = () => {
- const navigation = useNavigation();
 
+const ProfileScreen = () => {
+  const navigation = useNavigation();
   const [data, setData] = useState(null);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = await AsyncStorage.getItem("token"); //  Ensure token is fetched
+        const token = await AsyncStorage.getItem("token");
         if (!token) {
           console.error("No token found!");
           return;
         }
-       
+
         const apiUrl = `${BASE_URL}/userProfile/getProfile`;
-  
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -39,43 +40,17 @@ import { BASE_URL } from '../constants/config';
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const responseData = await response.json(); //  Properly parse JSON
-       
-        setData(responseData); //  Store actual response data
+        const responseData = await response.json();
+        setData(responseData);
 
       } catch (error) {
-        
-        setData([]); //  Ensure UI doesn't break
+        setData([]); // Fallback to empty array to prevent UI crash
       }
     };
 
     fetchProfile();
-  }, []); // Empty dependency array means it runs once on mount
+  }, []);
 
-  const handleLogout = async () => {
-    try {
-      // Clear token and user data from AsyncStorage
-      await AsyncStorage.removeItem('token');
-      await AsyncStorage.removeItem('user');
-      // Show logout confirmation
-      Alert.alert(" Logged Out", "You have been logged out successfully.", [
-        { text: "OK", onPress: () => navigation.replace('Welcome') } // Navigate to Welcome screen
-      ]);
-
-    } catch (error) {
-      
-      Alert.alert(" Error", "Something went wrong while logging out.");
-    }
-  };
-  const handleNavigation = async (screen) => {
-    const token = await AsyncStorage.getItem('token');
-    if (token) {
-      navigation.navigate(screen);
-    } else {
-     Alert.alert("You need to login/signin first")
-      navigation.navigate('Welcome'); // Redirect to Signup if no token found
-    }
-  };
   useEffect(() => {
     const checkToken = async () => {
       const storedToken = await AsyncStorage.getItem('token');
@@ -83,10 +58,33 @@ import { BASE_URL } from '../constants/config';
     };
     checkToken();
   }, []);
-  
-  const handleAuthNavigation = () => {
-    navigation.navigate('Welcome'); // Navigate to Signup/Login page
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('user');
+      Alert.alert("Logged Out", "You have been logged out successfully.", [
+        { text: "OK", onPress: () => navigation.replace('Welcome') }
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong while logging out.");
+    }
   };
+
+  const handleNavigation = async (screen) => {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      navigation.navigate(screen);
+    } else {
+      Alert.alert("You need to login/signin first");
+      navigation.navigate('Welcome');
+    }
+  };
+
+  const handleAuthNavigation = () => {
+    navigation.navigate('Welcome');
+  };
+
   const handlePrivacyPolicy = async () => {
     const url = 'https://www.yoraa.co/';
     const supported = await Linking.canOpenURL(url);
@@ -107,7 +105,6 @@ import { BASE_URL } from '../constants/config';
     }
   };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -120,45 +117,41 @@ import { BASE_URL } from '../constants/config';
           style={styles.backgroundImage}
         />
         <View style={styles.profileContent}>
-          <Image
-            source={
-              data?.imageUrl 
-                ? { uri: data.imageUrl } 
-                : require("../assests/images/ProfileImage.png") 
-            }
-            style={styles.profileImage}
-          />
+          {/* Conditionally render profile image only if imageUrl exists */}
+          {data?.imageUrl && (
+            <Image
+              source={{ uri: data.imageUrl }}
+              style={styles.profileImage}
+            />
+          )}
           <View style={styles.profileTextContainer}>
-            <Text style={styles.profileName}>{data?.user?.name}</Text>
-            
+            <Text style={styles.profileName}>{data?.user?.name }</Text>
           </View>
-          <View></View>
-          <View></View>
-          <View></View>
-          <View></View>
         </View>
       </View>
 
       <TouchableOpacity
-onPress={() => handleNavigation('UpdateProfile')}
-        style={styles.updateProfileButton}>
+        onPress={() => handleNavigation('UpdateProfile')}
+        style={styles.updateProfileButton}
+      >
         <Text style={styles.updateProfileButtonText}>UPDATE PROFILE</Text>
       </TouchableOpacity>
-      {token ? (
-  <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>LOG OUT</Text>
-      </TouchableOpacity>
-) : (
-  <TouchableOpacity onPress={handleAuthNavigation} style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>LOG IN/SIGN IN</Text>
-      </TouchableOpacity>
-)}
 
+      {token ? (
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>LOG OUT</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={handleAuthNavigation} style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>LOG IN/SIGN IN</Text>
+        </TouchableOpacity>
+      )}
 
       <ScrollView contentContainerStyle={styles.optionsContainer}>
         <TouchableOpacity
-         onPress={() => handleNavigation('Order')}
-          style={styles.option}>
+          onPress={() => handleNavigation('Order')}
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/Shipping.png')}
@@ -170,7 +163,8 @@ onPress={() => handleNavigation('UpdateProfile')}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('ReturnOrder')}
-          style={styles.option}>
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/exchangeOrder.png')}
@@ -182,7 +176,8 @@ onPress={() => handleNavigation('UpdateProfile')}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('Contact')}
-          style={styles.option}>
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/contactus.png')}
@@ -192,17 +187,10 @@ onPress={() => handleNavigation('UpdateProfile')}
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.option}>
-          <View style={styles.optionContent}>
-            <Image
-              source={require('../assests/images/invitefriend.png')}
-              style={styles.optionIcon}
-            />
-            <Text style={styles.optionText}>INVITE A FRIEND</Text>
-          </View>
-          <Text style={styles.optionArrow}>›</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity  onPress={() => navigation.navigate('Refund')} style={styles.option}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Refund')}
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/refund.png')}
@@ -214,7 +202,8 @@ onPress={() => handleNavigation('UpdateProfile')}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleTerms}
-          style={styles.option}>
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/Termscondition.png')}
@@ -225,8 +214,9 @@ onPress={() => handleNavigation('UpdateProfile')}
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
         <TouchableOpacity
-         onPress={handlePrivacyPolicy}
-          style={styles.option}>
+          onPress={handlePrivacyPolicy}
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/privacypolicy.png')}
@@ -236,22 +226,19 @@ onPress={() => handleNavigation('UpdateProfile')}
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
-
-
         <TouchableOpacity
           onPress={() => navigation.navigate('Delete')}
-          style={styles.option}>
+          style={styles.option}
+        >
           <View style={styles.optionContent}>
             <Image
               source={require('../assests/images/privacypolicy.png')}
               style={styles.optionIcon}
             />
-            <Text style={styles.optionText}>Delete Account</Text>
+            <Text style={styles.optionText}>DELETE ACCOUNT</Text>
           </View>
           <Text style={styles.optionArrow}>›</Text>
         </TouchableOpacity>
-
-
       </ScrollView>
     </View>
   );
@@ -283,9 +270,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   profileContent: {
-
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start', // Align content to the left when no image
     alignItems: 'center',
     padding: 30,
   },
@@ -305,16 +291,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
   },
-  profileSubtitle: {
-    fontSize: 14,
-    color: '#fff',
-  },
   updateProfileButton: {
     backgroundColor: '#000',
     paddingVertical: 14,
     marginHorizontal: 16,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 70,
   },
   updateProfileButtonText: {
     color: '#fff',
@@ -326,7 +308,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     marginTop: 8,
-    marginBottom:30
+    marginBottom: 30,
   },
   logoutButtonText: {
     fontSize: 14,
@@ -340,7 +322,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 8,
- 
   },
   optionContent: {
     flexDirection: 'row',
@@ -361,6 +342,5 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
-
 
 export default ProfileScreen;

@@ -16,15 +16,14 @@ import { BASE_URL } from '../constants/config';
 
 const CartScreen = () => {
   const navigation = useNavigation();
-  const { cart, fetchCart, removeFromCart, updateCartItem ,clearCart} = useCart();
+  const { cart, fetchCart, removeFromCart, updateCartItem, clearCart } = useCart();
   const [address, setAddress] = useState(null);
   const [data, setData] = useState(null);
-
   useEffect(() => {
     fetchCart();
     fetchAddress();
     fetchProfile();
-      // Fetch address when screen loads
+    // Fetch address when screen loads
   }, [navigation]);
 
   const fetchAddress = async () => {
@@ -33,15 +32,15 @@ const CartScreen = () => {
       if (!token) throw new Error('No token found');
 
       const response = await fetch(`${BASE_URL}/address/user`, {
-  
-      // const response = await fetch('https://api.yoraa.in/api/address/user', {
+
+        // const response = await fetch('https://api.yoraa.in/api/address/user', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (!response.ok) {
         // Handle 404 specifically without throwing an error
         if (response.status === 404) {
@@ -50,16 +49,16 @@ const CartScreen = () => {
         }
         throw new Error(`Failed to fetch address: ${response.status}`);
       }
-  
+
       const data = await response.json();
-  
+
       if (data && data.data && data.data.length > 0) {
         setAddress(data.data[0]);  // Set the first address in response
       } else {
         setAddress(null);  // No address found
       }
     } catch (error) {
-      console.log('Address fetch failed, but continuing without showing an error to the user.',error);
+      console.log('Address fetch failed, but continuing without showing an error to the user.', error);
       // Removed all alerts and error logs that show up on the UI
       setAddress(null);
     }
@@ -69,16 +68,16 @@ const CartScreen = () => {
   const fetchProfile = async () => {
     try {
       console.log("Fetching profile...");
-  
+
       const token = await AsyncStorage.getItem("token");
       if (!token) {
         console.error("No token found!");
         return;
       }
-  
+
       const apiUrl = `${BASE_URL}/userProfile/getProfile`;
       console.log("Fetching user profile from:", apiUrl);
-  
+
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
@@ -86,58 +85,58 @@ const CartScreen = () => {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const responseData = await response.json();
       console.log("Full API Response:", responseData);
-  
+
       // ✅ Extract `isProfile` correctly
       if (!responseData.user) {
         console.error("User object is missing in API response!");
         return;
       }
-  
+
       const profileData = {
-        ...responseData, 
+        ...responseData,
         isProfile: responseData.user.isProfile ?? false, // Extract `isProfile`
       };
-  
+
       console.log("Extracted isProfile:", profileData.isProfile);
       setData(profileData); // ✅ Store profile data in state
-  
+
     } catch (error) {
       console.error("Error fetching profile:", error);
       setData({}); // Prevent UI break
     }
   };
-  const handleCheckout = () => {  
+  const handleCheckout = () => {
     if (!data) {
-        console.log("Profile data is still loading...");
-        Alert.alert("Error", "Profile data is still loading. Please try again in a moment.");
-        return;
+      console.log("Profile data is still loading...");
+      Alert.alert("Error", "Profile data is still loading. Please try again in a moment.");
+      return;
     }
     const itemIds = cart.map(item => item.item);
     if (!data.isProfile) {
-        Alert.alert(
-            "Incomplete Information",
-            "Please complete your profile and address before proceeding to payment."
-        );
-        return; // Stop navigation if isProfile is false
+      Alert.alert(
+        "Incomplete Information",
+        "Please complete your profile and address before proceeding to payment."
+      );
+      return; // Stop navigation if isProfile is false
     }
 
-    navigation.navigate('Payment', { 
-        itemIds, 
-        address, 
-        cart,
-        totalAmount: calculateTotal(),
-        onPaymentSuccess: () => { 
-            clearCart(); 
-        } 
+    navigation.navigate('Payment', {
+      itemIds,
+      address,
+      cart,
+      totalAmount: calculateTotal(),
+      onPaymentSuccess: () => {
+        clearCart();
+      }
     });
-};
+  };
 
   const handleAddress = () => {
     navigation.navigate('Address');
@@ -176,6 +175,7 @@ const CartScreen = () => {
       <View style={styles.itemDetails}>
         <Text style={styles.itemTitle}>{item.name}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
+        <Text style={styles.itemSize}>Size: {item.desiredSize}</Text>
         <View style={styles.quantityContainer}>
           <TouchableOpacity onPress={() => handleUpdateQuantity(item.cartId, item.quantity - 1)}>
             <Icon name="remove" size={20} color="black" />
@@ -195,16 +195,16 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-       <View style={styles.header}>
-          <TouchableOpacity
-                       style={styles.backIcon}
-                       onPress={() => navigation.goBack()}>
-                       <Image 
-                         source={require('../assests/images/BackArrow.png')}  //  Use local asset
-                         style={styles.backIconImage}  //  Apply styles for proper size
-                       />
-                     </TouchableOpacity>
-          <Text style={styles.headerTitle}>CART ITEM</Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backIcon}
+          onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../assests/images/BackArrow.png')}  //  Use local asset
+            style={styles.backIconImage}  //  Apply styles for proper size
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>CART ITEM</Text>
       </View>
 
       <FlatList data={cart} renderItem={renderCartItem} keyExtractor={item => item.cartId.toString()} />
@@ -339,6 +339,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   checkoutText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+  itemSize: { fontSize: 12, color: '#555', marginTop: 5 },
 });
 
 export default CartScreen;

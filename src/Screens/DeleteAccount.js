@@ -15,7 +15,7 @@ export default function DeleteAccount() {
         return;
       }
       // Call the delete user API endpoint
-      const response = await fetch(`${BASE_URL}/auth/deleteUser` ,{
+      const response = await fetch(`${BASE_URL}/auth/deleteUser`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -23,10 +23,10 @@ export default function DeleteAccount() {
         },
       });
       const result = await response.json();
-  
+
       if (result.success) {
         setModalVisible(false);
-       
+
         // Navigate to the Welcome screen on successful deletion
         navigation.navigate('Welcome');
       } else {
@@ -57,11 +57,12 @@ export default function DeleteAccount() {
             </Text>
             <View style={styles.buttonsContainer}>
               <TouchableOpacity style={[styles.button, styles.buttonYes]} onPress={handleYes}>
-                <Text style={styles.buttonText}>Yes</Text>
+                <Text style={styles.buttonTextYes}>Yes</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, styles.buttonNo]} onPress={handleNo}>
-                <Text style={styles.buttonText}>No</Text>
+                <Text style={styles.buttonTextNo}>No</Text>
               </TouchableOpacity>
+
             </View>
           </View>
         </View>
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'light',
+    fontWeight: '300', // Adjusted fontWeight
     marginBottom: 10,
     color: '#333',
   },
@@ -117,17 +118,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonYes: {
-    backgroundColor: 'black', 
+    backgroundColor: 'white', // Yes button white
+    borderWidth: 1,
+    borderColor: 'black',
   },
-buttonNo: {
-    backgroundColor: 'black',  
+  buttonNo: {
+    backgroundColor: 'black', // No button black
   },
-
-  buttonText: {
-    color: '#fff',
+  buttonTextYes: {
+    color: 'black', // Yes button text black
     fontSize: 16,
-    fontWeight: 'light',
+    fontWeight: 'bold',
+  },
+  buttonTextNo: {
+    color: 'white', // No button text white
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
